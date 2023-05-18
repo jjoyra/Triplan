@@ -36,11 +36,12 @@ export default {
 .btn {
   border-radius: 50px;
   padding: 0.5em 1.2em;
+  border: 0.3px solid transparent;
 }
 
 .btn-group,
 .btn-group-vertical {
-  gap: 20px;
+  gap: 18px;
   position: relative;
   display: inline-flex;
   vertical-align: middle;
@@ -83,5 +84,12 @@ export default {
   color: #ffffff;
   background-color: #51abf3;
   border-color: #51abf3;
+}
+
+@media (max-width: 950px) {
+  .btn-group,
+  .btn-group-vertical {
+    gap: 12px;
+  }
 }
 </style>

@@ -36,8 +36,8 @@ export default {
 
 <style scoped>
 .thumbnail {
-  width: 140px;
-  height: 75px;
+  width: 150px;
+  height: 90px;
   border-radius: 3px 3px 0px 0px;
   background-color: #e6e6e6;
   position: relative;
@@ -54,8 +54,8 @@ img {
 }
 
 .desc {
-  width: 140px;
-  height: 50px;
+  width: 150px;
+  height: 60px;
   border-radius: 0px 0px 3px 3px;
   background-color: #ffffff;
   padding-left: 3px;

@@ -6,8 +6,8 @@
     <b-container>
       <attraction-search-bar></attraction-search-bar>
       <b-row>
-        <b-col cols="8"><kakao-map></kakao-map></b-col>
-        <b-col><attraction-list></attraction-list></b-col>
+        <b-col xl="8"><kakao-map></kakao-map></b-col>
+        <b-col xl="4"><attraction-list></attraction-list></b-col>
       </b-row>
     </b-container>
   </div>
