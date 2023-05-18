@@ -1,17 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from "vuex-persistedstate";
 
-Vue.use(Vuex)
+import noticeStore from "@/store/modules/noticeStore";
+import attractionStore from "@/store/modules/attractionStore";
+import memberStore from "@/store/modules/memberStore";
+
+Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
-  }
+    noticeStore,
+    attractionStore,
+    memberStore,
+  },
+  plugins: [
+    createPersistedState({
+      storage: sessionStorage, // 브라우저 종료시 제거하기 위해 localStorage가 아닌 sessionStorage로 변경. (default: localStorage)
+    }),
+  ],
 })

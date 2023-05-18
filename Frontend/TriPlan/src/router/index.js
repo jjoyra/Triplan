@@ -2,7 +2,64 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import MainView from '../views/MainView.vue'
 
-Vue.use(VueRouter)
+import store from "@/store";
+
+Vue.use(VueRouter);
+
+const onlyAuthAdmin = async (to, from, next) => {
+  const checkUserInfo = store.getters["memberStore/checkUserInfo"];
+  const checkToken = store.getters["memberStore/checkToken"];
+  let token = sessionStorage.getItem("access-token");
+  console.log("로그인 처리 전", checkUserInfo, token);
+
+  if (checkUserInfo != null && token) {
+    console.log("토큰 유효성 체크");
+    await store.dispatch("memberStore/getUserInfo", token);
+  }
+  if (!checkToken || checkUserInfo === null) {
+    alert("로그인이 필요한 페이지입니다..");
+    // next({ name: "login" });
+    // router.push({ name: "login" });
+    router.push({
+      name: "main",
+      params: { showLoginModal: true },
+    });
+  } else {
+    if (checkUserInfo.role === 0) {
+      console.log("관리자 로그인 완료");
+      next();
+    } else {
+      console.log("사용자 로그인 완료");
+      alert("관리자 권한이 필요한 페이지입니다..");
+      router.push({ name: "main" });
+    }
+    console.log("userinfo", checkUserInfo);
+  }
+};
+
+// const onlyAuthUser = async (to, from, next) => {
+//   const checkUserInfo = store.getters["memberStore/checkUserInfo"];
+//   const checkToken = store.getters["memberStore/checkToken"];
+//   let token = sessionStorage.getItem("access-token");
+//   console.log("로그인 처리 전", checkUserInfo, token);
+
+//   if (checkUserInfo != null && token) {
+//     console.log("토큰 유효성 체크");
+//     await store.dispatch("memberStore/getUserInfo", token);
+//   }
+//   if (!checkToken || checkUserInfo === null) {
+//     alert("로그인이 필요한 페이지입니다..");
+//     // next({ name: "login" });
+//     // router.push({ name: "login" });
+//     router.push({
+//       name: "main",
+//       params: { showLoginModal: true },
+//     });
+//   } else {
+//     console.log("로그인 완료");
+//     next();
+//   }
+// };
 
 const routes = [
   {
@@ -29,11 +86,13 @@ const routes = [
       {
         path: 'write',
         name: 'noticewrite',
+        beforeEnter: onlyAuthAdmin,
         component: () => import(/* webpackChunkName: "notice" */ '../components/notice/NoticeWrite')
       },
       {
         path: 'modify',
         name: 'noticemodify',
+        beforeEnter: onlyAuthAdmin,
         component: () => import(/* webpackChunkName: "notice" */ '../components/notice/NoticeModify')
       },
     ],
