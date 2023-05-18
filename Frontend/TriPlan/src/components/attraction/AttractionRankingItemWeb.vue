@@ -45,8 +45,9 @@ export default {
   position: relative;
 }
 
-/* .thumbnail:hover {
-} */
+.thumbnail:hover {
+  box-shadow: 1px 1px 20px #e1e1e19b;
+}
 
 img {
   width: 100%;

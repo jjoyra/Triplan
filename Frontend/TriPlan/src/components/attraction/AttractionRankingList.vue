@@ -47,7 +47,7 @@ export default {
 <style scoped>
 .bg {
   background-color: #fafafa;
-  padding: 30px 0;
+  padding: 15px 0px;
 }
 
 .ranking-list {
