@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.triplan.notice.model.mapper.NoticeMapper">
+
+	<resultMap type="noticeDto" id="notice">
+		<result column="member_id" property="memberId"/>
+		<result column="title" property="title"/>
+		<result column="is_must_read" property="isMustRead"/>
+		<result column="create_date" property="createDate"/>
+		<result column="hit" property="hit"/>
+	</resultMap>
+	
+	<!-- 1. 공지사항 등록 -->
+	<insert id="registNotice" parameterType="noticeDto">
+		insert into triplan.notice (member_id, title, content, is_must_read, hit, create_date, modify_date)
+		values (#{memberId}, #{title}, #{content}, ${isMustRead}, 0, now(), now())
+	</insert>
+	
+	<!-- 2. 공지사항 목록 조회 -->
+	<select id="getNoticeList" parameterType="map" resultMap="notice">
+		select notice_id, member_id, title, is_must_read, create_date, hit
+		from notice
+		<include refid="search"></include>
+		order by is_must_read desc, ${sortkey} desc, create_date desc
+		limit #{start}, #{listsize}
+	</select>
+	
+	<!-- 3. 공지사항 수정 -->
+	<update id="modifyNotice" parameterType="noticeDto">
+		update notice
+		<trim prefix="set" suffixOverrides=",">
+			<if test="title != null">title = #{title},</if>
+			<if test="content != null">content = #{content},</if>
+			<if test="isMustRead != null">is_must_read = ${isMustRead},</if>
+		</trim>
+		where notice_id = ${noticeId}
+	</update>
+	
+	<!-- 4. 공지사항 삭제 -->
+	<delete id="deleteNotice" parameterType="int">
+		delete from notice
+		where notice_id = ${noticeId};
+	</delete>
+	
+	<!-- 5. 공지사항 목록 총 개수 -->
+	<select id="getTotalNoticeCount" resultType="int">
+		select count(*)
+		from notice
+		<include refid="search"></include>
+	</select>
+	
+	<!-- 6. 공지사항 상세 조회 -->
+	<select id="getNoticeDetail" parameterType="int" resultType="noticeDto">
+		select *
+		from notice
+		where notice_id = ${noticeId}
+	</select>
+	
+	<!-- 7. 공지사항 조회수 증가 -->
+	<update id="updateHit" parameterType="int">
+		update notice
+		set hit = hit + 1
+		where notice_id = ${noticeId}
+	</update>
+	
+	<!-- 필터/검색 컬럼 : 작성자명(memberId), 제목(title) -->
+	<sql id="search">
+		<if test="word != null and word != ''">
+			where title like concat('%', #{word}, '%')
+		</if>
+	</sql>
+	
+</mapper>

@@ -1,0 +1,90 @@
+<template>
+  <div class="bg">
+    <div class="ranking-wrap">
+      <div class="ranking-list">
+        <h2>인기 여행지 TOP 3</h2>
+        <div class="ranking-item-web">
+          <!-- <attraction-ranking-item-web
+        v-for="attraction in attractions"
+        :key="attraction.content_id"
+        :attraction="attaraction"
+      ></attraction-ranking-item-web> -->
+          <attraction-ranking-item-web></attraction-ranking-item-web>
+          <attraction-ranking-item-web></attraction-ranking-item-web>
+          <attraction-ranking-item-web></attraction-ranking-item-web>
+        </div>
+
+        <div class="ranking-item-mobile">
+          <attraction-ranking-item-mobile></attraction-ranking-item-mobile>
+          <attraction-ranking-item-mobile></attraction-ranking-item-mobile>
+          <attraction-ranking-item-mobile></attraction-ranking-item-mobile>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import AttractionRankingItemMobile from "./AttractionRankingItemMobile.vue";
+import AttractionRankingItemWeb from "./AttractionRankingItemWeb.vue";
+
+export default {
+  name: "AttractionRankingList",
+  components: {
+    AttractionRankingItemWeb,
+    AttractionRankingItemMobile,
+  },
+  data() {
+    return {
+      attractions: [],
+    };
+  },
+  created() {},
+  methods: {},
+};
+</script>
+
+<style scoped>
+.bg {
+  background-color: #fafafa;
+  padding: 30px 0;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ranking-wrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ranking-item-web,
+.ranking-item-mobile {
+  gap: 50px;
+  margin: 15px 0px;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.ranking-item-web {
+  display: flex;
+}
+.ranking-item-mobile {
+  display: none;
+}
+
+@media (max-width: 950px) {
+  .ranking-item-web {
+    display: none;
+  }
+  .ranking-item-mobile {
+    display: flex;
+  }
+}
+</style>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.triplan.member.model.mapper.MemberMapper">
+
+	<resultMap type="memberDto" id="member">
+		<result column="member_id" property="memberId"/>
+		<result column="nickname" property="nickname"/>
+		<result column="role" property="role"/>
+	</resultMap>
+	
+	<resultMap type="memberDto" id="memberAll" extends="member">
+		<result column="password" property="password"/>
+		<result column="name" property="name"/>
+		<result column="img_url" property="imgUrl"/>
+		<result column="join_date" property="joinDate"/>
+	</resultMap>
+
+	<select id="idCheck" parameterType="String" resultType="int">
+		select count(member_id)
+		from member
+		where member_id = #{memberId};
+	</select>
+
+	<insert id="joinMember" parameterType="memberDto">
+		insert into member (member_id, password, name, nickname, img_url, join_date)
+		values (#{memberId}, #{password}, #{name}, #{nickname}, #{imgUrl}, now());
+	</insert>
+
+	<select id="loginMember" parameterType="map" resultMap="member">
+		select member_id, nickname, role
+		from member
+		where member_id = #{memberId} and password = #{password};
+	</select>
+	
+	<!-- ADMIN -->
+	<!-- <select id="listMember" resultMap="memberAll">
+		select *
+		from member
+		order by join_date
+	</select> -->
+	
+	<select id="getMember" parameterType="string" resultMap="memberAll">
+		select *
+		from member
+		where member_id = #{memberId}
+	</select>
+	
+	<update id="updateMember" parameterType="memberDto">
+		update member
+		<trim prefix="set" suffixOverrides=",">
+			<if test="password != null">password = #{password},</if>
+			<if test="nickname != null">nickname = #{nickname},</if>
+			<if test="imgUrl != null">img_url = #{imgUrl},</if>
+		</trim>
+		where member_id = #{memberId}
+	</update>
+	
+	<update id="deleteMember" parameterType="String">
+		UPDATE member 
+		SET member_id = CONCAT('000000000', (SELECT * from (SELECT COUNT(#{memberId}) FROM member) m)), password ='1', name = '알수없음', nickname = '알수없음'
+		where member_id = #{memberId};
+	</update>
+	
+	<select id="findPassword" parameterType="map" resultType="String">
+		select password 
+		from member
+		where member_id = #{memberId} and name = #{name};
+	</select>
+	
+</mapper>
