@@ -13,10 +13,15 @@
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${notice.noticeId}. ${notice.title}</h3><div><h6>작성자 : ${notice.memberId} 조회수 : ${notice.hit}</div><div>${notice.createDate}</h6></div>`"
+          :header-html="`<h3>${notice.title}</h3>`"
           class="mb-2"
           no-body
         >
+          <b-card-header>
+            <div>
+              <h6>작성자 : {{notice.memberId}} 조회수 : {{notice.hit}}, {{notice.createDate | dataFormat}}</h6>
+            </div>
+          </b-card-header>
           <b-card-body class="text-left">
             <div v-text="notice.content"></div>
           </b-card-body>
@@ -27,12 +32,8 @@
 </template>
 
 <script>
-// import moment from "moment";
-// import { getArticle } from "@/api/board";
-// import { mapState } from "vuex";
-
-// const memberStore = "memberStore";
-import http from '@/api/http';
+import moment from "moment";
+import { getNoticeDetail, deleteNotice } from '@/api/notice';
 
 export default {
   name: "NoticeDetail",
@@ -41,29 +42,17 @@ export default {
       notice: {},
     };
   },
-  computed: {
-    // ...mapState(memberStore, ["userInfo"]),
-    // message() {
-    //   if (this.article.content) return this.article.content.split("\n").join("<br>");
-    //   return "";
-    // },
-  },
   created() {
-    // let param = this.$route.params.articleno;
-    // getArticle(
-    //   param,
-    //   ({ data }) => {
-    //     this.article = data;
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
     let noticeId = this.$route.params.noticeId;
-    http.get(`notice/${noticeId}`).then(res => {
-      console.log(res);
-      this.notice = res.data.notice;
-    })
+    getNoticeDetail(
+      noticeId,
+      ({ data }) => {
+        this.notice = data.notice;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   },
   methods: {
     moveModifyNotice() {
@@ -74,20 +63,19 @@ export default {
     },
     deleteNotice() {
       if (confirm("정말 삭제하시겠습니까?")) {
-        http.delete(`notice/${this.notice.noticeId}`).then(() => {
-        this.$router.replace('/notice');
-        })
+        deleteNotice(
+          this.notice.noticeId,
+          () => this.$router.replace('/notice'),
+          (err) => console.log(err)
+        )
       }
     },
-    moveList() {
-    //   this.$router.push({ name: "boardlist" });
+  },
+  filters: {
+    dateFormat(regtime) {
+      return moment(new Date(regtime)).format("YY.MM.DD hh:mm:ss");
     },
   },
-  // filters: {
-  //   dateFormat(regtime) {
-  //     return moment(new Date(regtime)).format("YY.MM.DD hh:mm:ss");
-  //   },
-  // },
 };
 </script>
 

@@ -37,14 +37,19 @@
 </template>
 
 <script>
-import http from '@/api/http';
+// import { mapState, mapActions, mapMutations } from "vuex";
+import { getNoticeList } from '@/api/notice';
 import SearchInput from '@/components/common/SearchInput.vue';
+
+// const noticeStore = "noticeStore";
 
 export default {
   name: "NoticeList",
   data() {
     return {
       notices: [],
+      perPage: 20,
+      currentPage: 1,
       selected: 'createDate',
       searchWord: '',
       options: [
@@ -61,10 +66,17 @@ export default {
       ],
     }
   },
+  // computed: {
+  //   ...mapState(noticeStore, [
+  //     "notices",
+  //   ]),
+  // },
   components: {
     SearchInput,
   },
   methods: {
+    // ...mapActions(noticeStore, ["getNotices"]),
+    // ...mapMutations(noticeStore, ["SET_NOTICES_LIST"]),
     onRowSelected(selected) {
       this.$router.push({
         name: "noticedetail",
@@ -75,24 +87,32 @@ export default {
     },
     handleSearch(val) {
       this.searchWord = val;
-      console.log('공지사항 검색', val);
-      http.get('notice', {
-        params: {
-          word: val,
+      // this.getNotices({ word: val });
+      getNoticeList(
+        { word: val },
+        ({data}) => {
+          this.notices = data.notices;
+        },
+        (err) => {
+          console.log(err);
         }
-      }).then(res => {
-        console.log(res);
-        this.notices = res.data.notices;
-      })
+      );
     },
     handleNoticeFilter(e) {
       console.log(e);
     }
   },
   created() {
-    http.get('notice').then(res => {
-      this.notices = res.data.notices;
-    });
+    // this.getNotices();
+    getNoticeList(
+      null,
+      ({data}) => {
+        this.notices = data.notices;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   },
   watch: {
     selected(val) {
@@ -100,13 +120,16 @@ export default {
         word: this.searchWord,
         sortkey: val,
       };
-      console.log('param', params);
-      http.get(`notice`, {
-        params: params
-      }).then(res => {
-        console.log(res);
-        this.notices = res.data.notices;
-      })
+      // this.getNotices(params);
+      getNoticeList(
+        params,
+        ({data}) => {
+          this.notices = data.notices;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     }
   }
 };
