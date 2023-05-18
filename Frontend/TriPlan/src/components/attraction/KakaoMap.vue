@@ -3,6 +3,7 @@
 </template>
 
 <script>
+/*global kakao*/
 export default {
   name: "KaKaoMap",
   data() {
@@ -16,16 +17,16 @@ export default {
     attractions: [],
   },
   watch: {
-    // attractions() {
-    //   this.positions = [];
-    //   this.attractions.forEach((attraction) => {
-    //     let obj = {};
-    //     obj.title = attraction.title;
-    //     obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
-    //     this.positions.push(obj);
-    //   });
-    //   this.loadMarker();
-    // },
+    attractions() {
+      this.positions = [];
+      this.attractions.forEach((attraction) => {
+        let obj = {};
+        obj.title = attraction.title;
+        obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
+        this.positions.push(obj);
+      });
+      this.loadMarker();
+    },
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -56,35 +57,35 @@ export default {
       this.map = new window.kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
     },
 
-    // //지정한 위치에 마커 불러오기
-    // loadMarker() {
-    //   this.deleteMarker();
+    //지정한 위치에 마커 불러오기
+    loadMarker() {
+      this.deleteMarker();
 
-    //   this.markers = [];
-    //   this.positions.forEach((position) => {
-    //     const marker = new kakao.maps.Marker({
-    //       map: this.map,
-    //       position: position.latlng,
-    //       title: position.title,
-    //     });
-    //     this.markers.push(marker);
-    //   });
+      this.markers = [];
+      this.positions.forEach((position) => {
+        const marker = new kakao.maps.Marker({
+          map: this.map,
+          position: position.latlng,
+          title: position.title,
+        });
+        this.markers.push(marker);
+      });
 
-    //   const bounds = this.positions.reduce(
-    //     (bounds, position) => bounds.extend(position.latlng),
-    //     new kakao.maps.LatLngBounds()
-    //   );
+      const bounds = this.positions.reduce(
+        (bounds, position) => bounds.extend(position.latlng),
+        new kakao.maps.LatLngBounds()
+      );
 
-    //   this.map.setBounds(bounds);
-    // },
+      this.map.setBounds(bounds);
+    },
 
-    // deleteMarker() {
-    //   if (this.Markers.length > 0) {
-    //     this.markers.forEach((item) => {
-    //       item.setMap(null);
-    //     });
-    //   }
-    // },
+    deleteMarker() {
+      if (this.Markers.length > 0) {
+        this.markers.forEach((item) => {
+          item.setMap(null);
+        });
+      }
+    },
   },
 };
 </script>
