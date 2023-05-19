@@ -29,7 +29,7 @@ public class NoticeServiceImpl implements NoticeService {
 	public List<NoticeDto> getNoticeList(Map<String, Object> map) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
 		String sortkey = (String) map.get("sortkey");
-		param.put("sortkey", sortkey == null || "createDate".equals(sortkey) ? "create_date" : sortkey);
+		param.put("sortkey", sortkey == null || "createDate".equals(sortkey) || sortkey.length() == 0 ? "create_date" : sortkey);
 		param.put("word", map.get("word") == null ? "" : map.get("word"));
 		int pgNo = Integer.parseInt(((String) map.get("pgno") == "" || map.get("pgno") == null) ? "1" : (String) map.get("pgno"));
 		int start = pgNo * SizeConstant.LIST_SIZE - SizeConstant.LIST_SIZE;
@@ -51,8 +51,8 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public int getTotalNoticeCount(Map<String, Object> map) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
-		String key = (String) map.get("key");
-		param.put("key", key == null ? "" : key);
+		String sortkey = (String) map.get("sortkey");
+		param.put("sortkey", sortkey == null || "createDate".equals(sortkey) || sortkey.length() == 0 ? "create_date" : sortkey);
 		param.put("word", map.get("word") == null ? "" : map.get("word"));
 		return noticeMapper.getTotalNoticeCount(param);
 	}
