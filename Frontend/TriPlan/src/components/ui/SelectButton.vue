@@ -31,7 +31,7 @@ export default {
   methods: {
     changeContentType() {
       const params = {
-        contentTypeList: this.selected,
+        contentTypeList: this.selected.join(","),
       };
       this.$emit("select-content-type", params);
     },

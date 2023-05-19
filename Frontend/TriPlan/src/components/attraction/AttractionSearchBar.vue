@@ -65,7 +65,6 @@ export default {
         ...params,
       };
       console.log(this.searchParams);
-      this.searchParams.contentTypeList = this.searchParams.contentTypeList.join(",");
       this.getAttractionList(this.searchParams);
     },
 
