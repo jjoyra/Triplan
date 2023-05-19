@@ -14,11 +14,7 @@
       <router-link class="btn btn-primary" to="/notice/write">글쓰기</router-link>
     </div>
 
-    <b-table
-      :items="notices"
-      :fields="fields"
-      selectable
-      @row-selected="onRowSelected">
+    <b-table :items="notices" :fields="fields" selectable @row-selected="onRowSelected">
       <template #cell(index)="data">
         {{ data.index + 1 }}
       </template>
@@ -37,15 +33,15 @@
       v-model="currentPage"
       :total-rows="totalCount"
       aria-controls="my-table"
+      @change="handlePage"
     ></b-pagination>
-    
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { getNoticeList, getTotalNoticeCount } from '@/api/notice';
-import SearchInput from '@/components/common/SearchInput.vue';
+import { getNoticeList, getTotalNoticeCount } from "@/api/notice";
+import SearchInput from "@/components/common/SearchInput.vue";
 
 const noticeStore = "noticeStore";
 
@@ -56,22 +52,22 @@ export default {
       notices: [],
       currentPage: 1,
       totalCount: 0,
-      selected: 'createDate',
-      searchWord: '',
-      sortkey: '',
+      selected: "createDate",
+      searchWord: "",
+      sortkey: "",
       options: [
-        { text: '제목순', value: 'title' },
-        { text: '조회순', value: 'hit' },
-        { text: '작성일순', value: 'createDate' },
+        { text: "제목순", value: "title" },
+        { text: "조회순", value: "hit" },
+        { text: "작성일순", value: "createDate" },
       ],
       fields: [
-        { label: '글번호', key: 'index' },
-        { label: '제목', key: 'title' },
-        { label: '조회수', key: 'hit' },
-        { label: '작성자', key: 'memberId' },
-        { label: '작성일자', key: 'createDate' },
+        { label: "글번호", key: "index" },
+        { label: "제목", key: "title" },
+        { label: "조회수", key: "hit" },
+        { label: "작성자", key: "memberId" },
+        { label: "작성일자", key: "createDate" },
       ],
-    }
+    };
   },
   computed: {
     ...mapState(noticeStore, ["pgno"]),
@@ -82,25 +78,65 @@ export default {
   methods: {
     ...mapActions(noticeStore, ["setPgno"]),
     onRowSelected(selected) {
-      this.setPgno(this.currentPage);
-      this.$router.push({
-        name: "noticedetail",
-        params: { noticeId: selected[0].noticeId },
-      }).catch(err => {
-        console.log('notice detail 이동 실패', err)
-      })
+      // this.setPgno(this.currentPage);
+      this.$router
+        .push({
+          name: "noticedetail",
+          params: { noticeId: selected[0].noticeId },
+        })
+        .catch((err) => {
+          console.log("notice detail 이동 실패", err);
+        });
     },
     handleSearch(val) {
       this.searchWord = val;
       getNoticeList(
         { word: val },
-        ({data}) => {
+        ({ data }) => {
           this.notices = data.notices;
         },
         (err) => {
           console.log(err);
         }
       );
+    },
+    handlePage(page) {
+      let params = {
+        word: this.searchWord,
+        sortkey: this.sortkey,
+        pgno: page,
+      };
+      this.handleNotices(params, () => {
+        this.setPgno(page);
+      });
+    },
+    handleNotices(params, next) {
+      getNoticeList(
+        params,
+        ({ data }) => {
+          this.notices = data.notices;
+          next(data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+      getTotalNoticeCount(
+        params,
+        ({ data }) => {
+          this.totalCount = data.cnt;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    changeActive() {
+      let items = document.querySelectorAll("li.page-item");
+      items.forEach((item) => {
+        item.classList.remove("active");
+      });
+      items[this.pgno + 1].classList.add("active");
     },
   },
   created() {
@@ -110,75 +146,31 @@ export default {
       sortkey: this.sortkey,
       pgno: this.pgno,
     };
-    getNoticeList(
-      params,
-      ({data}) => {
-        this.notices = data.notices;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-    getTotalNoticeCount(
-      params,
-      ({data}) => {
-        this.totalCount = data.cnt;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    this.handleNotices(params, () => {});
+  },
+  updated() {
+    this.changeActive();
   },
   watch: {
     selected(val) {
       let params = {
         word: this.searchWord,
         sortkey: val,
+        pgno: this.pgno,
       };
-      getNoticeList(
-        params,
-        ({data}) => {
-          this.notices = data.notices;
-          this.sortkey = val;
-          this.currentPage = 1;
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+      this.handleNotices(params, () => {
+        this.sortkey = val;
+      });
     },
     searchWord(val) {
       let params = {
         word: val,
-      };
-      getTotalNoticeCount(
-        params,
-        ({data}) => {
-          this.totalCount = data.cnt;
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    },
-    currentPage(val) {
-        let params = {
-        word: this.searchWord,
         sortkey: this.sortkey,
-        pgno: val,
+        pgno: this.pgno,
       };
-      getNoticeList(
-        params,
-        ({data}) => {
-          this.notices = data.notices;
-          this.setPgno(val);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    }
-  }
+      this.handleNotices(params, () => {});
+    },
+  },
 };
 </script>
 
