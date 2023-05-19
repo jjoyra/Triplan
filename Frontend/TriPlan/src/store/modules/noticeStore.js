@@ -6,7 +6,7 @@ const noticeStore = {
     notices: [],
     notice: null,
     sortkey: null,
-    pgno: null,
+    pgno: 1,
     noticeSearchWord: null,
   },
   getters: {
@@ -54,6 +54,9 @@ const noticeStore = {
     // getNoticeDetail({ commit }, notice) {
     //   commit("SET_DETAIL_NOTICE", notice)
     // }
+    setPgno({ commit }, pgno) {
+      commit("SET_PGNO", pgno);
+    },
   },
 };
 

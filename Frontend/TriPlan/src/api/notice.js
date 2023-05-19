@@ -22,4 +22,8 @@ function getNoticeDetail(noticeid, success, fail) {
   api.get(`/notice/${noticeid}`).then(success).catch(fail);
 }
 
-export { registNotice, getNoticeList, modifyNotice, deleteNotice, getNoticeDetail };
+function getTotalNoticeCount(param, success, fail) {
+  api.get(`/notice/count`, { params: param }).then(success).catch(fail);
+}
+
+export { registNotice, getNoticeList, modifyNotice, deleteNotice, getNoticeDetail, getTotalNoticeCount };
