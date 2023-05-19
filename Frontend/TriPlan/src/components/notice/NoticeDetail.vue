@@ -1,30 +1,37 @@
 <template>
-  <b-container class="bv-example-row mt-3">
+  <b-container class="mt-3">
     <b-row class="mb-1">
       <b-col class="text-left">
         <router-link to="/notice/list" class="btn btn-primary">목록</router-link>
       </b-col>
       <!-- <b-col class="text-right" v-if="userInfo.userid === article.userid"> -->
       <b-col class="text-right">
-        <b-button variant="outline-success" size="sm" @click="moveModifyNotice" class="mr-2 h-100">수정</b-button>
-        <b-button variant="outline-danger" size="sm" @click="deleteNotice" class="h-100">삭제</b-button>
+        <b-button variant="success" size="sm" @click="moveModifyNotice" class="mr-2 h-100"
+          >수정</b-button
+        >
+        <b-button variant="danger" size="sm" @click="deleteNotice" class="h-100">삭제</b-button>
       </b-col>
     </b-row>
     <b-row class="mb-1">
       <b-col>
-        <b-card
-          :header-html="`<h3>${notice.title}</h3>`"
-          class="mb-2"
-          no-body
-        >
-          <b-card-header>
-            <div>
-              <h6>작성자 : {{notice.memberId}} 조회수 : {{notice.hit}}, {{notice.createDate | dateFormat}}</h6>
+        <b-card :title="notice.title">
+          <b-card-text>
+            <div class="card-text-wrap">
+              <div class="info">
+                <span>
+                  <b-icon id="content-icon" icon="person"></b-icon> {{ notice.memberId }}
+                </span>
+                <span> <b-icon id="content-icon" icon="eye"></b-icon> {{ notice.hit }} </span>
+                <span>
+                  <b-icon id="content-icon" icon="calendar-date"></b-icon>
+                  {{ notice.createDate | dateFormat }}
+                </span>
+              </div>
+              <div class="content">
+                {{ notice.content }}
+              </div>
             </div>
-          </b-card-header>
-          <b-card-body class="text-left">
-            <div v-text="notice.content"></div>
-          </b-card-body>
+          </b-card-text>
         </b-card>
       </b-col>
     </b-row>
@@ -32,8 +39,12 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
+const noticeStore = "noticeStore";
+
 import moment from "moment";
-import { getNoticeDetail, deleteNotice } from '@/api/notice';
+import { getNoticeDetail, deleteNotice } from "@/api/notice";
 
 export default {
   name: "NoticeDetail",
@@ -42,7 +53,11 @@ export default {
       notice: {},
     };
   },
+  computed: {
+    ...mapState(noticeStore, ["pgno"]),
+  },
   created() {
+    console.log("pgno", this.pgno);
     let noticeId = this.$route.params.noticeId;
     getNoticeDetail(
       noticeId,
@@ -65,9 +80,9 @@ export default {
       if (confirm("정말 삭제하시겠습니까?")) {
         deleteNotice(
           this.notice.noticeId,
-          () => this.$router.replace('/notice'),
+          () => this.$router.replace("/notice"),
           (err) => console.log(err)
-        )
+        );
       }
     },
   },
@@ -79,4 +94,17 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.card-text-wrap {
+  display: flex;
+  flex-direction: column;
+}
+.info {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  color: #a1a1a1;
+}
+</style>
