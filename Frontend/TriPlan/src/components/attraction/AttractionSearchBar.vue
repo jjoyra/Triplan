@@ -7,19 +7,24 @@
           placeholderTxt="여행지를 찾아보세요"
         ></search-input>
       </b-col>
-      <select-sido-gugun></select-sido-gugun>
+      <select-sido-gugun @select-gugun="handleAttractionSearch"></select-sido-gugun>
     </b-row>
     <div class="select-btn">
-      <select-button :contentTypes="contentTypes"></select-button>
+      <select-button
+        :contentTypes="contentTypes"
+        @select-content-type="handleAttractionSearch"
+      ></select-button>
     </div>
   </div>
 </template>
 
 <script>
-// import { mapState, mapActions, mapMutations } from "vuex";
+import { mapActions } from "vuex";
 import SearchInput from "../common/SearchInput.vue";
 import SelectSidoGugun from "../common/SelectSidoGugun.vue";
 import SelectButton from "../ui/SelectButton.vue";
+
+const attractionStore = "attractionStore";
 
 export default {
   name: "AttractionSearchBar",
@@ -41,13 +46,26 @@ export default {
         { text: "쇼핑", value: 38 },
         { text: "음식점", value: 39 },
       ],
+      searchParams: {
+        sidoCode: null,
+        gugunCode: null,
+        contentTypeList: [],
+        title: null,
+      },
     };
   },
   created() {},
   computed: {},
   methods: {
-    handleSearch(val) {
-      console.log("여행지 검색", val);
+    ...mapActions(attractionStore, ["getAttractionList"]),
+    handleAttractionSearch(params) {
+      this.searchParams = {
+        ...this.searchParams,
+        ...params,
+      };
+      console.log(this.searchParams);
+
+      this.getAttractionList(this.searchParams);
     },
   },
 };

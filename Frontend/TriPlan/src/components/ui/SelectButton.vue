@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form-checkbox-group v-model="selected" buttons>
+    <b-form-checkbox-group v-model="selected" @change="changeContentType" buttons>
       <b-form-checkbox
         v-for="contentType in contentTypes"
         :key="contentType.value"
@@ -28,7 +28,14 @@ export default {
     };
   },
   created() {},
-  methods: {},
+  methods: {
+    changeContentType() {
+      const params = {
+        contentTypeList: this.selected,
+      };
+      this.$emit("select-content-type", params);
+    },
+  },
 };
 </script>
 
