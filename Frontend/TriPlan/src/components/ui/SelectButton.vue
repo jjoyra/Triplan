@@ -34,6 +34,7 @@ export default {
 
 <style scoped>
 .btn {
+  flex-shrink: 0;
   border-radius: 50px;
   padding: 0.5em 1.2em;
   border: 0.3px solid transparent;
@@ -51,6 +52,7 @@ export default {
 .btn-group > .btn-group > .btn,
 .btn-group > .btn {
   border-radius: 50px;
+  flex: none;
 }
 
 .btn-group > .btn-group:not(:last-child) > .btn,
