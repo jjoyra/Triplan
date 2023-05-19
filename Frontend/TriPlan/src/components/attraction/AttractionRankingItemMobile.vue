@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mobile-wrap">
     <div class="thumbnail">
       <div><img src="" alt="" /></div>
       <div class="favo">
@@ -41,6 +41,10 @@ export default {
   border-radius: 3px 3px 0px 0px;
   background-color: #e6e6e6;
   position: relative;
+}
+
+.mobile-wrap:hover {
+  box-shadow: 1px 1px 20px #e1e1e19b;
 }
 
 img {
