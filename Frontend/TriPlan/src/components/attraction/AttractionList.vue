@@ -1,10 +1,28 @@
 <template>
-  <div class="list-wrap">여행지 검색 결과</div>
+  <div class="list-wrap">
+    <b-container v-if="attractions && attractions.length != 0">
+      <div v-for="(attraction, index) in attractions" :key="index">
+        {{ attraction.title }} {{ attraction.contentTypeId }} {{ attraction.sidoCode }}
+        {{ attraction.gugunCode }}
+      </div>
+    </b-container>
+    <b-container v-else>여행지 검색 결과</b-container>
+  </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
+const attractionStore = "attractionStore";
+
 export default {
   name: "AttractionList",
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapState(attractionStore, ["attractions"]),
+  },
 };
 </script>
 
