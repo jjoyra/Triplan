@@ -2,10 +2,10 @@
   <b-col>
     <b-row>
       <b-col>
-        <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList"></b-form-select>
+        <b-form-select v-model="sidoCode" :options="sidos"></b-form-select>
       </b-col>
       <b-col>
-        <b-form-select v-model="gugunCode" :options="guguns"></b-form-select>
+        <b-form-select v-model="gugunCode" :options="guguns" @change="changeGugun"></b-form-select>
       </b-col>
     </b-row>
   </b-col>
@@ -43,7 +43,13 @@ export default {
   methods: {
     ...mapActions(itemStore, ["getSido", "getGugun"]),
     ...mapMutations(itemStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST"]),
-
+    changeGugun() {
+      const sidoGugunCode = {
+        gugunCode: this.gugunCode,
+        sidoCode: this.sidoCode,
+      };
+      this.$emit("select-gugun", sidoGugunCode);
+    },
     handleSearch(val) {
       console.log("여행지 검색", val);
     },

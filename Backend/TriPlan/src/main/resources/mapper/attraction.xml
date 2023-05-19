@@ -47,9 +47,10 @@
 		select i.*, d.overview, d.recommend_cnt
 		from attraction_info i left outer join attraction_detail d
 		using (content_id)
+		where 1 = 1
 		<include refid="search"></include>
 		order by i.content_id desc
-		limit #{start}, #{listsize}
+		limit #{start}, #{listsize}; 
 	</select>
 	
 	<!-- 2. 관광지 목록 총 개수 -->
@@ -106,7 +107,20 @@
 	
 	<!-- 필터/검색 컬럼 : 관광지명(title), 주소(addr1, addr2), 지역별(sido_code, gugun_code), 콘텐츠별(content_type_id) -->
 	<sql id="search">
-		<if test="word != null and word != ''">
+		<if test="sidoCode != null and gugunCode != null">
+			and i.sido_Code = #{sidoCode} and i.gugun_Code = #{gugunCode}
+		</if>
+		<if test="title != null and title != ''">
+			and i.title like concat('%', #{title}, '%')
+		</if>
+		<if test="contentTypeList != null and contentTypeList.size != 0">
+			and i.content_Type_id in
+			<foreach collection="contentTypeList" item = "contentType" separator="," open="(" close=")">
+				#{contentType}
+			</foreach>
+		</if>
+	
+		<!--  <if test="word != null and word != ''">
 			<choose>
 				<when test="key == 'title'">
 					where i.title like concat('%', #{word}, '%')
@@ -131,6 +145,7 @@
 				</otherwise>
 			</choose>
 		</if>
+		 -->
 	</sql>
 	
 </mapper>
