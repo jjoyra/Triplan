@@ -10,7 +10,7 @@ public interface AttractionService {
 	
 	// 1. 관광지 목록 조회
 	// 필터/검색 컬럼 : 관광지명(title), 주소(addr1, addr2), 지역별(sido_code, gugun_code), 콘텐츠별(content_type_id)
-	List<AttractionDto> getAttractionList(Map<String, Object> map) throws Exception;
+	List<AttractionDto> getAttractionList(Map<String, Object> map, List<Integer> ContentTypeList) throws Exception;
 	
 	// 2. 관광지 목록 총 개수
 	int getTotalAttractionCount(Map<String, Object> map) throws Exception;

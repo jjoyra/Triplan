@@ -22,14 +22,15 @@ public class AttractionServiceImpl implements AttractionService {
 	}
 
 	@Override
-	public List<AttractionDto> getAttractionList(Map<String, Object> map) throws Exception {
+	public List<AttractionDto> getAttractionList(Map<String, Object> map, List<Integer> ContentTypeList) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
 		String key = (String) map.get("key");
 		param.put("key", key == null ? "" : key);
 		param.put("word", map.get("word") == null ? "" : map.get("word"));
 		param.put("sidoCode", map.get("sidoCode"));
 		param.put("gugunCode", map.get("gugunCode"));
-		param.put("contentTypeList", map.get("contentTypeList"));
+		
+		param.put("contentTypeList", ContentTypeList);
 		int pgNo = Integer.parseInt(((String) map.get("pgno") == "" || map.get("pgno") == null) ? "1" : (String) map.get("pgno"));
 		int start = pgNo * SizeConstant.LIST_SIZE - SizeConstant.LIST_SIZE;
 		param.put("start", start);

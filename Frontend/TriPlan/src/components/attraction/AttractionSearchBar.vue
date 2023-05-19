@@ -58,12 +58,19 @@ export default {
   computed: {},
   methods: {
     ...mapActions(attractionStore, ["getAttractionList"]),
+
     handleAttractionSearch(params) {
       this.searchParams = {
         ...this.searchParams,
         ...params,
       };
       console.log(this.searchParams);
+      this.searchParams.contentTypeList = this.searchParams.contentTypeList.join(",");
+      this.getAttractionList(this.searchParams);
+    },
+
+    handleSearch(val) {
+      this.searchParams.title = val;
 
       this.getAttractionList(this.searchParams);
     },

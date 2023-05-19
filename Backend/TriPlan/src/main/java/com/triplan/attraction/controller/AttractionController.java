@@ -1,8 +1,10 @@
 package com.triplan.attraction.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.websocket.server.PathParam;
 
@@ -47,9 +49,12 @@ public class AttractionController {
 		@ApiImplicitParam(name = "word", value = "검색어", required = false, dataType = "String", paramType = "query")
 	})
 	@GetMapping(value = "/attraction")
-	public ResponseEntity<?> getAttractionList(@RequestParam Map<String, Object> map) {
+	public ResponseEntity<?> getAttractionList(@RequestParam(required = false) Map<String, Object> map, @RequestParam(required = false) String contentTypeList) {
 		try {
-			List<AttractionDto> list = attractionService.getAttractionList(map);
+			List<Integer> contentTypes = null;
+			if (contentTypeList != null && !contentTypeList.equals(""))
+				contentTypes = Arrays.stream(contentTypeList.split(",")).map(Integer::parseInt).collect(Collectors.toList());
+			List<AttractionDto> list = attractionService.getAttractionList(map, contentTypes);
 			Map<String, Object> response = new HashMap<>();
 			response.put("attractions", list);
 			response.put("pgno", map.get("pgno"));

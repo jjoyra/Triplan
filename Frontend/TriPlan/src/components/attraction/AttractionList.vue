@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 const attractionStore = "attractionStore";
 
@@ -22,6 +22,12 @@ export default {
   },
   computed: {
     ...mapState(attractionStore, ["attractions"]),
+  },
+  created() {
+    this.CLEAR_ATTRACTION_LIST();
+  },
+  methods: {
+    ...mapMutations(attractionStore, ["CLEAR_ATTRACTION_LIST"]),
   },
 };
 </script>

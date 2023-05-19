@@ -25,7 +25,6 @@ const attractionStore = {
   },
   actions: {
     getAttractionList: ({ commit }, params) => {
-      //json.stringfy()로 변환해서 전달
       getAttractionList(
         params,
         ({ data }) => {
