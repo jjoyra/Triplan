@@ -33,25 +33,32 @@
       </template>
     </b-table>
 
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="totalCount"
+      aria-controls="my-table"
+    ></b-pagination>
+    
   </div>
 </template>
 
 <script>
-// import { mapState, mapActions, mapMutations } from "vuex";
-import { getNoticeList } from '@/api/notice';
+import { mapState, mapActions } from "vuex";
+import { getNoticeList, getTotalNoticeCount } from '@/api/notice';
 import SearchInput from '@/components/common/SearchInput.vue';
 
-// const noticeStore = "noticeStore";
+const noticeStore = "noticeStore";
 
 export default {
   name: "NoticeList",
   data() {
     return {
       notices: [],
-      perPage: 20,
       currentPage: 1,
+      totalCount: 0,
       selected: 'createDate',
       searchWord: '',
+      sortkey: '',
       options: [
         { text: '제목순', value: 'title' },
         { text: '조회순', value: 'hit' },
@@ -66,18 +73,16 @@ export default {
       ],
     }
   },
-  // computed: {
-  //   ...mapState(noticeStore, [
-  //     "notices",
-  //   ]),
-  // },
+  computed: {
+    ...mapState(noticeStore, ["pgno"]),
+  },
   components: {
     SearchInput,
   },
   methods: {
-    // ...mapActions(noticeStore, ["getNotices"]),
-    // ...mapMutations(noticeStore, ["SET_NOTICES_LIST"]),
+    ...mapActions(noticeStore, ["setPgno"]),
     onRowSelected(selected) {
+      this.setPgno(this.currentPage);
       this.$router.push({
         name: "noticedetail",
         params: { noticeId: selected[0].noticeId },
@@ -87,7 +92,6 @@ export default {
     },
     handleSearch(val) {
       this.searchWord = val;
-      // this.getNotices({ word: val });
       getNoticeList(
         { word: val },
         ({data}) => {
@@ -98,16 +102,27 @@ export default {
         }
       );
     },
-    handleNoticeFilter(e) {
-      console.log(e);
-    }
   },
   created() {
-    // this.getNotices();
+    this.currentPage = this.pgno;
+    let params = {
+      word: this.searchWord,
+      sortkey: this.sortkey,
+      pgno: this.pgno,
+    };
     getNoticeList(
-      null,
+      params,
       ({data}) => {
         this.notices = data.notices;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    getTotalNoticeCount(
+      params,
+      ({data}) => {
+        this.totalCount = data.cnt;
       },
       (err) => {
         console.log(err);
@@ -120,11 +135,43 @@ export default {
         word: this.searchWord,
         sortkey: val,
       };
-      // this.getNotices(params);
       getNoticeList(
         params,
         ({data}) => {
           this.notices = data.notices;
+          this.sortkey = val;
+          this.currentPage = 1;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    searchWord(val) {
+      let params = {
+        word: val,
+      };
+      getTotalNoticeCount(
+        params,
+        ({data}) => {
+          this.totalCount = data.cnt;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    currentPage(val) {
+        let params = {
+        word: this.searchWord,
+        sortkey: this.sortkey,
+        pgno: val,
+      };
+      getNoticeList(
+        params,
+        ({data}) => {
+          this.notices = data.notices;
+          this.setPgno(val);
         },
         (err) => {
           console.log(err);
