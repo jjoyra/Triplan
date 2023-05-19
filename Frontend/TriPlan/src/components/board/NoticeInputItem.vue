@@ -2,17 +2,6 @@
   <b-row class="mb-1">
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
-        <!-- <b-form-group id="userid-group" label="작성자:" label-for="userid" description="작성자를 입력하세요.">
-          <b-form-input
-            id="userid"
-            :disabled="isUserid"
-            v-model="article.userid"
-            type="text"
-            required
-            placeholder="작성자 입력..."
-          ></b-form-input>
-        </b-form-group> -->
-
         <b-form-group label="필독여부" label-for="mustRead">
           <b-form-checkbox
             id="checkbox-1"
@@ -52,8 +41,9 @@
 </template>
 
 <script>
-// import { writeArticle, modifyNotice, getArticle } from "@/api/board";
-import http from '@/api/http';
+import { registNotice, modifyNotice, getNoticeDetail } from "@/api/notice";
+import { mapState, mapActions } from "vuex";
+const noticeStore = "noticeStore";
 
 export default {
   name: "BoardInputItem",
@@ -75,15 +65,23 @@ export default {
   created() {
     if (this.type === "modify") {
       let noticeId = this.$route.params.noticeId;
-      http.get(`notice/${noticeId}`).then(res => {
-        this.notice = res.data.notice;
-      })
+      getNoticeDetail(
+        noticeId,
+        (res) => {
+          this.notice = res.data.notice;
+        },
+        (err) => console.log(err)
+      )
     }
   },
+  computed: {
+    ...mapState(noticeStore, ["pgno"]),
+  },
   methods: {
+    ...mapActions(noticeStore, ["setPgno"]),
     onSubmit(event) {
       event.preventDefault();
-      this.type === "register" ? this.registerNotice() : this.modifyNotice();
+      this.type === "register" ? this.registerNotice() : this.handleModifyNotice();
     },
     onReset(event) {
       event.preventDefault();
@@ -98,30 +96,19 @@ export default {
         content: this.notice.content,
         mustRead: this.notice.mustRead,
       }
-      http.post('notice', param).then(() => {
-        alert('등록 완료');
-        this.$router.push('/notice').catch(err=> {
-          console.log('이동 실패', err);
-        });
-      }).catch(err=> {
-        console.log('등록 실패', err);
-      });
-    //   writeArticle(
-    //     param,
-    //     ({ data }) => {
-    //       let msg = "등록 처리시 문제가 발생했습니다.";
-    //       if (data === "success") {
-    //         msg = "등록이 완료되었습니다.";
-    //       }
-    //       alert(msg);
-    //       this.moveList();
-    //     },
-    //     (error) => {
-    //       console.log(error);
-    //     }
-    //   );
+      registNotice(
+        param,
+        () => {
+          alert('등록 완료');
+          this.setPgno(1);
+          this.$router.push('/notice').catch(err=> {
+            console.log('이동 실패', err);
+          });
+        },
+        err => console.log('등록 실패', err)
+      )
     },
-    modifyNotice() {
+    handleModifyNotice() {
       let param = {
         noticeId: this.notice.noticeId,
         memberId: 'ssafy',
@@ -129,35 +116,16 @@ export default {
         content: this.notice.content,
         mustRead: this.notice.mustRead,
       };
-      http.put('notice', param).then(() => {
-        alert('수정 완료');
-        this.$router.push(`/notice/detail/${this.notice.noticeId}`).catch(err=> {
-          console.log('이동 실패', err);
-        });
-      }).catch(err=> {
-        console.log('수정 실패', err);
-      });
-    //   let param = {
-    //     articleno: this.article.articleno,
-    //     userid: this.article.userid,
-    //     subject: this.article.subject,
-    //     content: this.article.content,
-    //   };
-    //   modifyNotice(
-    //     param,
-    //     ({ data }) => {
-    //       let msg = "수정 처리시 문제가 발생했습니다.";
-    //       if (data === "success") {
-    //         msg = "수정이 완료되었습니다.";
-    //       }
-    //       alert(msg);
-    //       // 현재 route를 /list로 변경.
-    //       this.moveList();
-    //     },
-    //     (error) => {
-    //       console.log(error);
-    //     }
-    //   );
+      modifyNotice(
+        param,
+        () => {
+          alert('수정 완료');
+          this.$router.push(`/notice/detail/${this.notice.noticeId}`).catch(err=> {
+            console.log('이동 실패', err);
+          });
+        },
+        err => console.log('수정 실패', err)
+      )
     },
   },
 };
