@@ -19,7 +19,7 @@
         >
           <b-card-header>
             <div>
-              <h6>작성자 : {{notice.memberId}} 조회수 : {{notice.hit}}, {{notice.createDate | dataFormat}}</h6>
+              <h6>작성자 : {{notice.memberId}} 조회수 : {{notice.hit}}, {{notice.createDate | dateFormat}}</h6>
             </div>
           </b-card-header>
           <b-card-body class="text-left">
