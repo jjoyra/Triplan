@@ -7,12 +7,7 @@
           placeholderTxt="여행지를 찾아보세요"
         ></search-input>
       </b-col>
-      <b-col>
-        <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList"></b-form-select>
-      </b-col>
-      <b-col>
-        <b-form-select v-model="gugunCode" :options="guguns"></b-form-select>
-      </b-col>
+      <select-sido-gugun></select-sido-gugun>
     </b-row>
     <div class="select-btn">
       <select-button :contentTypes="contentTypes"></select-button>
@@ -21,8 +16,9 @@
 </template>
 
 <script>
-import http from "@/api/http";
+// import { mapState, mapActions, mapMutations } from "vuex";
 import SearchInput from "../common/SearchInput.vue";
+import SelectSidoGugun from "../common/SelectSidoGugun.vue";
 import SelectButton from "../ui/SelectButton.vue";
 
 export default {
@@ -30,11 +26,10 @@ export default {
   components: {
     SearchInput,
     SelectButton,
+    SelectSidoGugun,
   },
   data() {
     return {
-      sidoCode: null,
-      gugunCode: null,
       contentTypes: [
         { text: "전체", value: 0 },
         { text: "관광지", value: 12 },
@@ -46,20 +41,9 @@ export default {
         { text: "쇼핑", value: 38 },
         { text: "음식점", value: 39 },
       ],
-      sidos: [],
-      guguns: [],
     };
   },
-  created() {
-    this.sidos = [{ text: "시도", value: null }];
-    this.guguns = [{ text: "구군", value: null }];
-
-    http.get(`/attraction/sido`).then(({ data }) => {
-      data.sidos.forEach((sido) => {
-        this.sidos.push({ text: sido.sidoName, value: sido.sidoCode });
-      });
-    });
-  },
+  created() {},
   computed: {},
   methods: {
     handleSearch(val) {
