@@ -3,6 +3,7 @@
     <div class="thumbnail">
       <div><img src="" alt="" /></div>
       <div>
+        <!-- <medal-emoji></medal-emoji> -->
         <div class="desc">
           <div class="type"><span>여행지 유형</span></div>
           <div><h2>여행지 제목</h2></div>
@@ -17,11 +18,13 @@
 
 <script>
 import FavoButton from "../ui/FavoButton.vue";
+// import MedalEmoji from "../ui/MedalEmoji.vue";
 
 export default {
   name: "AttractionRankingItemWeb",
   components: {
     FavoButton,
+    // MedalEmoji,
   },
   data() {
     return {
