@@ -3,8 +3,14 @@ package com.triplan.member.controller;
 import java.sql.SQLException;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.triplan.member.model.MemberDto;
 import com.triplan.member.model.mapper.MemberMapper;
+import com.triplan.member.model.service.JwtServiceImpl;
 import com.triplan.member.model.service.MemberService;
 
 import io.swagger.annotations.Api;
@@ -33,7 +40,14 @@ import io.swagger.annotations.ApiResponses;
 @CrossOrigin("*")
 @Api(tags = { "회원관리" })
 public class MemberController {
+	
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
 
+	@Autowired
+	private JwtServiceImpl jwtService;
+
+	@Autowired
 	private MemberService memberService;
 
 	public MemberController(MemberService memberService) {
@@ -108,14 +122,38 @@ public class MemberController {
 		}
 	}
 
-//	// 로그인
-//	@PostMapping()
-//	public ResponseEntity<?> login() {
-//		return null;
-//	}
-//	
-//	// 로그아웃
-//	
+	// 로그인
+	@PostMapping("/user/login")
+	public String login(@RequestParam Map<String, String> map,
+			@RequestParam(name = "saveid", required = false) String saveid, Model model, HttpSession session,
+			HttpServletResponse response) {
+		try {
+			MemberDto memberDto = memberService.loginMember(map);
+			if (memberDto != null) {
+				session.setAttribute("userinfo", memberDto);
+
+				Cookie cookie = new Cookie("ssafy_id", map.get("memberId"));
+				cookie.setPath("/");
+				if ("ok".equals(saveid)) {
+					cookie.setMaxAge(60 * 60 * 24 * 365 * 40);
+				} else {
+					cookie.setMaxAge(0);
+				}
+				response.addCookie(cookie);
+				return "redirect:/";
+			} else {
+				model.addAttribute("msg", "아이디 또는 비밀번호 확인 후 다시 로그인하세요!");
+				return "index";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "index";
+		}
+	}
+
+	// 로그아웃
+
+	
 	// 비밀번호 찾기
 	@GetMapping("/user/password")
 	@ApiOperation(value = "비밀번호 찾기", notes = "회원의 이름과 아이디를 입력하면 <b>비밀번호를 return</b>합니다.")

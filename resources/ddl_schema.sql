@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `member` (
     `open_myplan` BOOLEAN NOT NULL DEFAULT TRUE,
     `open_favo_plan` BOOLEAN NOT NULL DEFAULT TRUE,
     `open_favo_attraction` BOOLEAN NOT NULL DEFAULT TRUE,
+    `token` VARCHAR(1000) NULL DEFAULT NULL,
     PRIMARY KEY(`member_id`) 
 );
 

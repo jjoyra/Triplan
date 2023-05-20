@@ -1,9 +1,11 @@
 package com.triplan.member.model.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.triplan.member.model.MemberDto;
@@ -12,12 +14,8 @@ import com.triplan.member.model.mapper.MemberMapper;
 @Service
 public class MemberServiceImpl implements MemberService {
 	
+	@Autowired
 	private MemberMapper memberMapper;
-
-	public MemberServiceImpl(MemberMapper memberMapper) {
-		super();
-		this.memberMapper = memberMapper;
-	}
 
 	@Override
 	public int idCheck(String memberId) throws SQLException {
@@ -31,6 +29,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberDto loginMember(Map<String, String> map) throws SQLException {
+		if (map.get("memberInfo") == null) {
+			return null;
+		}
 		return memberMapper.loginMember(map);
 	}
 
@@ -47,7 +48,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void updateMember(MemberDto memberDto) throws SQLException {
 		memberMapper.updateMember(memberDto);
-
 	}
 
 	@Override
@@ -58,6 +58,27 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public String findPassword(Map<String, Object> map) throws SQLException {
 		return memberMapper.findPassword(map);
+	}
+
+	@Override
+	public void saveRefreshToken(String memberId, String refreshToken) throws SQLException {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("memberId", memberId);
+		map.put("token", refreshToken);
+		memberMapper.saveRefreshToken(map);
+	}
+
+	@Override
+	public Object getRefreshToken(String memberId) throws SQLException {
+		return memberMapper.getRefreshToken(memberId);
+	}
+
+	@Override
+	public void deleteRefreshToken(String memberId) throws SQLException {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("memberId", memberId);
+		map.put("token", null);
+		memberMapper.deleteRefreshToken(map);
 	}
 
 }
