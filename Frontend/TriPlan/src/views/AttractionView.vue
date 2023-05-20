@@ -1,7 +1,12 @@
 <template>
   <div>
-    <div class="h1-wrap"><h1>여행지 둘러보기</h1></div>
-    <router-view></router-view>
+    <div class="container">
+      <div class="h1-wrap">
+        <h1>여행지 둘러보기</h1>
+      </div>
+
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 

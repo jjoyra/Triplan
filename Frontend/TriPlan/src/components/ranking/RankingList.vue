@@ -3,12 +3,14 @@
     <div class="content-wrap">
       <h2>{{ title }}</h2>
       <div class="ranking-item-wrap web">
+        <!-- <ranking-item-web v-for="item in items" :key="item"></ranking-item-web> -->
         <ranking-item-web></ranking-item-web>
         <ranking-item-web></ranking-item-web>
         <ranking-item-web></ranking-item-web>
       </div>
 
       <div class="ranking-item-wrap mobile">
+        <!-- <ranking-item-mobile v-for="item in items" :key="item"></ranking-item-mobile> -->
         <ranking-item-mobile></ranking-item-mobile>
         <ranking-item-mobile></ranking-item-mobile>
         <ranking-item-mobile></ranking-item-mobile>
@@ -33,7 +35,7 @@ export default {
   },
   data() {
     return {
-      attractions: [],
+      items: [],
     };
   },
   created() {},
@@ -46,6 +48,7 @@ export default {
   position: relative;
 }
 .content-wrap {
+  margin-bottom: 2rem;
   padding: 2rem 0;
   position: relative;
   z-index: 1;
