@@ -51,7 +51,7 @@ h1 {
   display: inline-block;
 }
 h1::after {
-  content: '';
+  content: "";
   position: absolute;
   top: calc(100% + 2px);
   left: 0;
@@ -63,6 +63,7 @@ h1::after {
 
 h2 {
   font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 ol,
@@ -94,12 +95,12 @@ img {
 }
 
 :root {
-  --primary: #51ABF3;
+  --primary: #51abf3;
   --primary-hover: #3e96df;
 }
 
 .btn {
-  padding: .15rem 1rem .2rem;
+  padding: 0.15rem 1rem 0.2rem;
 }
 .btn-primary {
   background-color: var(--primary);
@@ -109,7 +110,8 @@ img {
   background-color: var(--primary-hover);
   border-color: var(--primary-hover);
 }
-.btn-primary.focus, .btn-primary:focus {
+.btn-primary.focus,
+.btn-primary:focus {
   background-color: var(--primary-hover);
   border-color: var(--primary-hover);
 }
@@ -118,7 +120,7 @@ img {
   justify-content: center;
 }
 
-.custom-control-input:checked~.custom-control-label::before {
+.custom-control-input:checked ~ .custom-control-label::before {
   border-color: var(--primary);
   background-color: var(--primary);
 }
@@ -131,9 +133,9 @@ img {
   color: var(--primary);
 }
 .page-link:hover {
-    color: var(--primary-hover);
-    text-decoration: none;
-    background-color: #e9ecef;
-    border-color: #dee2e6;
+  color: var(--primary-hover);
+  text-decoration: none;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
 }
 </style>

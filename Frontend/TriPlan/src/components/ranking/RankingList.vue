@@ -4,9 +4,13 @@
       <h2>{{ title }}</h2>
       <div class="ranking-item-wrap web">
         <ranking-item-web></ranking-item-web>
+        <ranking-item-web></ranking-item-web>
+        <ranking-item-web></ranking-item-web>
       </div>
 
       <div class="ranking-item-wrap mobile">
+        <ranking-item-mobile></ranking-item-mobile>
+        <ranking-item-mobile></ranking-item-mobile>
         <ranking-item-mobile></ranking-item-mobile>
       </div>
     </div>
@@ -42,6 +46,7 @@ export default {
   position: relative;
 }
 .content-wrap {
+  padding: 2rem 0;
   position: relative;
   z-index: 1;
 }
@@ -56,19 +61,31 @@ export default {
 }
 
 .web {
-  display: block;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 .mobile {
   display: none;
 }
 
+.hover-box-shadow:hover {
+  cursor: pointer;
+  box-shadow: 1px 1px 20px #e1e1e19b;
+}
+
 @media (max-width: 750px) {
+  .content-wrap {
+    padding: 1rem 0;
+  }
   .web {
     display: none;
   }
   .mobile {
-    display: block;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
   }
 }
 </style>

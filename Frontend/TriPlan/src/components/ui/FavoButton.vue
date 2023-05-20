@@ -1,6 +1,8 @@
 <template>
-  <b-icon icon="heart-fill" v-if="checked" @click="toggle" class="true"></b-icon>
-  <b-icon icon="heart" v-else @click="toggle" class="false"></b-icon>
+  <div class="favo-icon-wrap">
+    <b-icon icon="heart-fill" v-if="checked" @click="toggle" class="true"></b-icon>
+    <b-icon icon="heart" v-else @click="toggle" class="false"></b-icon>
+  </div>
 </template>
 
 <script>
@@ -23,6 +25,12 @@ export default {
 </script>
 
 <style scoped>
+.favo-icon-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .b-icon {
   width: 100%;
   height: 25px;
@@ -34,5 +42,12 @@ export default {
 
 .true {
   color: #51abf3;
+}
+
+@media (max-width: 750px) {
+  .favo-icon-wrap {
+    top: -10px;
+    right: -10px;
+  }
 }
 </style>
