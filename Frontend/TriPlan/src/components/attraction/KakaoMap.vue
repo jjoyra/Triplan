@@ -80,7 +80,7 @@ export default {
     },
 
     deleteMarker() {
-      if (this.Markers.length > 0) {
+      if (this.markers.length > 0) {
         this.markers.forEach((item) => {
           item.setMap(null);
         });
