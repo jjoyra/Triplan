@@ -29,7 +29,7 @@ public class AttractionServiceImpl implements AttractionService {
 		param.put("word", map.get("word") == null ? "" : map.get("word"));
 		param.put("sidoCode", map.get("sidoCode"));
 		param.put("gugunCode", map.get("gugunCode"));
-		
+		param.put("title", map.get("title"));
 		param.put("contentTypeList", ContentTypeList);
 		int pgNo = Integer.parseInt(((String) map.get("pgno") == "" || map.get("pgno") == null) ? "1" : (String) map.get("pgno"));
 		int start = pgNo * SizeConstant.LIST_SIZE - SizeConstant.LIST_SIZE;
