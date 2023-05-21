@@ -1,18 +1,20 @@
 <template>
   <div class="list-wrap">
-    <b-container v-if="attractions && attractions.length != 0">
-      <b-card v-for="(attraction, index) in attractions" :key="index">
+    <div v-if="attractions && attractions.length != 0">
+      <b-list-group-item v-for="(attraction, index) in attractions" :key="index">
         <div>
-          <span>{{ attraction.title }}</span>
+          <span class="title">{{ attraction.title }}</span>
           <br />
-          <span>{{ attraction.contentTypeId }}</span>
+          <span class="type">{{ attraction.contentTypeId }}</span>
           <br />
           <span>{{ attraction.addr1 }}</span>
         </div>
-        <!-- <div><img src="{{attraction.first_image}}" alt="" /></div> -->
-      </b-card>
-    </b-container>
-    <b-container v-else class="searchEmpty"> <span>여행지 검색 결과</span></b-container>
+        <div>
+          <img :src="attraction.firstImage" alt="" />
+        </div>
+      </b-list-group-item>
+    </div>
+    <div v-else class="searchEmpty"><span>여행지 검색 결과</span></div>
   </div>
 </template>
 
@@ -39,16 +41,32 @@ export default {
 </script>
 
 <style scoped>
+.title {
+  font-size: 1rem;
+  color: #383838;
+}
+
+.type {
+  font-size: 0.8rem;
+  color: #51abf3;
+}
+
 .list-wrap {
   width: 100%;
   height: 560px;
-  background: #fafafa;
   border-radius: 3px;
   overflow: auto;
 }
 
-.card {
+/* .card {
   margin-bottom: 10px;
+} */
+
+.list-group-item {
+  border: 0.3px rgba(0, 0, 0, 0.125);
+  border-style: solid hidden;
+  display: flex;
+  justify-content: space-between;
 }
 
 span {
@@ -57,6 +75,14 @@ span {
 }
 
 .searchEmpty {
+  padding: 30px 0px;
+  width: 100%;
+  height: 560px;
   text-align: center;
+  background: #fafafa;
+}
+
+img {
+  width: 120px;
 }
 </style>
