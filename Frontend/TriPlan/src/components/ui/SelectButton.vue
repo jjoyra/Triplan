@@ -1,6 +1,12 @@
 <template>
   <div>
+    <!-- <b-form-checkbox value="-1" button-variant="primary" v-model="allSelected" button
+      >전체</b-form-checkbox
+    > -->
     <b-form-checkbox-group v-model="selected" @change="changeContentType" buttons>
+      <!-- <b-form-checkbox value="-1" button-variant="primary" v-model="allSelected" button
+        >전체</b-form-checkbox
+      > -->
       <b-form-checkbox
         v-for="contentType in contentTypes"
         :key="contentType.value"
@@ -10,9 +16,7 @@
         {{ contentType.text }}
       </b-form-checkbox>
     </b-form-checkbox-group>
-    <!-- <b-button class="btn btn-primary" v-if="checked" v-model="checked">{{ btnInfo.text }}</b-button>
-    <b-button class="btn false" v-else v-model="checked">{{ btnInfo.text }}</b-button> -->
-    <!-- <b-button>{{button.name}}</b-button> -->
+    <span>{{ selected }}</span>
   </div>
 </template>
 
@@ -27,13 +31,60 @@ export default {
       selected: [],
     };
   },
+  computed: {
+    allSelected: {
+      get() {
+        return this.selected.length === this.contentTypes.length;
+      },
+      set(e) {
+        if (e) {
+          const selected = [];
+          this.contentTypes.forEach((contentType) => {
+            selected.push(contentType.value);
+          });
+          this.selected = selected;
+        } else {
+          this.selected = [];
+        }
+      },
+    },
+  },
   created() {},
   methods: {
+    temp() {
+      const selected = [];
+      this.contentTypes.forEach((contentType) => {
+        selected.push(contentType.value);
+      });
+
+      this.selected = selected;
+    },
+    toggleAll(flag) {
+      console.log("toggle");
+      if (flag) {
+        this.temp();
+      }
+    },
     changeContentType() {
-      const params = {
-        contentTypeList: this.selected.join(","),
-      };
-      this.$emit("select-content-type", params);
+      let flag = false;
+      // console.log(this.selected);
+      for (let select of this.selected) {
+        console.log(select);
+        if (select === 0) flag = true;
+      }
+
+      if (flag) {
+        console.log("전체 선택");
+        this.toggleAll(true);
+      } else {
+        console.log("아님");
+        this.toggleAll(false);
+      }
+
+      // const params = {
+      //   contentTypeList: this.selected.join(","),
+      // };
+      // this.$emit("select-content-type", params);
     },
   },
 };

@@ -64,7 +64,7 @@ export default {
         ...this.searchParams,
         ...params,
       };
-      console.log(this.searchParams);
+      // console.log(this.searchParams);
       this.getAttractionList(this.searchParams);
     },
 
