@@ -19,6 +19,12 @@ public class MemberDto {
 	private String joinDate;
 	@ApiModelProperty(value = "역할(회원/관리자)", example = "0")
 	private int role;
+	@ApiModelProperty(value = "마이플랜 공개 여부")
+	private int openMyplan;
+	@ApiModelProperty(value = "좋아요한 플랜 공개 여부")
+	private int openFavoPlan;
+	@ApiModelProperty(value = "좋아요한 여행지 공개 여부")
+	private int openFavoAttraction;
 	
 	public String getMemberId() {
 		return memberId;
@@ -62,12 +68,30 @@ public class MemberDto {
 	public void setRole(int role) {
 		this.role = role;
 	}
+	public int getOpenMyplan() {
+		return openMyplan;
+	}
+	public void setOpenMyplan(int openMyplan) {
+		this.openMyplan = openMyplan;
+	}
+	public int getOpenFavoPlan() {
+		return openFavoPlan;
+	}
+	public void setOpenFavoPlan(int openFavoPlan) {
+		this.openFavoPlan = openFavoPlan;
+	}
+	public int getOpenFavoAttraction() {
+		return openFavoAttraction;
+	}
+	public void setOpenFavoAttraction(int openFavoAttraction) {
+		this.openFavoAttraction = openFavoAttraction;
+	}
 	
 	@Override
 	public String toString() {
 		return "MemberDto [memberId=" + memberId + ", password=" + password + ", name=" + name + ", nickname="
-				+ nickname + ", imgUrl=" + imgUrl + ", joinDate=" + joinDate + ", role=" + role + "]";
+				+ nickname + ", imgUrl=" + imgUrl + ", joinDate=" + joinDate + ", role=" + role + ", openMyplan="
+				+ openMyplan + ", openFavoPlan=" + openFavoPlan + ", openFavoAttraction=" + openFavoAttraction + "]";
 	}
 	
-
 }

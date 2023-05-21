@@ -15,6 +15,9 @@
 		<result column="name" property="name"/>
 		<result column="img_url" property="imgUrl"/>
 		<result column="join_date" property="joinDate"/>
+		<result column="open_myplan" property="openMyplan"/>
+		<result column="open_favo_plan" property="openFavoPlan"/>
+		<result column="open_favo_attraction" property="openFavoAttraction"/>
 	</resultMap>
 
 	<select id="idCheck" parameterType="String" resultType="int">
@@ -29,10 +32,28 @@
 	</insert>
 
 	<select id="loginMember" parameterType="map" resultMap="member">
-		select member_id, nickname, role
+		select member_id, nickname, img_url, role, open_myplan, open_favo_plan, open_favo_attraction
 		from member
 		where member_id = #{memberId} and password = #{password};
 	</select>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from member
+		where member_id = #{memberId}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update ssafy_member
+		set token = #{token}
+		where userid = #{userid}
+	</update>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update ssafy_member
+		set token = #{token, jdbcType=VARCHAR}
+		where userid = #{userid}
+	</update>
 	
 	<!-- ADMIN -->
 	<!-- <select id="listMember" resultMap="memberAll">
