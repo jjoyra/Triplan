@@ -6,6 +6,10 @@
           <router-link to="/"
             ><img id="side-logo" src="../../assets/logo.png" alt="logo.png"
           /></router-link>
+          <div class="profile-wrap" v-if="userInfo">
+            <img id="profileImg" src="../../assets/300.png" alt="300.png" />
+            MY
+          </div>
           <div>
             <b-icon icon="Bell"></b-icon>
             <b-nav-item to="/notice" exact exact-active-class="active">공지사항</b-nav-item>
@@ -23,27 +27,26 @@
             <b-nav-item to="/review" exact exact-active-class="active">플랜리뷰</b-nav-item>
           </div>
 
-          <div class="profile-wrap">
-            <img id="profileImg" src="../../assets/300.png" alt="300.png" />
-            <b-nav-item-dropdown
-              id="profile-dropdown"
-              text="임하스"
-              toggle-class="nav-link-custom"
-              right
+          <div class="profile-wrap" v-if="userInfo">플랜 만들기 로그아웃</div>
+          <div v-else>
+            <b-button
+              v-b-modal.modal-login
+              @click="
+                () => {
+                  isMenuOpen = false;
+                }
+              "
+              >로그인</b-button
             >
-              <b-dropdown-item>
-                <b-nav-item to="/mypage" exact exact-active-class="active">마이페이지</b-nav-item>
-              </b-dropdown-item>
-              <b-dropdown-divider></b-dropdown-divider>
-              <b-dropdown-item>
-                <b-nav-item to="/plan/write" exact exact-active-class="active"
-                  >플랜 만들기</b-nav-item
-                >
-              </b-dropdown-item>
-              <b-dropdown-item>
-                <b-nav-item to="/review" exact exact-active-class="active">로그아웃</b-nav-item>
-              </b-dropdown-item>
-            </b-nav-item-dropdown>
+            <b-button
+              v-b-modal.modal-registe
+              @click="
+                () => {
+                  isMenuOpen = false;
+                }
+              "
+              >회원가입</b-button
+            >
           </div>
         </div>
       </div>
@@ -81,7 +84,7 @@
             <b-nav-item to="/review" exact exact-active-class="active">플랜리뷰</b-nav-item>
           </div>
 
-          <div class="profile-wrap">
+          <div class="profile-wrap" v-if="userInfo">
             <img id="profileImg" src="../../assets/300.png" alt="300.png" />
             <b-nav-item-dropdown
               id="profile-dropdown"
@@ -99,17 +102,80 @@
                 >
               </b-dropdown-item>
               <b-dropdown-item>
-                <b-nav-item to="/review" exact exact-active-class="active">로그아웃</b-nav-item>
+                <b-nav-item @click="handleLogout" exact exact-active-class="active"
+                  >로그아웃</b-nav-item
+                >
               </b-dropdown-item>
             </b-nav-item-dropdown>
+          </div>
+          <div v-else>
+            <b-button
+              v-b-modal.modal-login
+              @click="
+                () => {
+                  isMenuOpen = false;
+                }
+              "
+              >로그인</b-button
+            >
+            <b-button
+              v-b-modal.modal-registe
+              @click="
+                () => {
+                  isMenuOpen = false;
+                }
+              "
+              >회원가입</b-button
+            >
           </div>
         </div>
       </b-nav>
     </div>
+
+    <b-modal id="modal-login" hide-footer centered title="로그인" no-stacking>
+      <b-form @submit="onSubmit">
+        <b-form-group label="아이디" label-for="memberId" label-cols-sm="3" label-align-sm="left">
+          <b-form-input
+            type="text"
+            v-model="memberId"
+            id="memberId"
+            name="memberId"
+            placeholder="아이디를 입력해주세요"
+            :state="null"
+            trim
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="비밀번호" label-for="password" label-cols-sm="3" label-align-sm="left">
+          <b-form-input
+            type="text"
+            v-model="password"
+            id="password"
+            name="password"
+            placeholder="비밀번호를 입력해주세요"
+            :state="null"
+            trim
+          ></b-form-input>
+        </b-form-group>
+
+        <div>{{ message }}</div>
+
+        <b-button type="submit" variant="primary" class="btn">로그인</b-button>
+        <b-button class="btn" @click="modalClose('modal-login')">닫기</b-button>
+      </b-form>
+    </b-modal>
+
+    <b-modal id="modal-registe" centered title="회원가입">
+      <p class="my-4">회원가입 모달</p>
+    </b-modal>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
+const memberStore = "memberStore";
+
 import SearchInput from "@/components/common/SearchInput.vue";
 
 export default {
@@ -119,9 +185,50 @@ export default {
       width: 0,
       isMenuOpen: false,
       isMain: true,
+      memberId: "",
+      password: "",
+      message: "",
     };
   },
   methods: {
+    ...mapActions(memberStore, ["userConfirm", "getUserInfo", "userLogout"]),
+    async onSubmit(e) {
+      e.preventDefault();
+      let params = {
+        memberId: this.memberId,
+        password: this.password,
+      };
+      console.log("로그인", params);
+
+      await this.userConfirm(params);
+
+      this.memberId = "";
+      this.password = "";
+
+      let token = sessionStorage.getItem("access-token");
+      console.log("1. confirm() token >> " + token);
+      if (this.isLogin) {
+        await this.getUserInfo(token);
+        console.log("4. confirm() userInfo :: ", this.userInfo);
+        this.message = "로그인 성공";
+        this.$bvModal.hide("modal-login");
+        this.message = "";
+      } else {
+        console.log("로그인 실패");
+        this.message = "아이디와 비밀번호를 확인해주세요!";
+      }
+    },
+    handleLogout() {
+      console.log("로그아웃");
+      console.log(this.userInfo.memberId);
+      this.userLogout(this.userInfo.memberId);
+      sessionStorage.removeItem("access-token");
+      sessionStorage.removeItem("refresh-token");
+      if (this.$route.path != "/") this.$router.push("/");
+    },
+    modalClose(id) {
+      this.$bvModal.hide(id);
+    },
     handleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
     },
@@ -131,6 +238,9 @@ export default {
     handleResize() {
       this.width = window.innerWidth;
     },
+  },
+  computed: {
+    ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
   },
   components: {
     SearchInput,
