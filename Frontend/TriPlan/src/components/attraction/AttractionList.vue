@@ -1,12 +1,18 @@
 <template>
   <div class="list-wrap">
     <b-container v-if="attractions && attractions.length != 0">
-      <div v-for="(attraction, index) in attractions" :key="index">
-        {{ attraction.title }} {{ attraction.contentTypeId }} {{ attraction.sidoCode }}
-        {{ attraction.gugunCode }}
-      </div>
+      <b-card v-for="(attraction, index) in attractions" :key="index">
+        <div>
+          <span>{{ attraction.title }}</span>
+          <br />
+          <span>{{ attraction.contentTypeId }}</span>
+          <br />
+          <span>{{ attraction.addr1 }}</span>
+        </div>
+        <!-- <div><img src="{{attraction.first_image}}" alt="" /></div> -->
+      </b-card>
     </b-container>
-    <b-container v-else>여행지 검색 결과</b-container>
+    <b-container v-else class="searchEmpty"> <span>여행지 검색 결과</span></b-container>
   </div>
 </template>
 
@@ -38,8 +44,19 @@ export default {
   height: 560px;
   background: #fafafa;
   border-radius: 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: auto;
+}
+
+.card {
+  margin-bottom: 10px;
+}
+
+span {
+  color: #8d9193;
+  padding: 10px 0px;
+}
+
+.searchEmpty {
+  text-align: center;
 }
 </style>
