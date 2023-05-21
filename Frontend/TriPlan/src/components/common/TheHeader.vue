@@ -6,9 +6,15 @@
           <router-link to="/"
             ><img id="side-logo" src="../../assets/logo.png" alt="logo.png"
           /></router-link>
-          <div class="profile-wrap" v-if="userInfo">
-            <img id="profileImg" src="../../assets/300.png" alt="300.png" />
-            MY
+          <div class="profile-wrap" v-if="userInfo" @click="movePage('/mypage')">
+            <div class="profileImg-wrap">
+              <img id="profileImg" src="../../assets/300.png" alt="300.png" />
+              <span>{{ userInfo.nickname }}</span>
+            </div>
+            <div>
+              <span>MY</span>
+              <b-icon class="rightArrow" icon="ChevronRight"></b-icon>
+            </div>
           </div>
           <div>
             <b-icon icon="Bell"></b-icon>
@@ -27,9 +33,10 @@
             <b-nav-item to="/review" exact exact-active-class="active">플랜리뷰</b-nav-item>
           </div>
 
-          <div class="profile-wrap" v-if="userInfo">플랜 만들기 로그아웃</div>
-          <div v-else>
+          <div v-if="userInfo">플랜 만들기 로그아웃</div>
+          <template v-else>
             <b-button
+              variant="primary"
               v-b-modal.modal-login
               @click="
                 () => {
@@ -39,6 +46,7 @@
               >로그인</b-button
             >
             <b-button
+              variant="dark"
               v-b-modal.modal-registe
               @click="
                 () => {
@@ -47,7 +55,7 @@
               "
               >회원가입</b-button
             >
-          </div>
+          </template>
         </div>
       </div>
       <div :class="{ overlay: isMenuOpen }" @click="handleMenuClose"></div>
@@ -88,7 +96,7 @@
             <img id="profileImg" src="../../assets/300.png" alt="300.png" />
             <b-nav-item-dropdown
               id="profile-dropdown"
-              text="임하스"
+              :text="userInfo.nickname"
               toggle-class="nav-link-custom"
               right
             >
@@ -108,8 +116,9 @@
               </b-dropdown-item>
             </b-nav-item-dropdown>
           </div>
-          <div v-else>
+          <template v-else>
             <b-button
+              class="nav-link btn-nav"
               v-b-modal.modal-login
               @click="
                 () => {
@@ -119,6 +128,7 @@
               >로그인</b-button
             >
             <b-button
+              class="nav-link btn-nav"
               v-b-modal.modal-registe
               @click="
                 () => {
@@ -127,13 +137,13 @@
               "
               >회원가입</b-button
             >
-          </div>
+          </template>
         </div>
       </b-nav>
     </div>
 
     <b-modal id="modal-login" hide-footer centered title="로그인" no-stacking>
-      <b-form @submit="onSubmit">
+      <b-form @submit="onLoginSubmit">
         <b-form-group label="아이디" label-for="memberId" label-cols-sm="3" label-align-sm="left">
           <b-form-input
             type="text"
@@ -148,7 +158,7 @@
 
         <b-form-group label="비밀번호" label-for="password" label-cols-sm="3" label-align-sm="left">
           <b-form-input
-            type="text"
+            type="password"
             v-model="password"
             id="password"
             name="password"
@@ -158,15 +168,121 @@
           ></b-form-input>
         </b-form-group>
 
-        <div>{{ message }}</div>
+        <b-form-group class="msg">{{ message }}</b-form-group>
 
-        <b-button type="submit" variant="primary" class="btn">로그인</b-button>
-        <b-button class="btn" @click="modalClose('modal-login')">닫기</b-button>
+        <div class="btn-modal-wrap">
+          <b-button type="submit" variant="primary" class="btn">로그인</b-button>
+          <b-button class="btn" @click="modalClose('modal-login')">닫기</b-button>
+        </div>
       </b-form>
     </b-modal>
 
-    <b-modal id="modal-registe" centered title="회원가입">
-      <p class="my-4">회원가입 모달</p>
+    <b-modal id="modal-registe" hide-footer centered title="회원가입" no-stacking>
+      <b-form @submit="onSignUpSubmit">
+        <b-form-group label="이름" label-for="signName" label-cols-sm="3" label-align-sm="left">
+          <b-form-input
+            type="text"
+            v-model="signName"
+            id="signName"
+            name="signName"
+            placeholder="이름을 입력해주세요"
+            :state="signName.length === 0 ? null : nameState"
+            aria-describedby="input-signName-feedback"
+            trim
+          ></b-form-input>
+          <b-form-invalid-feedback id="input-signName-feedback">
+            이름은 2자 이상 6자 이하입니다.
+          </b-form-invalid-feedback>
+        </b-form-group>
+
+        <b-form-group
+          label="닉네임"
+          label-for="signNickname"
+          label-cols-sm="3"
+          label-align-sm="left"
+        >
+          <b-form-input
+            type="text"
+            v-model="signNickname"
+            id="signNickname"
+            name="signNickname"
+            placeholder="닉네임을 입력해주세요"
+            :state="signNickname.length === 0 ? null : nicknameState"
+            aria-describedby="input-signNickname-feedback"
+            trim
+          ></b-form-input>
+          <b-form-invalid-feedback id="input-signNickname-feedback">
+            닉네임는 2자 이상 6자 이하입니다.
+          </b-form-invalid-feedback>
+        </b-form-group>
+
+        <b-form-group
+          label="아이디"
+          label-for="signMemberId"
+          label-cols-sm="3"
+          label-align-sm="left"
+        >
+          <b-form-input
+            type="text"
+            v-model="signMemberId"
+            id="signMemberId"
+            name="signMemberId"
+            placeholder="아이디를 입력해주세요"
+            :state="signMemberId.length === 0 ? null : idState"
+            aria-describedby="input-signMemberId-feedback"
+            trim
+          ></b-form-input>
+          <b-form-invalid-feedback id="input-signMemberId-feedback">
+            아이디는 4자 이상 10자 이하입니다.
+          </b-form-invalid-feedback>
+        </b-form-group>
+
+        <b-form-group
+          label="비밀번호"
+          label-for="signPassword"
+          label-cols-sm="3"
+          label-align-sm="left"
+        >
+          <b-form-input
+            type="password"
+            v-model="signPassword"
+            id="signPassword"
+            name="signPassword"
+            placeholder="비밀번호를 입력해주세요"
+            :state="signPassword.length === 0 ? null : passwordState"
+            trim
+          ></b-form-input>
+          <b-form-invalid-feedback id="input-signPassword-feedback">
+            비밀번호는 4자 이상 10자 이하입니다.
+          </b-form-invalid-feedback>
+        </b-form-group>
+
+        <b-form-group
+          label="비밀번호 확인"
+          label-for="signPasswordConfrim"
+          label-cols-sm="3"
+          label-align-sm="left"
+        >
+          <b-form-input
+            type="password"
+            v-model="signPasswordConfrim"
+            id="signPasswordConfrim"
+            placeholder="비밀번호를 다시 입력해주세요"
+            :state="signPasswordConfrim.length === 0 ? null : passwordConfirmState"
+            trim
+          ></b-form-input>
+          <b-form-invalid-feedback id="input-signPasswordConfrim-feedback">
+            비밀번호가 일치하지 않습니다.
+          </b-form-invalid-feedback>
+        </b-form-group>
+
+        <b-form-group class="msg">{{ message }}</b-form-group>
+
+        <div class="btn-modal-wrap">
+          <b-button type="submit" variant="primary" class="btn">회원가입</b-button>
+          <b-button class="btn" @click="modalClose('modal-registe')">닫기</b-button>
+        </div>
+      </b-form>
     </b-modal>
   </div>
 </template>
@@ -188,11 +304,16 @@ export default {
       memberId: "",
       password: "",
       message: "",
+      signMemberId: "",
+      signPassword: "",
+      signPasswordConfrim: "",
+      signName: "",
+      signNickname: "",
     };
   },
   methods: {
     ...mapActions(memberStore, ["userConfirm", "getUserInfo", "userLogout"]),
-    async onSubmit(e) {
+    async onLoginSubmit(e) {
       e.preventDefault();
       let params = {
         memberId: this.memberId,
@@ -210,13 +331,17 @@ export default {
       if (this.isLogin) {
         await this.getUserInfo(token);
         console.log("4. confirm() userInfo :: ", this.userInfo);
-        this.message = "로그인 성공";
-        this.$bvModal.hide("modal-login");
         this.message = "";
+        this.$bvModal.hide("modal-login");
+        alert(`${this.userInfo.nickname} 님 환영합니다!`);
       } else {
         console.log("로그인 실패");
         this.message = "아이디와 비밀번호를 확인해주세요!";
       }
+    },
+    async onSignUpSubmit(e) {
+      e.preventDefault();
+      console.log("회원가입");
     },
     handleLogout() {
       console.log("로그아웃");
@@ -224,6 +349,7 @@ export default {
       this.userLogout(this.userInfo.memberId);
       sessionStorage.removeItem("access-token");
       sessionStorage.removeItem("refresh-token");
+      alert("로그아웃 되셨습니다.");
       if (this.$route.path != "/") this.$router.push("/");
     },
     modalClose(id) {
@@ -238,9 +364,43 @@ export default {
     handleResize() {
       this.width = window.innerWidth;
     },
+    movePage(link) {
+      if (this.$route.path != link) this.$router.push(link);
+      else this.handleMenuClose();
+    },
   },
   computed: {
     ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
+    nameState() {
+      if (this.signName.length >= 2 && this.signName.length <= 6) {
+        return true;
+      }
+      return false;
+    },
+    nicknameState() {
+      if (this.signNickname.length >= 2 && this.signNickname.length <= 6) {
+        return true;
+      }
+      return false;
+    },
+    idState() {
+      if (this.signMemberId.length >= 4 && this.signMemberId.length <= 10) {
+        return true;
+      }
+      return false;
+    },
+    passwordState() {
+      if (this.signPassword.length >= 4 && this.signPassword.length <= 10) {
+        return true;
+      }
+      return false;
+    },
+    passwordConfirmState() {
+      if (this.signPassword === this.signPasswordConfrim) {
+        return true;
+      }
+      return false;
+    },
   },
   components: {
     SearchInput,
@@ -254,7 +414,7 @@ export default {
       } else {
         this.isMain = true;
       }
-      this.isMenuOpen = false;
+      this.handleMenuClose();
     },
     width(val) {
       if (this.$route.fullPath === "/") {
@@ -264,7 +424,7 @@ export default {
       } else {
         this.isMain = false;
       }
-      this.isMenuOpen = false;
+      this.handleMenuClose();
     },
   },
   mounted() {
@@ -325,6 +485,7 @@ export default {
 .profile-wrap {
   display: flex;
   flex-direction: row;
+  gap: 5px;
 }
 .profile-wrap #profileImg {
   width: 40px;
@@ -353,15 +514,31 @@ export default {
   display: none;
 }
 
+.msg {
+  color: #f35151;
+}
+
+.btn-modal-wrap {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.modal-title {
+  font-weight: bold;
+}
+
 @media (max-width: 950px) {
   .menuModal .side-menu-wrap {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
 
   .menuModal .side-menu-wrap #side-logo {
     margin: 0 auto;
     height: calc(1.5em + 0.75rem - 2px);
-    display: block;
+    display: flex;
   }
 
   .closeMenuModal .side-menu-wrap {
@@ -369,10 +546,32 @@ export default {
   }
 
   .side-menu-wrap div {
+    cursor: pointer;
     position: relative;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
+
+  .profile-wrap {
+    padding-right: 1rem;
+  }
+  .profile-wrap .profileImg-wrap {
+    gap: 1rem;
+  }
+  .profile-wrap .profileImg-wrap #profileImg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .side-menu-wrap div svg.rightArrow {
+    position: absolute;
+    top: 49%;
+    left: 1.5rem;
+    transform: translateY(-50%);
+  }
+
   .side-menu-wrap div svg {
     position: absolute;
     top: 50%;
@@ -397,7 +596,7 @@ export default {
   .menuModal {
     width: 70%;
     background-color: #fff;
-    z-index: 12;
+    z-index: 21;
     transition: left 0.5s;
   }
 
@@ -412,7 +611,7 @@ export default {
   .overlay {
     opacity: 0.5;
     background-color: #000;
-    z-index: 11;
+    z-index: 20;
     transition: all 0.5s ease-in-out;
   }
 
