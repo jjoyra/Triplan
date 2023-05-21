@@ -13,7 +13,7 @@ import com.triplan.member.model.mapper.MemberMapper;
 
 @Service
 public class MemberServiceImpl implements MemberService {
-	
+
 	@Autowired
 	private MemberMapper memberMapper;
 
@@ -29,16 +29,17 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberDto loginMember(Map<String, String> map) throws SQLException {
-		if (map.get("memberInfo") == null) {
+		if (map.get("memberId") == null && map.get("password") == null) {
 			return null;
 		}
 		return memberMapper.loginMember(map);
 	}
 
-//	@Override
-//	public List<MemberDto> listMember(Map<String, Object> map) throws SQLException {
-//		return memberMapper.listMember(map);
-//	}
+	// @Override
+	// public List<MemberDto> listMember(Map<String, Object> map) throws
+	// SQLException {
+	// return memberMapper.listMember(map);
+	// }
 
 	@Override
 	public MemberDto getMember(String memberId) throws SQLException {

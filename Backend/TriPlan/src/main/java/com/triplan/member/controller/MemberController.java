@@ -109,7 +109,7 @@ public class MemberController {
 			
 			try {
 				MemberDto memberDto = memberService.getMember(memberId);
-				resultMap.put("memberInfo", memberDto);
+				resultMap.put("userInfo", memberDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
@@ -148,11 +148,16 @@ public class MemberController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "memberId", value = "회원 아이디", required = true, dataType = "String", paramType = "path"),
 		@ApiImplicitParam(name = "password", value = "회원 비밀번호", required = true, dataType = "String", paramType = "path")})
-	public ResponseEntity<Map<String, Object>> login(@RequestParam Map<String, String> map) {
+	public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> map) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
+//		System.out.println("Controller====");
+//		System.out.println(map.toString());
+//		System.out.println("id " + map.get("memberId"));
+//		System.out.println("pwd " + map.get("password"));
 		try {
 			MemberDto loginMember = memberService.loginMember(map);
+			System.out.println("loginMember " + loginMember);
 			if (loginMember != null) {
 				String accessToken = jwtService.createAccessToken("memberId", loginMember.getMemberId());
 				String refreshToken = jwtService.createRefreshToken("memberId", loginMember.getMemberId());
@@ -180,12 +185,12 @@ public class MemberController {
 
 	// 로그아웃
 	@ApiOperation(value = "로그아웃", notes = "회원 정보를 담은 <b>token을 제거</b>합니다.")
-	@GetMapping("/logout/{memberId}")
+	@GetMapping("/user/logout/{memberId}")
 	public ResponseEntity<?> removeToken(@PathVariable("memberId") String memberId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			memberService.deleteMember(memberId);
+			memberService.deleteRefreshToken(memberId);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
@@ -214,7 +219,7 @@ public class MemberController {
 	
 	// access token 재발급
 	@ApiOperation(value = "Access Token 재발급", notes = "만료된 <b>access token을 재발급</b>받는다.")
-	@PostMapping("/refresh")
+	@PostMapping("/user/refresh")
 	public ResponseEntity<?> refreshToken(@RequestBody MemberDto memberDto, HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
