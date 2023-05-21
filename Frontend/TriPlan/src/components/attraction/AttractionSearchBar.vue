@@ -9,7 +9,7 @@
       </b-col>
       <select-sido-gugun @select-gugun="handleAttractionSearch"></select-sido-gugun>
     </b-row>
-    <div class="select-btn">
+    <div>
       <select-button
         :contentTypes="contentTypes"
         @select-content-type="handleAttractionSearch"
@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       contentTypes: [
-        { text: "전체", value: 0 },
+        // { text: "전체", value: 0 },
         { text: "관광지", value: 12 },
         { text: "문화시설", value: 14 },
         { text: "축제/공연/행사", value: 15 },
@@ -77,8 +77,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.select-btn {
-  padding: 20px 0px;
-}
-</style>
+<style scoped></style>
