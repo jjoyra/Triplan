@@ -116,6 +116,38 @@ img {
   border-color: var(--primary-hover);
 }
 
+.btn-secondary:hover {
+  color: #fff;
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+.nav-link.btn-nav {
+  color: #343a40;
+  padding-left: 0;
+}
+.nav-link.btn-nav:hover {
+  color: #212326;
+  background-color: transparent;
+}
+.nav-link.btn-nav:focus {
+  box-shadow: none;
+}
+.nav-link.btn-nav.btn-secondary:active {
+  color: #212326;
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.nav-link.btn-nav.btn-secondary:active:focus {
+  box-shadow: none;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: #bbb;
+}
+
 .pagination {
   justify-content: center;
 }
