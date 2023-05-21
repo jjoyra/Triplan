@@ -57,14 +57,21 @@
 </template>
 
 <script>
-import axios from "@/api/http";
-
 export default {
   name: "MainView",
-  created() {
-    axios.get("notice").then((res) => {
-      console.log(res);
-    });
+  data() {
+    return {
+      slide: 0,
+      sliding: null,
+    };
+  },
+  methods: {
+    onSlideStart() {
+      this.sliding = true;
+    },
+    onSlideEnd() {
+      this.sliding = false;
+    },
   },
 };
 </script>
