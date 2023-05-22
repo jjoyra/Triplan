@@ -143,7 +143,7 @@
     </div>
 
     <b-modal id="modal-login" hide-footer centered title="로그인" no-stacking>
-      <b-form @submit="onLoginSubmit">
+      <b-form @submit.stop.prevent="onLoginSubmit">
         <b-form-group label="아이디" label-for="memberId" label-cols-sm="3" label-align-sm="left">
           <b-form-input
             type="text"
@@ -178,101 +178,27 @@
     </b-modal>
 
     <b-modal id="modal-registe" hide-footer centered title="회원가입" no-stacking>
-      <b-form @submit="onSignUpSubmit">
-        <b-form-group label="이름" label-for="signName" label-cols-sm="3" label-align-sm="left">
-          <b-form-input
-            type="text"
-            v-model="signName"
-            id="signName"
-            name="signName"
-            placeholder="이름을 입력해주세요"
-            :state="signName.length === 0 ? null : nameState"
-            aria-describedby="input-signName-feedback"
-            trim
-          ></b-form-input>
-          <b-form-invalid-feedback id="input-signName-feedback">
-            이름은 2자 이상 6자 이하입니다.
-          </b-form-invalid-feedback>
-        </b-form-group>
-
+      <b-form @submit.stop.prevent="onSignUpSubmit">
         <b-form-group
-          label="닉네임"
-          label-for="signNickname"
+          v-for="(item, index) in signFormList"
+          :key="index"
+          :label="item.label"
+          :label-for="item.labelFor"
           label-cols-sm="3"
           label-align-sm="left"
         >
           <b-form-input
-            type="text"
-            v-model="signNickname"
-            id="signNickname"
-            name="signNickname"
-            placeholder="닉네임을 입력해주세요"
-            :state="signNickname.length === 0 ? null : nicknameState"
-            aria-describedby="input-signNickname-feedback"
+            :type="item.type"
+            v-model="item.value"
+            :id="item.id"
+            :name="item.name"
+            :placeholder="item.placeholder"
+            :state="inputState(index, item.min, item.max)"
+            :aria-describedby="item.ariaDescribedby"
             trim
           ></b-form-input>
-          <b-form-invalid-feedback id="input-signNickname-feedback">
-            닉네임는 2자 이상 6자 이하입니다.
-          </b-form-invalid-feedback>
-        </b-form-group>
-
-        <b-form-group
-          label="아이디"
-          label-for="signMemberId"
-          label-cols-sm="3"
-          label-align-sm="left"
-        >
-          <b-form-input
-            type="text"
-            v-model="signMemberId"
-            id="signMemberId"
-            name="signMemberId"
-            placeholder="아이디를 입력해주세요"
-            :state="signMemberId.length === 0 ? null : idState"
-            aria-describedby="input-signMemberId-feedback"
-            trim
-          ></b-form-input>
-          <b-form-invalid-feedback id="input-signMemberId-feedback">
-            아이디는 4자 이상 10자 이하입니다.
-          </b-form-invalid-feedback>
-        </b-form-group>
-
-        <b-form-group
-          label="비밀번호"
-          label-for="signPassword"
-          label-cols-sm="3"
-          label-align-sm="left"
-        >
-          <b-form-input
-            type="password"
-            v-model="signPassword"
-            id="signPassword"
-            name="signPassword"
-            placeholder="비밀번호를 입력해주세요"
-            :state="signPassword.length === 0 ? null : passwordState"
-            trim
-          ></b-form-input>
-          <b-form-invalid-feedback id="input-signPassword-feedback">
-            비밀번호는 4자 이상 10자 이하입니다.
-          </b-form-invalid-feedback>
-        </b-form-group>
-
-        <b-form-group
-          label="비밀번호 확인"
-          label-for="signPasswordConfrim"
-          label-cols-sm="3"
-          label-align-sm="left"
-        >
-          <b-form-input
-            type="password"
-            v-model="signPasswordConfrim"
-            id="signPasswordConfrim"
-            placeholder="비밀번호를 다시 입력해주세요"
-            :state="signPasswordConfrim.length === 0 ? null : passwordConfirmState"
-            trim
-          ></b-form-input>
-          <b-form-invalid-feedback id="input-signPasswordConfrim-feedback">
-            비밀번호가 일치하지 않습니다.
+          <b-form-invalid-feedback :id="item.ariaDescribedby">
+            {{ item.feedback }}
           </b-form-invalid-feedback>
         </b-form-group>
 
@@ -288,13 +214,16 @@
 </template>
 
 <script>
+import { validationMixin } from "vuelidate";
 import { mapState, mapActions } from "vuex";
 
 const memberStore = "memberStore";
+const CONFIRM_INPUT_IDX = 4;
 
 import SearchInput from "@/components/common/SearchInput.vue";
 
 export default {
+  mixins: [validationMixin],
   name: "TheHeader",
   data() {
     return {
@@ -309,12 +238,78 @@ export default {
       signPasswordConfrim: "",
       signName: "",
       signNickname: "",
+      signFormList: [
+        {
+          label: "이름",
+          labelFor: "signName",
+          type: "text",
+          value: "",
+          id: "signName",
+          name: "name",
+          placeholder: "이름을 입력해주세요",
+          ariaDescribedby: "input-signName-feedback",
+          feedback: "이름은 2자 이상 6자 이하입니다.",
+          min: 2,
+          max: 6,
+        },
+        {
+          label: "닉네임",
+          labelFor: "signNickname",
+          type: "text",
+          value: "",
+          id: "signNickname",
+          name: "nickname",
+          placeholder: "닉네임을 입력해주세요",
+          ariaDescribedby: "input-signNickname-feedback",
+          feedback: "닉네임는 2자 이상 6자 이하입니다.",
+          min: 2,
+          max: 6,
+        },
+        {
+          label: "아이디",
+          labelFor: "signMemberId",
+          type: "text",
+          value: "",
+          id: "signMemberId",
+          name: "memberId",
+          placeholder: "아이디를 입력해주세요",
+          ariaDescribedby: "input-signMemberId-feedback",
+          feedback: "아이디는 4자 이상 10자 이하입니다.",
+          min: 4,
+          max: 10,
+        },
+        {
+          label: "비밀번호",
+          labelFor: "signPassword",
+          type: "password",
+          value: "",
+          id: "signPassword",
+          name: "password",
+          placeholder: "비밀번호를 입력해주세요",
+          ariaDescribedby: "input-signPassword-feedback",
+          feedback: "비밀번호는 4자 이상 10자 이하입니다.",
+          min: 4,
+          max: 10,
+        },
+        {
+          label: "비밀번호 확인",
+          labelFor: "signPasswordConfrim",
+          type: "text",
+          value: "",
+          id: "signPasswordConfrim",
+          // name: "signPasswordConfrim",
+          placeholder: "비밀번호를 다시 입력해주세요",
+          ariaDescribedby: "input-signPasswordConfrim-feedback",
+          feedback: "비밀번호가 일치하지 않습니다.",
+          min: 4,
+          max: 10,
+        },
+      ],
     };
   },
   methods: {
     ...mapActions(memberStore, ["userConfirm", "getUserInfo", "userLogout"]),
-    async onLoginSubmit(e) {
-      e.preventDefault();
+    async onLoginSubmit() {
       let params = {
         memberId: this.memberId,
         password: this.password,
@@ -339,8 +334,10 @@ export default {
         this.message = "아이디와 비밀번호를 확인해주세요!";
       }
     },
-    async onSignUpSubmit(e) {
-      e.preventDefault();
+    async onSignUpSubmit() {
+      console.log("v", this);
+      console.log("v", this.$v);
+      console.log("v", this.v$);
       console.log("회원가입");
     },
     handleLogout() {
@@ -368,39 +365,30 @@ export default {
       if (this.$route.path != link) this.$router.push(link);
       else this.handleMenuClose();
     },
-  },
-  computed: {
-    ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
-    nameState() {
-      if (this.signName.length >= 2 && this.signName.length <= 6) {
-        return true;
-      }
-      return false;
-    },
-    nicknameState() {
-      if (this.signNickname.length >= 2 && this.signNickname.length <= 6) {
-        return true;
-      }
-      return false;
-    },
-    idState() {
-      if (this.signMemberId.length >= 4 && this.signMemberId.length <= 10) {
-        return true;
-      }
-      return false;
-    },
-    passwordState() {
-      if (this.signPassword.length >= 4 && this.signPassword.length <= 10) {
+    inputState(idx, min, max) {
+      if (idx === CONFIRM_INPUT_IDX) return this.passwordConfirmState();
+      if (this.signFormList[idx].value.length === 0) return null;
+      if (
+        this.signFormList[idx].value.length >= min &&
+        this.signFormList[idx].value.length <= max
+      ) {
         return true;
       }
       return false;
     },
     passwordConfirmState() {
-      if (this.signPassword === this.signPasswordConfrim) {
+      if (this.signFormList[CONFIRM_INPUT_IDX].value.length === 0) return null;
+      if (
+        this.signFormList[CONFIRM_INPUT_IDX - 1].value ===
+        this.signFormList[CONFIRM_INPUT_IDX].value
+      ) {
         return true;
       }
       return false;
     },
+  },
+  computed: {
+    ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
   },
   components: {
     SearchInput,
