@@ -35,24 +35,10 @@
 
           <div v-if="userInfo">플랜 만들기 로그아웃</div>
           <template v-else>
-            <b-button
-              variant="primary"
-              v-b-modal.modal-login
-              @click="
-                () => {
-                  isMenuOpen = false;
-                }
-              "
+            <b-button variant="primary" v-b-modal.modal-login @click="handleMenuClose"
               >로그인</b-button
             >
-            <b-button
-              variant="dark"
-              v-b-modal.modal-registe
-              @click="
-                () => {
-                  isMenuOpen = false;
-                }
-              "
+            <b-button variant="dark" v-b-modal.modal-registe @click="handleMenuClose"
               >회원가입</b-button
             >
           </template>
@@ -117,24 +103,10 @@
             </b-nav-item-dropdown>
           </div>
           <template v-else>
-            <b-button
-              class="nav-link btn-nav"
-              v-b-modal.modal-login
-              @click="
-                () => {
-                  isMenuOpen = false;
-                }
-              "
+            <b-button class="nav-link btn-nav" v-b-modal.modal-login @click="handleMenuClose"
               >로그인</b-button
             >
-            <b-button
-              class="nav-link btn-nav"
-              v-b-modal.modal-registe
-              @click="
-                () => {
-                  isMenuOpen = false;
-                }
-              "
+            <b-button class="nav-link btn-nav" v-b-modal.modal-registe @click="handleMenuClose"
               >회원가입</b-button
             >
           </template>
@@ -147,7 +119,7 @@
         <b-form-group label="아이디" label-for="memberId" label-cols-sm="3" label-align-sm="left">
           <b-form-input
             type="text"
-            v-model="memberId"
+            v-model="loginMemberId"
             id="memberId"
             name="memberId"
             placeholder="아이디를 입력해주세요"
@@ -159,7 +131,7 @@
         <b-form-group label="비밀번호" label-for="password" label-cols-sm="3" label-align-sm="left">
           <b-form-input
             type="password"
-            v-model="password"
+            v-model="loginPassword"
             id="password"
             name="password"
             placeholder="비밀번호를 입력해주세요"
@@ -186,17 +158,38 @@
           :label-for="item.labelFor"
           label-cols-sm="3"
           label-align-sm="left"
+          :class="item.name === 'memberId' ? 'input-id-wrap' : ''"
         >
-          <b-form-input
-            :type="item.type"
-            v-model="item.value"
-            :id="item.id"
-            :name="item.name"
-            :placeholder="item.placeholder"
-            :state="inputState(index, item.min, item.max)"
-            :aria-describedby="item.ariaDescribedby"
-            trim
-          ></b-form-input>
+          <template v-if="item.name === 'memberId'">
+            <b-form-input
+              ref="inputIdRef"
+              :type="item.type"
+              v-model="item.value"
+              :id="item.id"
+              :name="item.name"
+              :placeholder="item.placeholder"
+              :aria-describedby="item.ariaDescribedby"
+              trim
+              @keyup="changeId"
+            ></b-form-input>
+
+            <button type="button" @click="handleIdCheck" id="btn-id-check" class="btn btn-danger">
+              중복확인
+            </button>
+          </template>
+          <template v-else>
+            <b-form-input
+              :type="item.type"
+              v-model="item.value"
+              :id="item.id"
+              :name="item.name"
+              :placeholder="item.placeholder"
+              :state="inputState(index)"
+              :aria-describedby="item.ariaDescribedby"
+              trim
+            ></b-form-input>
+          </template>
+
           <b-form-invalid-feedback :id="item.ariaDescribedby">
             {{ item.feedback }}
           </b-form-invalid-feedback>
@@ -214,30 +207,70 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
+import { join, idCheck } from "@/api/member";
+import { useVuelidate } from "@vuelidate/core";
+import { required, minLength, maxLength, sameAs } from "@vuelidate/validators";
 import { mapState, mapActions } from "vuex";
 
 const memberStore = "memberStore";
+const ID_INPUT_IDX = 2;
 const CONFIRM_INPUT_IDX = 4;
 
 import SearchInput from "@/components/common/SearchInput.vue";
 
 export default {
-  mixins: [validationMixin],
   name: "TheHeader",
+  setup() {
+    return {
+      v$: useVuelidate(),
+    };
+  },
+  validations() {
+    return {
+      signFormList: {
+        0: {
+          value: {
+            required,
+            minLength: minLength(2),
+            maxLength: maxLength(6),
+          },
+        },
+        1: {
+          value: {
+            required,
+            minLength: minLength(2),
+            maxLength: maxLength(6),
+          },
+        },
+        2: {
+          value: {
+            required,
+            minLength: minLength(4),
+            maxLength: maxLength(10),
+          },
+        },
+        3: {
+          value: {
+            required,
+            minLength: minLength(4),
+            maxLength: maxLength(10),
+          },
+        },
+        4: {
+          value: { sameAs: sameAs(this.signFormList[CONFIRM_INPUT_IDX - 1].value) },
+        },
+      },
+    };
+  },
   data() {
     return {
       width: 0,
       isMenuOpen: false,
       isMain: true,
-      memberId: "",
-      password: "",
+      loginMemberId: "",
+      loginPassword: "",
       message: "",
-      signMemberId: "",
-      signPassword: "",
-      signPasswordConfrim: "",
-      signName: "",
-      signNickname: "",
+      isCanUseId: false,
       signFormList: [
         {
           label: "이름",
@@ -249,8 +282,6 @@ export default {
           placeholder: "이름을 입력해주세요",
           ariaDescribedby: "input-signName-feedback",
           feedback: "이름은 2자 이상 6자 이하입니다.",
-          min: 2,
-          max: 6,
         },
         {
           label: "닉네임",
@@ -261,9 +292,7 @@ export default {
           name: "nickname",
           placeholder: "닉네임을 입력해주세요",
           ariaDescribedby: "input-signNickname-feedback",
-          feedback: "닉네임는 2자 이상 6자 이하입니다.",
-          min: 2,
-          max: 6,
+          feedback: "닉네임은 2자 이상 6자 이하입니다.",
         },
         {
           label: "아이디",
@@ -275,8 +304,6 @@ export default {
           placeholder: "아이디를 입력해주세요",
           ariaDescribedby: "input-signMemberId-feedback",
           feedback: "아이디는 4자 이상 10자 이하입니다.",
-          min: 4,
-          max: 10,
         },
         {
           label: "비밀번호",
@@ -288,21 +315,17 @@ export default {
           placeholder: "비밀번호를 입력해주세요",
           ariaDescribedby: "input-signPassword-feedback",
           feedback: "비밀번호는 4자 이상 10자 이하입니다.",
-          min: 4,
-          max: 10,
         },
         {
           label: "비밀번호 확인",
           labelFor: "signPasswordConfrim",
-          type: "text",
+          type: "password",
           value: "",
           id: "signPasswordConfrim",
           // name: "signPasswordConfrim",
           placeholder: "비밀번호를 다시 입력해주세요",
           ariaDescribedby: "input-signPasswordConfrim-feedback",
           feedback: "비밀번호가 일치하지 않습니다.",
-          min: 4,
-          max: 10,
         },
       ],
     };
@@ -311,15 +334,15 @@ export default {
     ...mapActions(memberStore, ["userConfirm", "getUserInfo", "userLogout"]),
     async onLoginSubmit() {
       let params = {
-        memberId: this.memberId,
-        password: this.password,
+        memberId: this.loginMemberId,
+        password: this.loginPassword,
       };
       console.log("로그인", params);
 
       await this.userConfirm(params);
 
-      this.memberId = "";
-      this.password = "";
+      this.loginMemberId = "";
+      this.loginPassword = "";
 
       let token = sessionStorage.getItem("access-token");
       console.log("1. confirm() token >> " + token);
@@ -334,11 +357,37 @@ export default {
         this.message = "아이디와 비밀번호를 확인해주세요!";
       }
     },
-    async onSignUpSubmit() {
-      console.log("v", this);
-      console.log("v", this.$v);
-      console.log("v", this.v$);
-      console.log("회원가입");
+    onSignUpSubmit() {
+      if (!this.v$.$invalid && this.isCanUseId) {
+        let userInfo = {
+          name: this.signFormList[0].value,
+          nickname: this.signFormList[1].value,
+          memberId: this.signFormList[2].value,
+          password: this.signFormList[3].value,
+        };
+        join(
+          userInfo,
+          ({ status }) => {
+            if (status === 201) {
+              this.$bvModal.hide("modal-registe");
+              this.message = "";
+              this.signFormList = this.signFormList.map((item) => {
+                return {
+                  ...item,
+                  value: "",
+                };
+              });
+              this.isCanUseId = false;
+              this.$refs.inputIdRef[0].state = null;
+              alert("회원가입 성공");
+            }
+          },
+          (err) => console.log("회원가입 실패", err)
+        );
+      } else {
+        if (!this.isCanUseId) this.message = "아이디 중복 확인이 필요합니다.";
+        else this.message = "입력 값을 확인해주세요.";
+      }
     },
     handleLogout() {
       console.log("로그아웃");
@@ -348,6 +397,40 @@ export default {
       sessionStorage.removeItem("refresh-token");
       alert("로그아웃 되셨습니다.");
       if (this.$route.path != "/") this.$router.push("/");
+    },
+    handleIdCheck() {
+      let memberId = this.signFormList[ID_INPUT_IDX].value;
+      if (!this.v$.signFormList[ID_INPUT_IDX].$invalid) {
+        // 길이가 유효하면
+        idCheck(
+          memberId,
+          ({ data }) => {
+            if (data === 1) {
+              // 중복된 아이디
+              this.isCanUseId = false;
+              this.$refs.inputIdRef[0].state = false;
+              this.signFormList[ID_INPUT_IDX].feedback = "중복된 아이디 입니다.";
+            } else {
+              // 사용 가능한 아이디
+              if (
+                this.$refs.inputIdRef[0].value.length >= 4 &&
+                this.$refs.inputIdRef[0].value.length <= 10
+              ) {
+                this.isCanUseId = true;
+                this.$refs.inputIdRef[0].state = true;
+              } else {
+                this.isCanUseId = false;
+                this.$refs.inputIdRef[0].state = false;
+                this.signFormList[ID_INPUT_IDX].feedback = "아이디는 4자 이상 10자 이하입니다.";
+              }
+            }
+          },
+          (err) => console.log(err)
+        );
+      } else {
+        this.isCanUseId = false;
+        this.$refs.inputIdRef[0].state = false;
+      }
     },
     modalClose(id) {
       this.$bvModal.hide(id);
@@ -365,19 +448,44 @@ export default {
       if (this.$route.path != link) this.$router.push(link);
       else this.handleMenuClose();
     },
-    inputState(idx, min, max) {
-      if (idx === CONFIRM_INPUT_IDX) return this.passwordConfirmState();
-      if (this.signFormList[idx].value.length === 0) return null;
-      if (
-        this.signFormList[idx].value.length >= min &&
-        this.signFormList[idx].value.length <= max
+    changeId() {
+      this.isCanUseId = false;
+
+      if (this.$refs.inputIdRef[0].value.length === 0) {
+        this.$refs.inputIdRef[0].state = null;
+      } else if (
+        this.$refs.inputIdRef[0].value.length >= 4 &&
+        this.$refs.inputIdRef[0].value.length <= 10
       ) {
+        this.$refs.inputIdRef[0].state = false;
+        this.signFormList[ID_INPUT_IDX].feedback = "아이디 중복 확인이 필요합니다.";
+      } else {
+        this.$refs.inputIdRef[0].state = false;
+        this.signFormList[ID_INPUT_IDX].feedback = "아이디는 4자 이상 10자 이하입니다.";
+      }
+    },
+    inputState(idx) {
+      if (this.signFormList[idx].value.length === 0) {
+        return null;
+      }
+      if (idx === ID_INPUT_IDX) return this.idCheckState();
+      if (idx === CONFIRM_INPUT_IDX) return this.passwordConfirmState();
+      if (!this.v$.signFormList[idx].$invalid) {
         return true;
       }
       return false;
     },
+    idCheckState() {
+      this.isCanUseId = false;
+      this.$refs.inputIdRef[0].state = false;
+
+      if (!this.v$.signFormList[ID_INPUT_IDX].$invalid) {
+        this.signFormList[ID_INPUT_IDX].feedback = "아이디 중복 확인이 필요합니다.";
+      } else {
+        this.signFormList[ID_INPUT_IDX].feedback = "아이디는 4자 이상 10자 이하입니다.";
+      }
+    },
     passwordConfirmState() {
-      if (this.signFormList[CONFIRM_INPUT_IDX].value.length === 0) return null;
       if (
         this.signFormList[CONFIRM_INPUT_IDX - 1].value ===
         this.signFormList[CONFIRM_INPUT_IDX].value
@@ -514,6 +622,24 @@ export default {
 
 .modal-title {
   font-weight: bold;
+}
+
+.input-id-wrap .form-control {
+  width: calc(100% - 7rem);
+  display: inline-block;
+  margin-right: 14px;
+}
+
+#btn-id-check {
+  height: 100%;
+  vertical-align: baseline;
+}
+.is-invalid + #btn-id-check {
+  height: calc(100% - 25px);
+}
+
+.successMsg {
+  color: #51abf3;
 }
 
 @media (max-width: 950px) {

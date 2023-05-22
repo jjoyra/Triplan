@@ -5,7 +5,6 @@ const api = apiInstance();
 async function login(member, success, fail) {
   await api.post(`/user/login`, JSON.stringify(member)).then(success).catch(fail);
 }
-
 async function findById(memberId, success, fail) {
   api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
   await api.get(`/user/${memberId}`).then(success).catch(fail);
@@ -40,4 +39,8 @@ function findPassword(member, success, fail) {
   api.get(`/user/password`, member).then(success).catch(fail);
 }
 
-export { login, findById, tokenRegeneration, logout, join, modifyMember, getMember, deleteMember, findPassword };
+async function idCheck(memberId, success, fail) {
+  await api.get(`/user/idcheck/${memberId}`).then(success).catch(fail);
+}
+
+export { login, findById, tokenRegeneration, logout, join, modifyMember, getMember, deleteMember, findPassword, idCheck };
