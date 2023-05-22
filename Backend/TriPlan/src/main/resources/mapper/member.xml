@@ -73,6 +73,12 @@
 	</select> -->
 	
 	<select id="getMember" parameterType="string" resultMap="memberInfo">
+		select member_id, nickname, name, img_url, open_myplan, open_favo_plan, open_favo_attraction, role
+		from member
+		where member_id = #{memberId}
+	</select>
+	
+	<select id="getMemberAll" parameterType="string" resultMap="memberAll">
 		select *
 		from member
 		where member_id = #{memberId}

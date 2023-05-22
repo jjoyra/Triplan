@@ -14,6 +14,7 @@ public interface MemberMapper {
 	void joinMember(MemberDto memberDto) throws SQLException;
 	MemberDto loginMember(Map<String, String> map) throws SQLException;
 	String findPassword(Map<String, Object> map) throws SQLException;
+	MemberDto getMember(String memberId) throws SQLException;
 
 	void saveRefreshToken(Map<String, String> map) throws SQLException;
 	Object getRefreshToken(String memberId) throws SQLException;
@@ -21,7 +22,7 @@ public interface MemberMapper {
 	
 	/* Admin */
 //	List<MemberDto> listMember(Map<String, Object> map) throws SQLException;
-	MemberDto getMember(String memberId) throws SQLException;
+	MemberDto getMemberAll(String memberId) throws SQLException;
 	void updateMember(MemberDto memberDto) throws SQLException;
 	void deleteMember(String memberId) throws SQLException;
 	
