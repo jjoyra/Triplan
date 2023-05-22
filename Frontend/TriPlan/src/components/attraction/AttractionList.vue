@@ -54,7 +54,6 @@ export default {
 .list-wrap {
   width: 100%;
   height: 560px;
-  border-radius: 3px;
   overflow: auto;
 }
 
@@ -63,7 +62,7 @@ export default {
 } */
 
 .list-group-item {
-  border: 0.3px rgba(0, 0, 0, 0.125);
+  border-bottom: 0.3px rgba(0, 0, 0, 0.125);
   border-style: solid hidden;
   display: flex;
   justify-content: space-between;
