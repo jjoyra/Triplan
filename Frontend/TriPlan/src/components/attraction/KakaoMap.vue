@@ -3,8 +3,8 @@
 </template>
 
 <script>
-/*global kakao*/
 export default {
+  /*global kakao*/
   name: "KaKaoMap",
   data() {
     return {
@@ -66,8 +66,29 @@ export default {
         const marker = new kakao.maps.Marker({
           map: this.map,
           position: position.latlng,
-          title: position.title,
         });
+
+        // const content = `
+        //   <div class="wrap">
+        //     <div>${position.title}</div>
+        //     <div class="close" onclick="closeOverlay()" title="닫기"></div>
+        //   </div>
+        //   `;
+
+        // const overlay = new kakao.maps.CustomOverlay({
+        //   content: content,
+        //   map: this.map,
+        //   position: marker.getPosition(),
+        // });
+
+        // kakao.maps.event.addListener(marker, "click", function () {
+        //   overlay.setMap(this.map);
+        // });
+
+        // function closeOverlay() {
+        //   overlay.setMap(null);
+        // }
+
         this.markers.push(marker);
       });
 
@@ -100,4 +121,29 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
+/* .wrap {
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  width: 250px;
+  height: 132px;
+  text-align: left;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+.wrap {
+  width: 286px;
+  height: 120px;
+  border-radius: 5px;
+  border-bottom: 2px solid #ccc;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  background: #fff;
+}
+.wrap .info:nth-child(1) {
+  border: 0;
+  box-shadow: 0px 1px 2px #888;
+} */
 </style>
