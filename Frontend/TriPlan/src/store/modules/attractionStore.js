@@ -1,6 +1,6 @@
 import {
   getAttractionList,
-  // getAttractionDetail,
+  getAttractionDetail,
   // getWorldCupTOP3AttractionList,
 } from "@/api/attraction";
 
@@ -19,16 +19,16 @@ const attractionStore = {
     SET_ATTRACTION_LIST(state, data) {
       state.attractions = data.attractions;
     },
-    // SET_DETAIL_ATTRACTION(state, attraction) {
-    //   state.attraction = attraction;
-    // },
+    SET_DETAIL_ATTRACTION(state, attraction) {
+      state.attraction = attraction;
+    },
   },
   actions: {
     getAttractionList: ({ commit }, params) => {
       getAttractionList(
         params,
         ({ data }) => {
-          console.log(data);
+          // console.log(data);
           commit("SET_ATTRACTION_LIST", data);
         },
         (error) => {
@@ -36,10 +36,13 @@ const attractionStore = {
         }
       );
     },
-    // detailAttraction: ({ commit }, attraction) => {
-    //   getAttractionDetail()
-    //   commit("SET_DETAIL_ATTRACTION", attraction);
-    // },
+    detailAttraction: ({ commit }, attractionId) => {
+      getAttractionDetail(attractionId, ({ data }) => {
+        commit("SET_DETAIL_ATTRACTION", data); 
+      }, (error) => {
+        console.error(error)
+      })
+    },
   },
 };
 
