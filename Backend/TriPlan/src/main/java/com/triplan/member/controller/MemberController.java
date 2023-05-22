@@ -71,7 +71,7 @@ public class MemberController {
 	@PostMapping("/user")
 	@ApiOperation(value = "회원가입", notes = "회원가입을 하면 <b>회원 정보를  insert</b>합니다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "회원가입 성공"), @ApiResponse(code = 500, message = "서버 에러") })
-	public ResponseEntity<?> join(@ApiParam(value = "회원 Dto") MemberDto memberDto) {
+	public ResponseEntity<?> join(@RequestBody @ApiParam(value = "회원 Dto") MemberDto memberDto) {
 		try {
 			memberService.joinMember(memberDto);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
