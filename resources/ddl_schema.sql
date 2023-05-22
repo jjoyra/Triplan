@@ -4,9 +4,9 @@ use triplan;
 CREATE TABLE IF NOT EXISTS `member` (
 	`member_id`	VARCHAR(16)	NOT NULL,
 	`password`	VARCHAR(45)	NOT NULL,
-	`name`	VARCHAR(5)	NOT NULL,
+	`name`	VARCHAR(16)	NOT NULL,
 	`nickname`	VARCHAR(16)	NOT NULL,
-	`img_url`	VARCHAR(100)	NULL,
+	`img_url`	VARCHAR(1000)	NULL,
 	`join_date`	TIMESTAMP	NOT NULL 	DEFAULT current_timestamp,
     `role` TINYINT NOT NULL DEFAULT 1 COMMENT '관리자(0)/회원(1)',
     `open_myplan` BOOLEAN NOT NULL DEFAULT TRUE,
