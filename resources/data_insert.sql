@@ -73,6 +73,11 @@ values (1, '2849095', 1, '내 금고'),
 	   (1, '2840968', 2, '뭔데 뭐하는 곳인데'),
        (1, '2840934', 3, '경주 가면 황리단길 꼭 가야지 볼거 진짜 많음 OO 가게 꼭 가! 진짜 맛있어');
 
+-- 테이블 : follow_list
+insert into triplan.follow_list(follower_id, followee_id)
+values ('ssafy', 'test'),
+	   ('ssafy', 'admin'),
+	   ('test', 'ssafy');
 
 
 
