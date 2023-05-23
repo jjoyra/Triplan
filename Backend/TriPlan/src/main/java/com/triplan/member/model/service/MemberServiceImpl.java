@@ -47,6 +47,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public MemberDto getOtherMember(String memberId) throws SQLException {
+		return memberMapper.getOtherMember(memberId);
+	}
+
+	@Override
 	public void updateMember(MemberDto memberDto) throws SQLException {
 		memberMapper.updateMember(memberDto);
 	}

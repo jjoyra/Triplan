@@ -17,7 +17,7 @@ public class MemberDto {
 	private String imgUrl;
 	@ApiModelProperty(value = "가입 날짜")
 	private String joinDate;
-	@ApiModelProperty(value = "역할(회원/관리자)", example = "0")
+	@ApiModelProperty(value = "역할(회원/관리자)", example = "회원 1, 관리자 0")
 	private int role;
 	@ApiModelProperty(value = "마이플랜 공개 여부")
 	private int openMyplan;
@@ -25,6 +25,8 @@ public class MemberDto {
 	private int openFavoPlan;
 	@ApiModelProperty(value = "좋아요한 여행지 공개 여부")
 	private int openFavoAttraction;
+	@ApiModelProperty(value = "상태 메시지")
+	private String comment;
 	
 	public String getMemberId() {
 		return memberId;
@@ -85,6 +87,12 @@ public class MemberDto {
 	}
 	public void setOpenFavoAttraction(int openFavoAttraction) {
 		this.openFavoAttraction = openFavoAttraction;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 	@Override

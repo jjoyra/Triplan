@@ -125,6 +125,31 @@ public class MemberController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	// 다른 회원 정보 조회
+	@GetMapping("/user/other/{memberId}")
+	@ApiOperation(value = "다른 회원 정보 조회", notes = "<b>다른 회원 정보를</b> return합니다.")
+	@ApiResponses({ @ApiResponse(code = 200, message = "다른 회원 정보 불러오기 성공"), @ApiResponse(code = 500, message = "서버 에러") })
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "memberId", value = "회원 아이디", required = true, dataType = "String", paramType = "path") })
+	public ResponseEntity<?> getOtherMember(@PathVariable("memberId") String memberId, HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<>();
+		MemberDto memberDto;
+		try {
+			memberDto = memberService.getOtherMember(memberId);
+
+			if (memberDto != null) {
+				resultMap.put("userInfo", memberDto);
+				resultMap.put("message", SUCCESS);
+				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+			} else {
+				resultMap.put("message", FAIL);
+				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.NO_CONTENT);
+			}
+		} catch (SQLException e) {
+			return exceptionHandling(e);
+		}
+	}
 
 //	// 회원 탈퇴
 	@PutMapping("/user/{memberId}")
@@ -151,10 +176,6 @@ public class MemberController {
 	public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> map) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-//		System.out.println("Controller====");
-//		System.out.println(map.toString());
-//		System.out.println("id " + map.get("memberId"));
-//		System.out.println("pwd " + map.get("password"));
 		try {
 			MemberDto loginMember = memberService.loginMember(map);
 			System.out.println("loginMember " + loginMember);

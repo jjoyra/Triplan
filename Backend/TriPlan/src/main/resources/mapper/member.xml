@@ -17,6 +17,18 @@
 		<result column="open_favo_plan" property="openFavoPlan"/>
 		<result column="open_favo_attraction" property="openFavoAttraction"/>
 		<result column="role" property="role"/>
+		<result column="comment" property="comment"/>
+	</resultMap>
+	
+	<!-- 다른 사용자 정보 -->
+	<resultMap type="memberDto" id="otherMember">
+		<result column="member_id" property="memberId"/>
+		<result column="nickname" property="nickname"/>
+		<result column="img_url" property="imgUrl"/>
+		<result column="open_myplan" property="openMyplan"/>
+		<result column="open_favo_plan" property="openFavoPlan"/>
+		<result column="open_favo_attraction" property="openFavoAttraction"/>
+		<result column="comment" property="comment"/>
 	</resultMap>
 	
 	<!-- 관리자용 사용자 전체 정보(비밀번호까지 가져옴) -->
@@ -28,6 +40,8 @@
 		<result column="open_myplan" property="openMyplan"/>
 		<result column="open_favo_plan" property="openFavoPlan"/>
 		<result column="open_favo_attraction" property="openFavoAttraction"/>
+		<result column="role" property="role"/>
+		<result column="comment" property="comment"/>
 	</resultMap>
 
 	<select id="idCheck" parameterType="String" resultType="int">
@@ -73,9 +87,15 @@
 	</select> -->
 	
 	<select id="getMember" parameterType="string" resultMap="memberInfo">
-		select member_id, nickname, name, img_url, open_myplan, open_favo_plan, open_favo_attraction, role
+		select member_id, nickname, name, img_url, open_myplan, open_favo_plan, open_favo_attraction, role, comment
 		from member
 		where member_id = #{memberId}
+	</select>
+	
+	<select id="getOtherMember" parameterType="map" resultMap="otherMember">
+		select member_id, nickname, img_url, open_myplan, open_favo_plan, open_favo_attraction, comment
+		from member
+		where member_id = #{memberId};
 	</select>
 	
 	<select id="getMemberAll" parameterType="string" resultMap="memberAll">
