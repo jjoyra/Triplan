@@ -2,8 +2,8 @@
   <div>
     FavoPlanView 입니다.
     <br />
-    <router-link to="/mypage/favoplan/list">List</router-link> |
-    <!-- <router-link to="/mypage/favoplan/detail">Detail</router-link> -->
+    <router-link to="/mypage/ssafy/favoplan/list">List</router-link> |
+    <!-- <router-link to="/mypage/ssafy/favoplan/detail">Detail</router-link> -->
     <br />
 
     <router-view></router-view>
@@ -16,6 +16,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

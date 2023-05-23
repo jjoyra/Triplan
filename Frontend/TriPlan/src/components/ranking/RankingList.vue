@@ -1,7 +1,14 @@
 <template>
   <div class="fluid-wrap">
     <div class="content-wrap">
-      <h2>{{ title }}</h2>
+      <div class="h2-wrap">
+        <h2>{{ title }}</h2>
+        <template v-if="isMore">
+          <router-link :to="link"
+            ><b-icon class="rightArrow" icon="ChevronRight"></b-icon
+          ></router-link>
+        </template>
+      </div>
       <div class="ranking-item-wrap web">
         <!-- <ranking-item-web v-for="item in items" :key="item"></ranking-item-web> -->
         <ranking-item-web></ranking-item-web>
@@ -33,6 +40,8 @@ export default {
   props: {
     title: String,
     bg: Boolean,
+    isMore: Boolean,
+    link: String,
   },
   data() {
     return {
@@ -62,6 +71,23 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   background: #fafafa;
+}
+
+.h2-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.h2-wrap h2 {
+  margin-bottom: 0;
+}
+.h2-wrap svg {
+  font-size: 1.2rem;
+}
+.h2-wrap a:hover {
+  color: #383838;
 }
 
 .web {

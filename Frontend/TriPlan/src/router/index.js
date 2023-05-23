@@ -169,8 +169,14 @@ const routes = [
   {
     path: '/mypage/:memberId',
     name: 'mypage',
+    redirect: '/mypage/:memberId/main',
     component: () => import(/* webpackChunkName: "mypage" */ '../views/MypageView.vue'),
     children: [
+      {
+        path: 'main',
+        name: 'mypagemain',
+        component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/MypageMain.vue'),
+      },
       {
         path: 'myplan',
         name: 'myplan',
@@ -198,7 +204,7 @@ const routes = [
       {
         path: 'favoplan',
         name: 'favoplan',
-        redirect: '/mypage/favoplan/list',
+        redirect: '/mypage/:memberId/favoplan/list',
         component: () => import(/* webpackChunkName: "mypage" */ '../views/FavoPlanView.vue'),
         children: [
           {
@@ -211,7 +217,7 @@ const routes = [
       {
         path: 'favoattraction',
         name: 'favoattraction',
-        redirect: '/mypage/favoattraction/list',
+        redirect: '/mypage/:memberId/favoattraction/list',
         component: () => import(/* webpackChunkName: "mypage" */ '../views/FavoAttractionView.vue'),
         children: [
           {
