@@ -29,11 +29,11 @@ export default {
   computed: {
     allSelected: {
       get() {
-        console.log(this.selected.length, this.contentTypes.length);
+        // console.log(this.selected.length, this.contentTypes.length);
         return this.selected.length === this.contentTypes.length;
       },
       set(e) {
-        console.log(e);
+        // console.log(e);
         if (e) {
           const selected = [];
           this.contentTypes.forEach((contentType) => {
