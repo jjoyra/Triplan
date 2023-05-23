@@ -15,11 +15,11 @@ function updateRankingVotes(contentid, success, fail) {
 }
 
 function getAttractionDetail(contentid, success, fail) {
-  api.put(`/attraction/${contentid}`).then(success).catch(fail);
+  api.get(`/attraction/${contentid}`).then(success).catch(fail);
 }
 
 function getWorldCupTOP3AttractionList(success, fail) {
-  api.put(`/attraction/ranking}`).then(success).catch(fail);
+  api.get(`/attraction/ranking`).then(success).catch(fail);
 }
 
 export {
