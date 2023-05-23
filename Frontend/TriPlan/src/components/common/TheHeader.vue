@@ -37,7 +37,14 @@
             <b-nav-item to="/review" exact exact-active-class="active">플랜리뷰</b-nav-item>
           </div>
 
-          <div v-if="userInfo">플랜 만들기 로그아웃</div>
+          <div v-if="userInfo" class="user-memu-wrap">
+            <li class="nav-item">
+              <router-link class="user-menu-plan" to="`/mypage/${userInfo.memberId}/plan/write`"
+                >플랜 만들기</router-link
+              >
+            </li>
+            <button class="user-menu-logout" @click="handleLogout">로그아웃</button>
+          </div>
           <template v-else>
             <b-button variant="primary" v-b-modal.modal-login @click="handleMenuClose"
               >로그인</b-button
@@ -679,6 +686,8 @@ export default {
 
   .profile-wrap {
     padding-right: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 0.3px solid #e7e7e7;
   }
   .profile-wrap .profileImg-wrap {
     gap: 1rem;
@@ -701,8 +710,18 @@ export default {
     left: 1rem;
     transform: translateY(-50%);
   }
-  .side-menu-wrap div li {
+  .side-menu-wrap div li,
+  .user-menu-logout {
     padding-left: 1.25rem;
+  }
+
+  .side-menu-wrap .user-memu-wrap {
+    padding-top: 20px;
+    border-top: 0.3px solid #e7e7e7;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
   }
 
   .closeMenuModal,
