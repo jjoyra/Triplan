@@ -70,13 +70,18 @@ export default {
       this.$bvModal.show("modal-detail");
     },
     clickedAttraction(contentId) {
-      this.detailAttraction(contentId);
+      this.$emit("clicked-attraction", contentId);
+      // this.detailAttraction(contentId);
     },
   },
 };
 </script>
 
 <style scoped>
+a {
+  color: #8d9193;
+}
+
 .title {
   font-size: 1rem;
   color: #383838;

@@ -3,10 +3,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-
-const attractionStore = "attractionStore";
-
 export default {
   /*global kakao*/
   name: "KaKaoMap",
@@ -15,16 +11,14 @@ export default {
       map: null,
       positions: [],
       markers: [],
-      peek: null,
+      peekMarker: null,
       content: null,
       overlay: null,
     };
   },
   props: {
     attractions: [],
-  },
-  computed: {
-    ...mapState(attractionStore, ["attraction"]),
+    peekList: Number,
   },
   watch: {
     attractions() {
@@ -40,6 +34,21 @@ export default {
         });
       }
       this.loadMarker();
+    },
+    peekList() {
+      console.log(this.attraction);
+      if (this.attractions.length) {
+        let obj = {};
+        this.attractions.forEach((attraction) => {
+          if (attraction.contentId == this.peekList) {
+            obj.title = attraction.title;
+            obj.addr1 = attraction.addr1;
+            obj.firstImage = attraction.firstImage;
+            obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
+            this.openOverlay(obj);
+          }
+        });
+      }
     },
   },
   mounted() {
@@ -70,8 +79,6 @@ export default {
 
       this.map = new window.kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
-      //제목, 주소, 사진
-
       this.overlay = new kakao.maps.CustomOverlay({
         position: null,
       });
@@ -79,7 +86,7 @@ export default {
 
     //지정한 위치에 마커 불러오기
     loadMarker() {
-      this.closeOverlay();
+      if (this.overlay) this.closeOverlay();
       this.deleteMarker();
 
       this.markers = [];
@@ -91,26 +98,8 @@ export default {
         });
 
         kakao.maps.event.addListener(marker, "click", () => {
-          this.peek = position;
-          this.content = `<div class="wrap">
-                <div class="info">
-                    <div class="title">
-                        ${this.peek.title}
-                    </div>
-                    <div class="body">
-                        <div class="img">
-                            <img src="${this.peek.firstImage}" width="73" height="70" onerror="this.style.display='none'">
-                          </div>
-                        <div class="desc">
-                            <div class="ellipsis">${this.peek.addr1}</div>
-                      </div>
-                    </div>'
-                </div>
-            </div>`;
-
-          this.overlay.setContent(this.content);
-          this.overlay.setPosition(marker.getPosition());
-          this.overlay.setMap(this.map);
+          this.peekMarker = position;
+          this.openOverlay(this.peekMarker);
         });
 
         this.markers.push(marker);
@@ -123,6 +112,30 @@ export default {
       );
 
       this.map.setBounds(bounds);
+    },
+    openOverlay(peek) {
+      this.content = `<div class="wrap">
+                <div class="info">
+                    <div class="title">
+                        ${peek.title}
+                    </div>
+                    <div class="body">
+                        <div class="img">
+                            <img src="${peek.firstImage}" width="73" height="70" onerror="this.style.display='none'">
+                          </div>
+                        <div class="desc">
+                            <div class="ellipsis">${peek.addr1}</div>
+                      </div>
+                    </div>'
+                </div>
+            </div>`;
+
+      this.overlay.setContent(this.content);
+      this.overlay.setPosition(peek.latlng);
+      this.overlay.setMap(this.map);
+
+      // 지도 이동
+      // this.map.setCenter(peek.latlang);
     },
     closeOverlay() {
       this.overlay.setMap(null);
