@@ -146,4 +146,10 @@ export default {
   border: 0;
   box-shadow: 0px 1px 2px #888;
 } */
+
+@media (max-width: 950px) {
+  #map {
+    height: 453px;
+  }
+}
 </style>
