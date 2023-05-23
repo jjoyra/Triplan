@@ -18,6 +18,8 @@ public interface MemberMapper {
 	MemberDto getOtherMember(String memberId) throws SQLException;
 	List<String> getFollowerList(String memberId) throws SQLException;
 	List<String> getFolloweeList(String memberId) throws SQLException;
+	void follow(Map<String, Object> map) throws SQLException;
+	void unfollow(Map<String, Object> map) throws SQLException;
 
 	void saveRefreshToken(Map<String, String> map) throws SQLException;
 	Object getRefreshToken(String memberId) throws SQLException;

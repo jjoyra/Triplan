@@ -268,10 +268,77 @@ public class MemberController {
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	// 팔로우
+	@ApiOperation(value = "유저 팔로우", notes = "<b>유저를 팔로우</b>합니다.")
+	@PostMapping("/user/follow/{followerId}/{followeeId}")
+	public ResponseEntity<?> follow(@PathVariable("followerId") String followerId, @PathVariable("followeeId") String followeeId, HttpServletRequest request) throws Exception {
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		if (jwtService.checkToken(request.getHeader("access-token"))) {
+			System.out.println("사용 가능한 토큰~!");
+			
+			try {
+				System.out.println("팔로우!");
+				System.out.println("followerId " + followerId);
+				System.out.println("followeeId " + followeeId);
+				Map<String, Object> map = new HashMap<>();
+				map.put("followerId", followerId);
+				map.put("followeeId", followeeId);
+				memberService.follow(map);
+				status = HttpStatus.OK;
+			} catch (Exception e) {
+				e.printStackTrace();
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+		} else {
+			System.out.println("사용 불가능한 토큰~!");
+			status = HttpStatus.UNAUTHORIZED;
+		}
+
+		return new ResponseEntity<Void>(status);
+	}
 
 	private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();
 		return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	// 언팔로우
+	@DeleteMapping("/user/unfollow/{followerId}/{followeeId}")
+	@ApiOperation(value = "유저 언팔로우", notes = "<b>유저를 언팔로우</b>합니다.")
+    @ApiResponses({@ApiResponse(code = 200, message = "언팔로우 OK"), @ApiResponse(code = 500, message = "서버 에러")})
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "followerId", value = "팔로워 아이디", required = true, dataType = "String"),
+		@ApiImplicitParam(name = "followeeId", value = "팔로이 아이디", required = true, dataType = "String") })
+	public ResponseEntity<?> unfollow(@PathVariable("followerId") String followerId, @PathVariable("followeeId") String followeeId, HttpServletRequest request) throws Exception {
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		System.out.println(request);
+		System.out.println(request.getHeader("access-token"));
+		
+		if (jwtService.checkToken(request.getHeader("access-token"))) {
+			System.out.println("사용 가능한 토큰~!");
+			
+			try {
+				System.out.println("언팔로우!");
+				System.out.println("followerId " + followerId);
+				System.out.println("followeeId " + followeeId);
+				Map<String, Object> map = new HashMap<>();
+				map.put("followerId", followerId);
+				map.put("followeeId", followeeId);
+				memberService.unfollow(map);
+				status = HttpStatus.OK;
+			} catch (Exception e) {
+				e.printStackTrace();
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+		} else {
+			System.out.println("사용 불가능한 토큰~!");
+			status = HttpStatus.UNAUTHORIZED;
+		}
+
+		return new ResponseEntity<Void>(status);
 	}
 
 }

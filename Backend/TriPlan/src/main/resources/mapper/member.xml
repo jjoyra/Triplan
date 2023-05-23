@@ -141,4 +141,14 @@
 		where member_id = #{memberId} and name = #{name};
 	</select>
 	
+	<insert id="follow" parameterType="map">
+		insert into triplan.follow_list(follower_id, followee_id)
+		values (#{followerId}, #{followeeId});
+	</insert>
+	
+	<delete id="unfollow" parameterType="map">
+		delete from follow_list
+		where follower_id = #{followerId} and followee_id = #{followeeId};
+	</delete>
+	
 </mapper>

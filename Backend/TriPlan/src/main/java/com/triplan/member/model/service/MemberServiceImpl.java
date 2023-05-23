@@ -97,4 +97,14 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.deleteRefreshToken(map);
 	}
 
+	@Override
+	public void follow(Map<String, Object> map) throws SQLException {
+		memberMapper.follow(map);
+	}
+	
+	@Override
+	public void unfollow(Map<String, Object> map) throws SQLException {
+		memberMapper.unfollow(map);
+	}
+
 }
