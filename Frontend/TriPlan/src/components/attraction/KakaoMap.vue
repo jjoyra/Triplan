@@ -3,6 +3,10 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
+const attractionStore = "attractionStore";
+
 export default {
   /*global kakao*/
   name: "KaKaoMap",
@@ -11,20 +15,30 @@ export default {
       map: null,
       positions: [],
       markers: [],
+      peek: null,
+      content: null,
+      overlay: null,
     };
   },
   props: {
     attractions: [],
   },
+  computed: {
+    ...mapState(attractionStore, ["attraction"]),
+  },
   watch: {
     attractions() {
       this.positions = [];
-      this.attractions.forEach((attraction) => {
-        let obj = {};
-        obj.title = attraction.title;
-        obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
-        this.positions.push(obj);
-      });
+      if (this.attractions.length) {
+        this.attractions.forEach((attraction) => {
+          let obj = {};
+          obj.title = attraction.title;
+          obj.addr1 = attraction.addr1;
+          obj.firstImage = attraction.firstImage;
+          obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
+          this.positions.push(obj);
+        });
+      }
       this.loadMarker();
     },
   },
@@ -55,43 +69,54 @@ export default {
       };
 
       this.map = new window.kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+      //제목, 주소, 사진
+
+      this.overlay = new kakao.maps.CustomOverlay({
+        position: null,
+      });
     },
 
     //지정한 위치에 마커 불러오기
     loadMarker() {
+      this.closeOverlay();
       this.deleteMarker();
 
       this.markers = [];
+
       this.positions.forEach((position) => {
         const marker = new kakao.maps.Marker({
           map: this.map,
           position: position.latlng,
         });
 
-        // const content = `
-        //   <div class="wrap">
-        //     <div>${position.title}</div>
-        //     <div class="close" onclick="closeOverlay()" title="닫기"></div>
-        //   </div>
-        //   `;
+        kakao.maps.event.addListener(marker, "click", () => {
+          this.peek = position;
+          this.content = `<div class="wrap">
+                <div class="info">
+                    <div class="title">
+                        ${this.peek.title}
+                    </div>
+                    <div class="body">
+                        <div class="img">
+                            <img src="${this.peek.firstImage}" width="73" height="70" onerror="this.style.display='none'">
+                          </div>
+                        <div class="desc">
+                            <div class="ellipsis">${this.peek.addr1}</div>
+                      </div>
+                    </div>'
+                </div>
+            </div>`;
 
-        // const overlay = new kakao.maps.CustomOverlay({
-        //   content: content,
-        //   map: this.map,
-        //   position: marker.getPosition(),
-        // });
-
-        // kakao.maps.event.addListener(marker, "click", function () {
-        //   overlay.setMap(this.map);
-        // });
-
-        // function closeOverlay() {
-        //   overlay.setMap(null);
-        // }
+          this.overlay.setContent(this.content);
+          this.overlay.setPosition(marker.getPosition());
+          this.overlay.setMap(this.map);
+        });
 
         this.markers.push(marker);
       });
 
+      // 지도 이동
       const bounds = this.positions.reduce(
         (bounds, position) => bounds.extend(position.latlng),
         new kakao.maps.LatLngBounds()
@@ -99,7 +124,9 @@ export default {
 
       this.map.setBounds(bounds);
     },
-
+    closeOverlay() {
+      this.overlay.setMap(null);
+    },
     deleteMarker() {
       if (this.markers.length > 0) {
         this.markers.forEach((item) => {
@@ -122,18 +149,23 @@ export default {
   align-items: center;
 }
 
-/* .wrap {
+.wrap {
   position: absolute;
   left: 0;
   bottom: 40px;
-  width: 250px;
+  width: 288px;
   height: 132px;
+  margin-left: -144px;
   text-align: left;
   overflow: hidden;
+  font-size: 12px;
   line-height: 1.5;
 }
-
-.wrap {
+.wrap * {
+  padding: 0;
+  margin: 0;
+}
+.wrap .info {
   width: 286px;
   height: 120px;
   border-radius: 5px;
@@ -145,7 +177,66 @@ export default {
 .wrap .info:nth-child(1) {
   border: 0;
   box-shadow: 0px 1px 2px #888;
-} */
+}
+.info .title {
+  padding: 5px 0 0 10px;
+  height: 30px;
+  font-size: 18px;
+  font-weight: bold;
+}
+.info .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #888;
+  width: 17px;
+  height: 17px;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png");
+}
+.info .close:hover {
+  cursor: pointer;
+}
+.info .body {
+  position: relative;
+  overflow: hidden;
+}
+.info .desc {
+  position: relative;
+  margin: 13px 0 0 90px;
+  height: 75px;
+}
+.desc .ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.desc .jibun {
+  font-size: 11px;
+  color: #888;
+  margin-top: -2px;
+}
+.info .img {
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  width: 73px;
+  height: 71px;
+  color: #888;
+  overflow: hidden;
+}
+.info:after {
+  content: "";
+  position: absolute;
+  margin-left: -12px;
+  left: 50%;
+  bottom: 0;
+  width: 22px;
+  height: 12px;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png");
+}
+.info .link {
+  color: #5085bb;
+}
 
 @media (max-width: 950px) {
   #map {

@@ -1,14 +1,14 @@
 <template>
   <div class="list-wrap">
     <div v-if="attractions && attractions.length != 0">
-      <b-list-group-item
-        v-for="(attraction, index) in attractions"
-        :key="index"
-        @click="openModal(attraction.contentId)"
-      >
+      <b-list-group-item v-for="(attraction, index) in attractions" :key="index">
         <div>
-          <div class="title">{{ attraction.title }}</div>
-
+          <div class="title-wrap">
+            <div class="title">{{ attraction.title }}</div>
+            <div>
+              <a @click="openModal(attraction.contentId)" target="_blank" class="link">상세보기</a>
+            </div>
+          </div>
           <span class="type">{{ attraction.contentTypeId | formatContentType }}</span>
           <br />
           <span>{{ attraction.addr1 }}</span>
