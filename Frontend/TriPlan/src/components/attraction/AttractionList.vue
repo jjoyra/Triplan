@@ -1,7 +1,11 @@
 <template>
   <div class="list-wrap">
     <div v-if="attractions && attractions.length != 0">
-      <b-list-group-item v-for="(attraction, index) in attractions" :key="index">
+      <b-list-group-item
+        v-for="(attraction, index) in attractions"
+        :key="index"
+        @click="clickedAttraction(attraction.contentId)"
+      >
         <div>
           <div class="title-wrap">
             <div class="title">{{ attraction.title }}</div>
@@ -64,6 +68,9 @@ export default {
     openModal(contentId) {
       this.detailAttraction(contentId);
       this.$bvModal.show("modal-detail");
+    },
+    clickedAttraction(contentId) {
+      this.detailAttraction(contentId);
     },
   },
 };
