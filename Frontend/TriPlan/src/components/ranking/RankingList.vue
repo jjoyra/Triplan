@@ -16,7 +16,7 @@
         <ranking-item-mobile></ranking-item-mobile>
       </div>
     </div>
-    <div class="fluid-bg"></div>
+    <div :class="{ 'fluid-bg': bg }"></div>
   </div>
 </template>
 
@@ -32,6 +32,7 @@ export default {
   },
   props: {
     title: String,
+    bg: Boolean,
   },
   data() {
     return {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ranking-list title="인기글 TOP3"></ranking-list>
+    <ranking-list title="인기글 TOP3" bg="true"></ranking-list>
   </div>
 </template>
 
