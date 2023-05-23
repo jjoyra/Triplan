@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `member_plan_list` (
 	`member_plan_list_id`	INT	NOT NULL	auto_increment,
 	`member_id`	VARCHAR(16)	NOT NULL,
 	`plan_id`	INT	NOT NULL,
-	`role`	VARCHAR(16)	NOT NULL	COMMENT 'OWNER/MEMBER',
+    `role` TINYINT NOT NULL DEFAULT 0 COMMENT 'OWNER(0)/MEMBER(1)',
      PRIMARY KEY (`member_plan_list_id`),
      CONSTRAINT `FK_plan_TO_member_plan_list_1` FOREIGN KEY (`plan_id`) REFERENCES `plan` (`plan_id`),
      CONSTRAINT `FK_member_TO_member_plan_list_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`member_id`) ON UPDATE CASCADE
