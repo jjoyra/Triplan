@@ -1,11 +1,13 @@
 <template>
   <div>
-    <ranking-list title="인기 여행지 TOP3" bg="true"></ranking-list>
+    <ranking-list title="인기 여행지 TOP3" :bg="true"></ranking-list>
     <div>
       <attraction-search-bar></attraction-search-bar>
       <b-row>
-        <b-col xl="8"><kakao-map :attractions="attractions"></kakao-map></b-col>
-        <b-col xl="4"><attraction-list></attraction-list></b-col>
+        <b-col xl="8"
+          ><kakao-map :attractions="attractions" :peekList="peekList"></kakao-map
+        ></b-col>
+        <b-col xl="4"><attraction-list @clicked-attraction="openOverlay"></attraction-list></b-col>
       </b-row>
     </div>
   </div>
@@ -21,6 +23,11 @@ import { mapState } from "vuex";
 const attractionStore = "attractionStore";
 export default {
   name: "AttractionMain",
+  data() {
+    return {
+      peekList: null,
+    };
+  },
   components: {
     RankingList,
     AttractionSearchBar,
@@ -29,6 +36,11 @@ export default {
   },
   computed: {
     ...mapState(attractionStore, ["attractions"]),
+  },
+  methods: {
+    openOverlay(contentid) {
+      this.peekList = contentid;
+    },
   },
 };
 </script>

@@ -79,6 +79,10 @@ img {
   text-align: right;
 }
 
+.info:after {
+  display: none;
+}
+
 .modal-header {
   display: flex;
   align-items: flex-start;
