@@ -46,4 +46,14 @@ async function idCheck(memberId, success, fail) {
   await api.get(`/user/idcheck/${memberId}`).then(success).catch(fail);
 }
 
-export { login, findById, tokenRegeneration, logout, join, modifyMember, getMember, getOtherMemberInfo, deleteMember, findPassword, idCheck };
+async function follow(params, success, fail) {
+  api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
+  await api.post(`/user/follow/${params.followerId}/${params.followeeId}`).then(success).catch(fail);
+}
+
+async function unfollow(params, success, fail) {
+  api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
+  await api.delete(`/user/unfollow/${params.followerId}/${params.followeeId}`).then(success).catch(fail);
+}
+
+export { login, findById, tokenRegeneration, logout, join, modifyMember, getMember, getOtherMemberInfo, deleteMember, findPassword, idCheck, follow, unfollow };

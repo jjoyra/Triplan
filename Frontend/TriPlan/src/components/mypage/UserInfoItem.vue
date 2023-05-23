@@ -11,10 +11,10 @@
             <button class="btn btn-round" v-if="isMyInfo">정보 수정하기</button>
             <template v-else>
               <button
-                :class="{ btn: true, 'btn-round-primary': followee, 'btn-round': !followee }"
-                @click="toggleFollow"
+                :class="{ btn: true, 'btn-round-primary': !followee, 'btn-round': followee }"
+                @click="handleFollow"
               >
-                {{ followee ? "팔로우" : "언팔로우" }}
+                {{ followee ? "언팔로우" : "팔로우" }}
               </button>
             </template>
           </div>
@@ -30,11 +30,19 @@
 </template>
 
 <script>
+import { follow, unfollow } from "@/api/member";
+import { mapState } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
   name: "userInfoItem",
   props: {
     pageUserInfo: Object,
     isMyInfo: Boolean,
+  },
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
   },
   data() {
     return {
@@ -42,15 +50,54 @@ export default {
     };
   },
   created() {
-    if (this.isMyInfo) {
-      console.log("내 페이지");
-    } else {
-      console.log("남 페이지");
+    console.log("info", this.pageUserInfo);
+    if (!this.isMyInfo) {
+      this.followCheck();
     }
   },
   methods: {
-    toggleFollow() {
-      this.followee = !this.followee;
+    handleFollow() {
+      let params = {
+        followerId: this.pageUserInfo.memberId,
+        followeeId: this.userInfo.memberId,
+      };
+      console.log("params", params);
+      if (this.followee) {
+        console.log("언팔로우");
+        unfollow(
+          params,
+          (res) => {
+            this.followee = !this.followee;
+            this.$emit("get-page-user-info");
+            console.log("성공");
+            console.log(res);
+          },
+          (err) => console.log(err)
+        );
+      } else {
+        console.log("팔로우");
+        follow(
+          params,
+          (res) => {
+            this.followee = !this.followee;
+            this.$emit("get-page-user-info");
+            console.log("성공");
+            console.log(res);
+          },
+          (err) => console.log(err)
+        );
+      }
+    },
+    followCheck() {
+      if (this.pageUserInfo.follower.length !== 0) {
+        for (let f of this.pageUserInfo.follower) {
+          if (f === this.userInfo.nickname) {
+            console.log("팔로우 맞습니다");
+            this.followee = true;
+            break;
+          }
+        }
+      }
     },
   },
 };
@@ -58,10 +105,12 @@ export default {
 
 <style scoped>
 #userInfo-wrap {
-  padding: 0 5rem;
+  padding: 1rem 5rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  border-bottom: 0.3px solid #e5e5e5;
+  margin-bottom: 2rem;
 }
 #userInfo-wrap .comment {
   color: #5f5f5f;

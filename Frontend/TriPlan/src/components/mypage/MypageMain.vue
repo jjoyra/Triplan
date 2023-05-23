@@ -7,11 +7,12 @@
     </template>
 
     <div>
-      <template v-if="pageUserInfo === null">
-        <user-info-item :pageUserInfo="userInfo" :isMyInfo="`true`"></user-info-item>
-      </template>
-      <template v-else>
-        <user-info-item :pageUserInfo="pageUserInfo" :isMyInfo="`false`"></user-info-item>
+      <template v-if="pageUserInfo">
+        <user-info-item
+          :pageUserInfo="pageUserInfo"
+          :isMyInfo="userInfo.memberId !== memberId && pageUserInfo ? false : true"
+          v-on:get-page-user-info="getPageUserInfo"
+        ></user-info-item>
       </template>
 
       <div id="myplan-wrap">
@@ -48,6 +49,7 @@ import RankingList from "../ranking/RankingList.vue";
 import UserInfoItem from "./UserInfoItem.vue";
 
 const memberStore = "memberStore";
+
 export default {
   name: "MypageMain",
   data() {
@@ -66,27 +68,35 @@ export default {
   watch: {
     $route(to) {
       this.memberId = to.params.memberId;
+      this.getPageUserInfo();
     },
   },
   created() {
     this.memberId = this.$route.params.memberId;
-
-    if (this.userInfo.memberId !== this.memberId) {
-      getOtherMemberInfo(
-        this.memberId,
-        ({ data }) => {
-          if (data.message === "success") {
-            this.pageUserInfo = data.userInfo;
+    this.getPageUserInfo();
+  },
+  methods: {
+    getPageUserInfo() {
+      if (this.userInfo.memberId !== this.memberId) {
+        getOtherMemberInfo(
+          this.memberId,
+          ({ data }) => {
+            console.log("남 페이지임", this.memberId);
+            if (data.message === "success") {
+              console.log("남 정보", data.userInfo);
+              this.pageUserInfo = data.userInfo;
+              console.log("pageInfo", this.pageUserInfo);
+            }
+          },
+          async (error) => {
+            console.log("회원 정보 조회 불가", error);
           }
-        },
-        async (error) => {
-          console.log("회원 정보 조회 불가", error);
-        }
-      );
-    } else {
-      console.log("내 페이지임");
-      this.pageUserInfo = this.userInfo;
-    }
+        );
+      } else {
+        console.log("내 페이지임");
+        this.pageUserInfo = this.userInfo;
+      }
+    },
   },
 };
 </script>
