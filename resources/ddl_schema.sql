@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `member` (
     `open_favo_plan` BOOLEAN NOT NULL DEFAULT TRUE,
     `open_favo_attraction` BOOLEAN NOT NULL DEFAULT TRUE,
     `token` VARCHAR(1000) NULL DEFAULT NULL,
+    `comment` VARCHAR(500) DEFAULT NULL COMMENT '상태 메시지',
     PRIMARY KEY(`member_id`) 
 );
 
@@ -85,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `plan` (
 	`title`	VARCHAR(30)	NOT NULL,
 	`start_date`	DATE	NOT NULL,
 	`end_date`	DATE	NOT NULL,
-	`thumnail_url`	VARCHAR(100)	NOT NULL,
+	`thumnail_url`	VARCHAR(1000)	NOT NULL,
     PRIMARY KEY (`plan_id`)
 );
 
@@ -112,6 +113,9 @@ CREATE TABLE IF NOT EXISTS `review` (
 	`create_date`	TIMESTAMP	NOT NULL 	DEFAULT current_timestamp,
 	`modify_date`	TIMESTAMP	NOT NULL 	DEFAULT current_timestamp,
 	`plan_id`	INT	NOT NULL,
+    `rating` INT NOT NULL DEFAULT 0 COMMENT '별점',
+    `companion` INT NULL NULL DEFAULT 0 COMMENT '동행자(0: 혼자, 1: 친구와, 2: 연인과, 3: 가족과, 4: 부모님과, 5: 배우자와, 6: 반려동물과)',
+    `price` INT NULL NULL DEFAULT 0 COMMENT '여행 경비',
     PRIMARY KEY (`review_id`, `member_id`, `plan_id`),
     CONSTRAINT `FK_member_TO_review_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`member_id`) ON UPDATE CASCADE,
 	CONSTRAINT `FK_plan_TO_review_1` FOREIGN KEY (`plan_id`) REFERENCES `plan` (`plan_id`) ON UPDATE CASCADE
@@ -121,6 +125,7 @@ CREATE TABLE IF NOT EXISTS `course_list` (
 	`plan_id`	INT	NOT NULL	auto_increment,
 	`content_id`	INT	NOT NULL,
 	`order`	int	NOT NULL	COMMENT '코스 순서',
+    `comment` VARCHAR(1000) NULL COMMENT '코스 설명/리뷰',
     PRIMARY KEY (`plan_id`, `content_id`),
     CONSTRAINT `FK_plan_TO_course_list_1` FOREIGN KEY (`plan_id`)REFERENCES `plan` (`plan_id`),
     CONSTRAINT `FK_attraction_info_TO_course_list_1` FOREIGN KEY (`content_id`) REFERENCES `attraction_info` (`content_id`)
