@@ -2,6 +2,7 @@ package com.triplan.member.controller;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -109,6 +110,9 @@ public class MemberController {
 			
 			try {
 				MemberDto memberDto = memberService.getMember(memberId);
+				memberDto.setFollower(memberService.getFollowerList(memberDto.getMemberId()));
+				memberDto.setFollowee(memberService.getFolloweeList(memberDto.getMemberId()));
+				System.out.println(memberDto);
 				resultMap.put("userInfo", memberDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
@@ -137,8 +141,9 @@ public class MemberController {
 		MemberDto memberDto;
 		try {
 			memberDto = memberService.getOtherMember(memberId);
-
 			if (memberDto != null) {
+				memberDto.setFollower(memberService.getFollowerList(memberDto.getMemberId()));
+				memberDto.setFollowee(memberService.getFolloweeList(memberDto.getMemberId()));
 				resultMap.put("userInfo", memberDto);
 				resultMap.put("message", SUCCESS);
 				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);

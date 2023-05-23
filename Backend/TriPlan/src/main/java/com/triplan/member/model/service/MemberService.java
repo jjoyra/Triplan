@@ -12,6 +12,8 @@ public interface MemberService {
 	MemberDto loginMember(Map<String, String> map) throws SQLException;
 	String findPassword(Map<String, Object> map) throws SQLException;
 	MemberDto getOtherMember(String memberId) throws SQLException;
+	List<String> getFollowerList(String memberId) throws SQLException;
+	List<String> getFolloweeList(String memberId) throws SQLException;
 
 	void saveRefreshToken(String memberId, String refreshToken) throws SQLException;
 	Object getRefreshToken(String memberId) throws SQLException;

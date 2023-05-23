@@ -1,5 +1,7 @@
 package com.triplan.member.model;
 
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -27,6 +29,10 @@ public class MemberDto {
 	private int openFavoAttraction;
 	@ApiModelProperty(value = "상태 메시지")
 	private String comment;
+	@ApiModelProperty(value = "팔로워 목록")
+	private List<String> follower;
+	@ApiModelProperty(value = "팔로우 목록")
+	private List<String> followee;
 	
 	public String getMemberId() {
 		return memberId;
@@ -93,6 +99,18 @@ public class MemberDto {
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public List<String> getFollower() {
+		return follower;
+	}
+	public void setFollower(List<String> follower) {
+		this.follower = follower;
+	}
+	public List<String> getFollowee() {
+		return followee;
+	}
+	public void setFollowee(List<String> followee) {
+		this.followee = followee;
 	}
 	
 	@Override

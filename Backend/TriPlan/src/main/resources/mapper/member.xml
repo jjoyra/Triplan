@@ -17,7 +17,6 @@
 		<result column="open_favo_plan" property="openFavoPlan"/>
 		<result column="open_favo_attraction" property="openFavoAttraction"/>
 		<result column="role" property="role"/>
-		<result column="comment" property="comment"/>
 	</resultMap>
 	
 	<!-- 다른 사용자 정보 -->
@@ -96,6 +95,22 @@
 		select member_id, nickname, img_url, open_myplan, open_favo_plan, open_favo_attraction, comment
 		from member
 		where member_id = #{memberId};
+	</select>
+	
+	<select id="getFollowerList" parameterType="string" resultType="string">
+		select nickname
+		from member
+		where member_id in (
+		    select f.followee_id
+		    from member m, follow_list f
+		    where m.member_id = f.follower_id and f.follower_id = #{memberId}
+		);
+	</select>
+	
+	<select id="getFolloweeList" parameterType="string" resultType="string">
+		select m.nickname
+		from member m, follow_list f
+		where m.member_id = f.followee_id and m.member_id = #{memberId};
 	</select>
 	
 	<select id="getMemberAll" parameterType="string" resultMap="memberAll">
