@@ -122,6 +122,26 @@ img {
   border-color: #545b62;
 }
 
+.btn-round-primary {
+  border-radius: 30px;
+  background: #51abf3;
+  color: #fff;
+}
+.btn-round-primary:hover {
+  background: #3e96df;
+  color: #fff;
+}
+.btn-round {
+  background: transparent;
+  border: 0.3px solid #5a6268;
+  color: #5a6268;
+  border-radius: 30px;
+}
+.btn-round:focus,
+.btn-round.focus {
+  box-shadow: none;
+}
+
 .nav-link.btn-nav {
   color: #343a40;
   padding-left: 0;
