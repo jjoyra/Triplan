@@ -11,7 +11,12 @@
         >
         </b-form-radio-group>
       </b-form-group>
-      <router-link class="btn btn-primary" to="/notice/write">글쓰기</router-link>
+      <router-link
+        class="btn btn-primary"
+        to="/notice/write"
+        v-if="userInfo ? userInfo.role === 0 : ''"
+        >글쓰기</router-link
+      >
     </div>
 
     <b-table :items="notices" :fields="fields" selectable @row-selected="onRowSelected">
@@ -44,6 +49,7 @@ import { getNoticeList, getTotalNoticeCount } from "@/api/notice";
 import SearchInput from "@/components/common/SearchInput.vue";
 
 const noticeStore = "noticeStore";
+const memberStore = "memberStore";
 
 export default {
   name: "NoticeList",
@@ -71,6 +77,7 @@ export default {
   },
   computed: {
     ...mapState(noticeStore, ["pgno"]),
+    ...mapState(memberStore, ["userInfo"]),
   },
   components: {
     SearchInput,

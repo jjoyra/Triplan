@@ -4,8 +4,7 @@
       <b-col class="text-left">
         <router-link to="/notice/list" class="btn btn-primary">목록</router-link>
       </b-col>
-      <!-- <b-col class="text-right" v-if="userInfo.userid === article.userid"> -->
-      <b-col class="text-right">
+      <b-col class="text-right" v-if="userInfo ? userInfo.role === 0 : ''">
         <b-button variant="success" size="sm" @click="moveModifyNotice" class="mr-2 h-100"
           >수정</b-button
         >
@@ -42,6 +41,7 @@
 import { mapState } from "vuex";
 
 const noticeStore = "noticeStore";
+const memberStore = "memberStore";
 
 import moment from "moment";
 import { getNoticeDetail, deleteNotice } from "@/api/notice";
@@ -55,6 +55,7 @@ export default {
   },
   computed: {
     ...mapState(noticeStore, ["pgno"]),
+    ...mapState(memberStore, ["userInfo"]),
   },
   created() {
     console.log("pgno", this.pgno);
