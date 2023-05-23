@@ -6,7 +6,11 @@
           <router-link to="/"
             ><img id="side-logo" src="../../assets/logo.png" alt="logo.png"
           /></router-link>
-          <div class="profile-wrap" v-if="userInfo" @click="movePage('/mypage')">
+          <div
+            class="profile-wrap"
+            v-if="userInfo"
+            @click="movePage(`/mypage/${userInfo.memberId}`)"
+          >
             <div class="profileImg-wrap">
               <img id="profileImg" src="../../assets/300.png" alt="300.png" />
               <span>{{ userInfo.nickname }}</span>
@@ -87,11 +91,16 @@
               right
             >
               <b-dropdown-item>
-                <b-nav-item to="/mypage" exact exact-active-class="active">마이페이지</b-nav-item>
+                <b-nav-item :to="`/mypage/${userInfo.memberId}`" exact exact-active-class="active"
+                  >마이페이지</b-nav-item
+                >
               </b-dropdown-item>
               <b-dropdown-divider></b-dropdown-divider>
               <b-dropdown-item>
-                <b-nav-item to="/plan/write" exact exact-active-class="active"
+                <b-nav-item
+                  :to="`/mypage/${userInfo.memberId}/myplan/write`"
+                  exact
+                  exact-active-class="active"
                   >플랜 만들기</b-nav-item
                 >
               </b-dropdown-item>

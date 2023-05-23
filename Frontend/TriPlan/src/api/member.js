@@ -30,6 +30,9 @@ function modifyMember(member, success, fail) {
 function getMember(memberid, success, fail) {
   api.get(`/user/${memberid}`).then(success).catch(fail);
 }
+async function getOtherMemberInfo(memberId, success, fail) {
+  await api.get(`/user/other/${memberId}`).then(success).catch(fail);
+}
 
 function deleteMember(memberid, success, fail) {
   api.delete(`/user/${memberid}`).then(success).catch(fail);
@@ -43,4 +46,4 @@ async function idCheck(memberId, success, fail) {
   await api.get(`/user/idcheck/${memberId}`).then(success).catch(fail);
 }
 
-export { login, findById, tokenRegeneration, logout, join, modifyMember, getMember, deleteMember, findPassword, idCheck };
+export { login, findById, tokenRegeneration, logout, join, modifyMember, getMember, getOtherMemberInfo, deleteMember, findPassword, idCheck };

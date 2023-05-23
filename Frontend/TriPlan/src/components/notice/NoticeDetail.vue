@@ -18,9 +18,9 @@
           <b-card-text>
             <div class="card-text-wrap">
               <div class="info">
-                <span>
+                <router-link :to="`/mypage/${notice.memberId}`">
                   <b-icon id="content-icon" icon="person"></b-icon> {{ notice.memberId }}
-                </span>
+                </router-link>
                 <span> <b-icon id="content-icon" icon="eye"></b-icon> {{ notice.hit }} </span>
                 <span>
                   <b-icon id="content-icon" icon="calendar-date"></b-icon>
@@ -105,6 +105,10 @@ export default {
   gap: 20px;
   flex-wrap: wrap;
   margin-bottom: 1rem;
+  color: #a1a1a1;
+}
+
+.info a {
   color: #a1a1a1;
 }
 </style>

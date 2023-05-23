@@ -37,29 +37,29 @@ const onlyAuthAdmin = async (to, from, next) => {
   }
 };
 
-// const onlyAuthUser = async (to, from, next) => {
-//   const checkUserInfo = store.getters["memberStore/checkUserInfo"];
-//   const checkToken = store.getters["memberStore/checkToken"];
-//   let token = sessionStorage.getItem("access-token");
-//   console.log("로그인 처리 전", checkUserInfo, token);
+const onlyAuthUser = async (to, from, next) => {
+  const checkUserInfo = store.getters["memberStore/checkUserInfo"];
+  const checkToken = store.getters["memberStore/checkToken"];
+  let token = sessionStorage.getItem("access-token");
+  console.log("로그인 처리 전", checkUserInfo, token);
 
-//   if (checkUserInfo != null && token) {
-//     console.log("토큰 유효성 체크");
-//     await store.dispatch("memberStore/getUserInfo", token);
-//   }
-//   if (!checkToken || checkUserInfo === null) {
-//     alert("로그인이 필요한 페이지입니다..");
-//     // next({ name: "login" });
-//     // router.push({ name: "login" });
-//     router.push({
-//       name: "main",
-//       params: { showLoginModal: true },
-//     });
-//   } else {
-//     console.log("로그인 완료");
-//     next();
-//   }
-// };
+  if (checkUserInfo != null && token) {
+    console.log("토큰 유효성 체크");
+    await store.dispatch("memberStore/getUserInfo", token);
+  }
+  if (!checkToken || checkUserInfo === null) {
+    alert("로그인이 필요한 페이지입니다..");
+    // next({ name: "login" });
+    // router.push({ name: "login" });
+    router.push({
+      name: "main",
+      params: { showLoginModal: true },
+    });
+  } else {
+    console.log("로그인 완료");
+    next();
+  }
+};
 
 const routes = [
   {
@@ -167,14 +167,14 @@ const routes = [
     ],
   },
   {
-    path: '/mypage',
+    path: '/mypage/:memberId',
     name: 'mypage',
     component: () => import(/* webpackChunkName: "mypage" */ '../views/MypageView.vue'),
     children: [
       {
         path: 'myplan',
         name: 'myplan',
-        redirect: '/mypage/myplan/list',
+        redirect: '/mypage/:memberId/myplan/list',
         component: () => import(/* webpackChunkName: "mypage" */ '../views/MyplanView.vue'),
         children: [
           {
@@ -187,6 +187,12 @@ const routes = [
             name: 'myplandetail',
             component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/myplan/MyPlanDetail'),
           },
+          {
+            path: 'write',
+            name: 'myplanwrite',
+            beforeEnter: onlyAuthUser,
+            component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/myplan/MyPlanWrite'),
+          }
         ],
       },
       {
