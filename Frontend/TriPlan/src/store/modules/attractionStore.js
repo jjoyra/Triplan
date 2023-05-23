@@ -19,8 +19,9 @@ const attractionStore = {
     SET_ATTRACTION_LIST(state, data) {
       state.attractions = data.attractions;
     },
-    SET_DETAIL_ATTRACTION(state, attraction) {
-      state.attraction = attraction;
+    SET_DETAIL_ATTRACTION(state, data) {
+      state.attraction = data.attraction;
+      console.log(state.attraction);
     },
   },
   actions: {
@@ -28,7 +29,6 @@ const attractionStore = {
       getAttractionList(
         params,
         ({ data }) => {
-          // console.log(data);
           commit("SET_ATTRACTION_LIST", data);
         },
         (error) => {
@@ -37,11 +37,15 @@ const attractionStore = {
       );
     },
     detailAttraction: ({ commit }, attractionId) => {
-      getAttractionDetail(attractionId, ({ data }) => {
-        commit("SET_DETAIL_ATTRACTION", data); 
-      }, (error) => {
-        console.error(error)
-      })
+      getAttractionDetail(
+        attractionId,
+        ({ data }) => {
+          commit("SET_DETAIL_ATTRACTION", data);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
     },
   },
 };
