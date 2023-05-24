@@ -56,7 +56,7 @@ values ("admin", "공지입니다1", "콘텐츠입니다1", 1, 0, now(), now()),
 	   ("admin", "공지입니다4", "콘텐츠입니다4", 0, 0, now(), now());
 
 -- 테이블 : plan(순서 plan -> member_plan_list -> course_list)
-insert into triplan.plan(title, start_date, end_date, thumnail_url)
+insert into triplan.plan(title, start_date, end_date, thumbnail_url)
 values ("경주 당일치기 코스", "2023-05-23", "2023-05-23", "https://file.notion.so/f/s/348bbb4d-1f00-438c-951a-6c72f69f6a6d/4.jpg?id=4451f9fd-5e37-45a8-8349-4df0fed00515&table=block&spaceId=83d31fd5-de0f-493d-93c5-8cdbc56e0df4&expirationTimestamp=1684889653093&signature=CLIWMHEGEWxjvuY5nwOyAxb5WhVu-q7eNlF_siBfcRQ&downloadName=4.jpg"),
 	   ("부산 바다 보러", "2023-05-03", "2023-05-08", "https://file.notion.so/f/s/fc83c716-7695-4274-9c1a-ed7867e6fc74/2.jpg?id=19d1d84b-a992-48d3-9a0a-3e1a4fed62ce&table=block&spaceId=83d31fd5-de0f-493d-93c5-8cdbc56e0df4&expirationTimestamp=1684889664248&signature=iruRnOh_VkaSMKzmoBG-9Pqyc5JAyzv_vl3QdS6ybcM&downloadName=2.jpg"),
        ("제주도", "2022-04-23", "2022-04-25", "https://file.notion.so/f/s/de8e180c-b127-4f37-b9f9-c725b1b598df/3.jpg?id=d481c737-9693-4b76-8027-83c557a748a1&table=block&spaceId=83d31fd5-de0f-493d-93c5-8cdbc56e0df4&expirationTimestamp=1684889635130&signature=hbztYUL43qvRkawEU8wC82kLhrjcpOlelDluP76YsaI&downloadName=3.jpg");
