@@ -125,7 +125,8 @@ CREATE TABLE IF NOT EXISTS `course_list` (
 	`plan_id`	INT	NOT NULL	auto_increment,
 	`content_id`	INT	NOT NULL,
 	`order`	int	NOT NULL	COMMENT '코스 순서',
-    `comment` VARCHAR(1000) NULL COMMENT '코스 설명/리뷰',
+    `comment` VARCHAR(1000) NULL COMMENT '코스 리뷰',
+    `plan_comment` VARCHAR(1000) NULL COMMENT '코스 계획',
     PRIMARY KEY (`plan_id`, `content_id`),
     CONSTRAINT `FK_plan_TO_course_list_1` FOREIGN KEY (`plan_id`)REFERENCES `plan` (`plan_id`),
     CONSTRAINT `FK_attraction_info_TO_course_list_1` FOREIGN KEY (`content_id`) REFERENCES `attraction_info` (`content_id`)

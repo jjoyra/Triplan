@@ -5,6 +5,7 @@ public class CourseListDto {
     private int ContentId;
     private int order;
     private String comment;
+    private String planComment;
 
     public int getPlanId() {
         return planId;
@@ -37,13 +38,19 @@ public class CourseListDto {
     public void setComment(String comment) {
         this.comment = comment;
     }
-    @Override
-    public String toString() {
-        return "CourseListDto{" +
-                "planId=" + planId +
-                ", ContentId=" + ContentId +
-                ", order=" + order +
-                ", comment='" + comment + '\'' +
-                '}';
-    }
+    
+    public String getPlanComment() {
+		return planComment;
+	}
+
+	public void setPlanComment(String planComment) {
+		this.planComment = planComment;
+	}
+
+	@Override
+	public String toString() {
+		return "CourseListDto [planId=" + planId + ", ContentId=" + ContentId + ", order=" + order + ", comment="
+				+ comment + ", planComment=" + planComment + "]";
+	}
+
 }
