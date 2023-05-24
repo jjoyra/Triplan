@@ -32,8 +32,8 @@ export default {
           obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
           this.positions.push(obj);
         });
+        this.loadMarker();
       }
-      this.loadMarker();
     },
     peekList() {
       console.log(this.attraction);
@@ -73,7 +73,7 @@ export default {
       const container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
       const options = {
         //지도를 생성할 때 필요한 기본 옵션
-        center: new window.kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+        center: new window.kakao.maps.LatLng(35.18998133576961, 126.82424707736024), //지도의 중심좌표.
         level: 3, //지도의 레벨(확대, 축소 정도)
       };
 
@@ -81,6 +81,16 @@ export default {
 
       this.overlay = new kakao.maps.CustomOverlay({
         position: null,
+      });
+
+      kakao.maps.event.addListener(this.map, "click", function (mouseEvent) {
+        // 클릭한 위도, 경도 정보를 가져옵니다
+        var latlng = mouseEvent.latLng;
+
+        var message = "클릭한 위치의 위도는 " + latlng.getLat() + " 이고, ";
+        message += "경도는 " + latlng.getLng() + " 입니다";
+
+        console.log(message);
       });
     },
 
