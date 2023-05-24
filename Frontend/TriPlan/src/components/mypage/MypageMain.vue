@@ -44,7 +44,7 @@
 
 <script>
 import { getOtherMemberInfo } from "@/api/member";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import RankingList from "../ranking/RankingList.vue";
 import UserInfoItem from "./UserInfoItem.vue";
 
@@ -63,7 +63,7 @@ export default {
     UserInfoItem,
   },
   computed: {
-    ...mapState(memberStore, ["userInfo"]),
+    ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
   watch: {
     $route(to) {
@@ -76,16 +76,21 @@ export default {
     this.getPageUserInfo();
   },
   methods: {
-    getPageUserInfo() {
+    ...mapActions(memberStore, ["getUserInfo"]),
+    async loginUserInfo() {
+      let token = sessionStorage.getItem("access-token");
+      if (this.isLogin) {
+        await this.getUserInfo(token);
+      }
+    },
+    async getPageUserInfo() {
       if (this.userInfo.memberId !== this.memberId) {
         getOtherMemberInfo(
           this.memberId,
           ({ data }) => {
-            console.log("남 페이지임", this.memberId);
             if (data.message === "success") {
-              console.log("남 정보", data.userInfo);
+              console.log("남 페이지임", data.userInfo);
               this.pageUserInfo = data.userInfo;
-              console.log("pageInfo", this.pageUserInfo);
             }
           },
           async (error) => {
@@ -93,6 +98,7 @@ export default {
           }
         );
       } else {
+        await this.loginUserInfo();
         console.log("내 페이지임");
         this.pageUserInfo = this.userInfo;
       }
