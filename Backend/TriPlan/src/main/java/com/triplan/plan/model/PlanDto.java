@@ -14,6 +14,7 @@ public class PlanDto {
     private Map<String, Object> members;
     // onwer: id
     // member: 배열
+    private List<CourseListDto> courseList;
 
     public int getPlanId() {
         return planId;
@@ -61,5 +62,26 @@ public class PlanDto {
 
     public void setMembers(Map<String, Object> members) {
         this.members = members;
+    }
+
+    public List<CourseListDto> getCourseList() {
+        return courseList;
+    }
+
+    public void setCourseList(List<CourseListDto> courseList) {
+        this.courseList = courseList;
+    }
+
+    @Override
+    public String toString() {
+        return "PlanDto{" +
+                "planId=" + planId +
+                ", title='" + title + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", thumbnailUrl='" + thumbnailUrl + '\'' +
+                ", members=" + members +
+                ", courseList=" + courseList +
+                '}';
     }
 }
