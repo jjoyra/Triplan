@@ -1,20 +1,25 @@
 package com.triplan.plan.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 public class PlanDto {
 
-    private String planId;
+    private int planId;
     private String title;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String thumnailUrl;
+    private String thumbnailUrl;
+    private Map<String, Object> members;
+    // onwer: id
+    // member: 배열
 
-    public String getPlanId() {
+    public int getPlanId() {
         return planId;
     }
 
-    public void setPlanId(String planId) {
+    public void setPlanId(int planId) {
         this.planId = planId;
     }
 
@@ -42,22 +47,19 @@ public class PlanDto {
         this.endDate = endDate;
     }
 
-    public String getThumnailUrl() {
-        return thumnailUrl;
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
     }
 
-    public void setThumnailUrl(String thumnailUrl) {
-        this.thumnailUrl = thumnailUrl;
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 
-    @Override
-    public String toString() {
-        return "PlanDto{" +
-                "planId='" + planId + '\'' +
-                ", title='" + title + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", thumnailUrl='" + thumnailUrl + '\'' +
-                '}';
+    public Map<String, Object> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Map<String, Object> members) {
+        this.members = members;
     }
 }

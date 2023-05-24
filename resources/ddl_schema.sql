@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `plan` (
 	`title`	VARCHAR(30)	NOT NULL,
 	`start_date`	DATE	NOT NULL,
 	`end_date`	DATE	NOT NULL,
-	`thumnail_url`	VARCHAR(1000)	NOT NULL,
+	`thumbnail_url`	VARCHAR(1000)	NOT NULL,
     PRIMARY KEY (`plan_id`)
 );
 
