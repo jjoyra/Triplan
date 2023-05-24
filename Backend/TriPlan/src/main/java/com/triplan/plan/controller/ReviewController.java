@@ -19,13 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.triplan.member.model.service.JwtServiceImpl;
-import com.triplan.notice.model.NoticeDto;
 import com.triplan.plan.model.CourseListDto;
 import com.triplan.plan.model.ReviewDto;
 import com.triplan.plan.model.service.PlanService;
 import com.triplan.plan.model.service.ReviewService;
 
-import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
@@ -48,7 +46,7 @@ public class ReviewController {
 	// 1-1. 리뷰 생성, 1-2. 코스별 코멘트 생성(하나씩 수정)
 //	int plan_id, String content_id, String comment, int order
 	@PostMapping("/review")
-	public ResponseEntity<?> registReview(@RequestBody Map<String, Object> map, HttpServletRequest request) {
+	public ResponseEntity<?> registReview(@RequestBody Map<String, Object> map, HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
@@ -62,13 +60,13 @@ public class ReviewController {
 				reviewService.registReview(reviewDto);
 				
 				// 코스별 코멘트 생성
-//				int planId = (int) map.get("planId");
-//				List<CourseListDto> courseList = planService.getCouresList(planId);
-//				
-//				for (CourseListDto course: courseList) {
-//					System.out.println("comment 등록 " + course);
-//					reviewService.registCourseComment(course);
-//				}
+				int planId = (int) map.get("planId");
+				List<CourseListDto> courseList = planService.getCourseList(planId);
+				
+				for (CourseListDto course: courseList) {
+					System.out.println("comment 등록 " + course);
+					reviewService.registCourseComment(course);
+				}
 
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
@@ -117,9 +115,9 @@ public class ReviewController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	// 3-1. 리뷰 상세 보기
+	// 3-1. 리뷰 상세 보기, 3-2. 리뷰 코스 가져오기
 	@GetMapping("/review/{reviewId}")
-	public ResponseEntity<?> getReviewDetail(@PathVariable("reviewId") int reviewId, @RequestParam Map<String, Object> map, HttpServletRequest request) {
+	public ResponseEntity<?> getReviewDetail(@PathVariable("reviewId") int reviewId, @RequestParam Map<String, Object> map, HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
@@ -128,7 +126,11 @@ public class ReviewController {
 			
 			try {
 				ReviewDto review = reviewService.getReviewDetail(reviewId);
+				
+				List<CourseListDto> courseList = planService.getCourseList(review.getPlanId());
+				
 				resultMap.put("review", review);
+				resultMap.put("courseList", courseList);
 				resultMap.put("pgno", map.get("pgno"));
 				resultMap.put("sortkey", map.get("sortkey"));
 				resultMap.put("word", map.get("word"));
@@ -147,9 +149,6 @@ public class ReviewController {
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
-	// 3-2. 리뷰 코스 가져오기
-	// PlanMapper 플랜 코스 가져오기 참고
 	
 	// 4. 리뷰 삭제
 	@DeleteMapping("/review/{reviewId}")
@@ -215,7 +214,7 @@ public class ReviewController {
 	}
 	
 	// 6. 리뷰 목록 총 개수
-	@GetMapping("/notice/count")
+	@GetMapping("/review/count")
 	public ResponseEntity<?> getTotalReviewCount(@RequestParam Map<String, Object> map) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
