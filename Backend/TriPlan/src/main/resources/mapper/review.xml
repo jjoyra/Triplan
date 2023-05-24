@@ -17,13 +17,16 @@
 		<result column="rating" property="rating"/>
 		<result column="companion" property="companion"/>
 		<result column="price" property="price"/>
+		<result column="people_cnt" property="peopleCnt"/>
+		<result column="start_date" property="startDate"/>
+		<result column="end_date" property="endDate"/>
 	</resultMap>
 	
 	<!-- 1-1. 리뷰 생성 -->
 	<!-- void registReview(ReviewDto reviewDto) throws SQLException; -->
 	<insert id="registReview" parameterType="reviewDto">
-		insert into review (member_id, title, content, recommend_cnt, hit, create_date, modify_date, plan_id, rating, companion, price)
-		values (#{memberId}, #{title}, #{content}, 0, 0, now(), now(), ${planId}, ${rating}, ${companion}, ${price})
+		insert into review (member_id, people_cnt, title, content, recommend_cnt, hit, create_date, modify_date, start_date, end_date, plan_id, rating, companion, price)
+		values (#{memberId}, ${peopleCnt}, #{title}, #{content}, 0, 0, now(), now(), #{start_date}, #{end_date} ${planId}, ${rating}, ${companion}, ${price})
 	</insert>
 	
 	<!-- 1-2. 코스별 코멘트 생성 -->
@@ -68,7 +71,7 @@
 	<!-- void modifyReview(ReviewDto reviewDto, CourseListDto courseListDto) throws SQLException; -->
 	<update id="modifyReview" parameterType="reviewDto">
 		update review
-		set title = #{title}, content = #{content}, modify_date = now(), rating = ${rating}, companion = ${companio}, price = ${price}
+		set title = #{title}, content = #{content}, modify_date = now(), rating = ${rating}, companion = ${companio}, price = ${price}, people_cnt = ${people_cnt}, start_date = #{start_date}, end_date = #{end_date}
 		where review_id = #{reviewId};
 	</update>
 	
