@@ -108,10 +108,7 @@
               </b-dropdown-item>
               <b-dropdown-divider></b-dropdown-divider>
               <b-dropdown-item>
-                <b-nav-item
-                  :to="`/mypage/${userInfo.memberId}/myplan/write`"
-                  exact
-                  exact-active-class="active"
+                <b-nav-item :to="`/myplan`" exact exact-active-class="active"
                   >플랜 만들기</b-nav-item
                 >
               </b-dropdown-item>

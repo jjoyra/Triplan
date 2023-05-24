@@ -178,30 +178,6 @@ const routes = [
         component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/MypageMain.vue'),
       },
       {
-        path: 'myplan',
-        name: 'myplan',
-        redirect: '/mypage/:memberId/myplan/list',
-        component: () => import(/* webpackChunkName: "mypage" */ '../views/MyplanView.vue'),
-        children: [
-          {
-            path: 'list',
-            name: 'myplanlist',
-            component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/myplan/MyPlanList'),
-          },
-          {
-            path: 'detail',
-            name: 'myplandetail',
-            component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/myplan/MyPlanDetail'),
-          },
-          {
-            path: 'write',
-            name: 'myplanwrite',
-            beforeEnter: onlyAuthUser,
-            component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/myplan/MyPlanWrite'),
-          }
-        ],
-      },
-      {
         path: 'favoplan',
         name: 'favoplan',
         redirect: '/mypage/:memberId/favoplan/list',
@@ -227,6 +203,30 @@ const routes = [
           },
         ],
       },
+    ],
+  },
+  {
+    path: '/myplan',
+    name: 'myplan',
+    redirect: '/myplan/write',
+    component: () => import(/* webpackChunkName: "mypage" */ '../views/MyplanView.vue'),
+    children: [
+      {
+        path: 'list',
+        name: 'myplanlist',
+        component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/myplan/MyPlanList'),
+      },
+      {
+        path: 'detail',
+        name: 'myplandetail',
+        component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/myplan/MyPlanDetail'),
+      },
+      {
+        path: 'write',
+        name: 'myplanwrite',
+        beforeEnter: onlyAuthUser,
+        component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/myplan/MyPlanWrite'),
+      }
     ],
   },
 ]
