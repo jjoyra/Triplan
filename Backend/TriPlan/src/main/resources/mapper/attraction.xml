@@ -32,16 +32,6 @@
 		<result column="recommend_cnt" property="recommendCnt"/>
 	</resultMap>
 	
-	<!-- 시도구군 코드 -->
-	<!-- 
-		<resultMap type="SidoGugunCodeDto" id="sidoGugunCode">
-		<result column="sido_code" property="sidoCode"/>
-		<result column="sido_name" property="sidoName"/>
-		<result column="gugun_code" property="gugunCode"/>
-		<result column="gugun_name" property="gugunName"/>
-	</resultMap>
-	  -->
-	
 	<!-- 1. 관광지 목록 조회 -->
 	<select id="getAttractionList" parameterType="map" resultMap="attraction">
 		select i.*, d.overview, d.recommend_cnt
@@ -119,33 +109,6 @@
 				#{contentType}
 			</foreach>
 		</if>
-	
-		<!--  <if test="word != null and word != ''">
-			<choose>
-				<when test="key == 'title'">
-					where i.title like concat('%', #{word}, '%')
-				</when>
-				<when test="key == 'addr'">
-					where i.addr1 like concat('%', #{word}, '%') or i.addr2 like concat('%', #{word}, '%')
-				</when>
-				<when test="key == 'contentTypeId'">
-					where i.content_type_id = #{word}
-				</when>
-				<when test="key == 'gugunCode'">
-					where i.gugun_code = #{word}
-				</when>
-				<when test="key == 'sidoCode'">
-					where i.sido_code = #{word}
-				</when>
-				<when test="key == ''">
-					where i.title like concat('%', #{word}, '%') or i.addr1 like concat('%', #{word}, '%') or i.addr2 like concat('%', #{word}, '%')
-				</when>
-				<otherwise>
-					where i.#{key} = #{word}
-				</otherwise>
-			</choose>
-		</if>
-		 -->
 	</sql>
 	
 </mapper>
