@@ -39,11 +39,15 @@
 
           <div v-if="userInfo" class="user-memu-wrap">
             <li class="nav-item">
+              <b-icon icon="CalendarPlus"></b-icon>
               <router-link class="user-menu-plan" to="`/mypage/${userInfo.memberId}/plan/write`"
                 >플랜 만들기</router-link
               >
             </li>
-            <button class="user-menu-logout" @click="handleLogout">로그아웃</button>
+            <li class="nav-item">
+              <b-icon icon="BoxArrowRight"></b-icon>
+              <button class="user-menu-logout" @click="handleLogout">로그아웃</button>
+            </li>
           </div>
           <template v-else>
             <b-button variant="primary" v-b-modal.modal-login @click="handleMenuClose"
@@ -712,7 +716,15 @@ export default {
   }
   .side-menu-wrap div li,
   .user-menu-logout {
-    padding-left: 1.25rem;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+  .side-menu-wrap div li a,
+  .user-menu-logout {
+    padding: 0.5rem 1rem;
+  }
+  .user-menu-logout {
+    background: transparent;
   }
 
   .side-menu-wrap .user-memu-wrap {
