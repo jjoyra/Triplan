@@ -18,11 +18,11 @@ public interface ReviewMapper {
 	// 2. 리뷰 목록 불러오기
 	List<ReviewDto> getReviewList() throws SQLException;
 	
-	// 3-2. 리뷰 상세 보기
+	// 3-1. 리뷰 상세 보기
 	ReviewDto getReviewDetail(int reviewId) throws SQLException;
 	
-	// 3-1. 리뷰 코스 가져오기
-	// PlanMapper 참고
+	// 3-2. 리뷰 코스 가져오기
+	// PlanMapper 플랜 코스 가져오기 참고
 	
 	// 4. 리뷰 삭제
 	void deleteReview(int reviewId) throws SQLException;

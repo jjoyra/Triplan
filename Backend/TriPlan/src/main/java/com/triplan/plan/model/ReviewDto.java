@@ -1,4 +1,4 @@
-package com.triplan.review.model;
+package com.triplan.plan.model;
 
 import java.time.LocalDateTime;
 
