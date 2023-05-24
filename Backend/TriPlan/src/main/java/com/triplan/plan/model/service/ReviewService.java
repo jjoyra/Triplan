@@ -1,16 +1,13 @@
-package com.triplan.plan.model.mapper;
+package com.triplan.plan.model.service;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Mapper;
-
 import com.triplan.plan.model.CourseListDto;
 import com.triplan.plan.model.ReviewDto;
 
-@Mapper
-public interface ReviewMapper {
+public interface ReviewService {
 	
 	// 1-1. 리뷰 생성
 	void registReview(ReviewDto reviewDto) throws SQLException;

@@ -4,6 +4,112 @@
 	
 <mapper namespace="com.triplan.plan.model.mapper.ReviewMapper">
 
+	<resultMap type="reviewDto" id="review">
+		<result column="review_id" property="reviewId"/>
+		<result column="member_id" property="memberId"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="recommend_cnt" property="recommendCnt"/>
+		<result column="hit" property="hit"/>
+		<result column="create_date" property="createDate"/>
+		<result column="modify_date" property="modifyDate"/>
+		<result column="plan_id" property="planId"/>
+		<result column="rating" property="rating"/>
+		<result column="companion" property="companion"/>
+		<result column="price" property="price"/>
+	</resultMap>
+	
+	<!-- 1-1. 리뷰 생성 -->
+	<!-- void registReview(ReviewDto reviewDto) throws SQLException; -->
+	<insert id="registReview" parameterType="reviewDto">
+		insert into review (member_id, title, content, recommend_cnt, hit, create_date, modify_date, plan_id, rating, companion, price)
+		values (#{memberId}, #{title}, #{content}, 0, 0, now(), now(), ${planId}, ${rating}, ${companion}, ${price})
+	</insert>
+	
+	<!-- 1-2. 코스별 코멘트 생성 -->
+	<!-- int plan_id, String content_id, String comment, int order -->
+	<!-- void registCourseComment(Map<String, Object> map) throws SQLException; -->
+	<update id="registCourseComment" parameterType="courseListDto">
+		update course_list
+		set comment = #{comment}
+		where plan_id = ${planId} and content_id = #{contentId};
+	</update>
+	
+	<!-- 2. 리뷰 목록 불러오기 --> 
+	<!-- List<ReviewDto> getReviewList() throws SQLException; -->
+	<!-- ${sortkey} = title, recommend_cnt, hit, create_date, rating, price -->
+	<select id="getReviewList" parameterType="map" resultMap="review">
+		select *
+		from review
+		<include refid="search"></include>
+		order by ${sortkey} desc, create_date desc
+		limit #{start}, #{listsize}
+	</select>
+	
+	<!-- 3-1. 리뷰 상세 보기 --> 
+	<!-- ReviewDto getReviewDetail(int reviewId) throws SQLException; -->
+	<select id="getReviewDetail" parameterType="int" resultType="reviewDto">
+		select *
+		from review
+		where review_id = ${reviewId}
+	</select>
+	
+	<!-- 3-2. 리뷰 코스 가져오기 -->
+	<!-- // PlanMapper 플랜 코스 가져오기 참고 -->
+	
+	<!-- 4. 리뷰 삭제 -->
+	<!-- void deleteReview(int reviewId) throws SQLException; -->
+	<delete id="deleteReview" parameterType="int">
+		delete from review
+		where review_id = ${reviewId};
+	</delete>
+	
+	<!-- 5-1. 리뷰 수정 -->
+	<!-- void modifyReview(ReviewDto reviewDto, CourseListDto courseListDto) throws SQLException; -->
+	<update id="modifyReview" parameterType="reviewDto">
+		update review
+		set title = #{title}, content = #{content}, modify_date = now(), rating = ${rating}, companion = ${companio}, price = ${price}
+		where review_id = #{reviewId};
+	</update>
+	
+	<!-- 5-2. 코스 코멘트 수정 -->
+	<!-- int plan_id, String content_id, String comment, int order -->
+	<!-- void modifyCourseComment(Map<String, Object> map) throws SQLException; -->
+	<update id="modifyCourseComment" parameterType="courseListDto">
+		update course_list
+		set `order` = ${order}, comment = #{comment}
+		where plan_id = ${planId} and content_id = ${contentId};
+	</update>
+	
+	<!-- 6. 리뷰 목록 총 개수 -->
+	<!-- int getTotalReviewCount(Map<String, Object> map) throws SQLException; -->
+	<select id="getTotalReviewCount" resultType="int">
+		select count(*)
+		from review
+		<include refid="search"></include>
+	</select>
+	
+	<!-- 7. 리뷰 조회수 증가 -->
+	<!-- void updateHit(int reviewId) throws SQLException; -->
+	<update id="updateHit" parameterType="int">
+		update review
+		set hit = hit + 1
+		where review_id = ${reviewId}
+	</update>
+	
+	<!-- 8. 리뷰 추천수 증가 -->
+	<!-- void updateRecommendCnt(int reviewId) throws SQLException; -->
+	<update id="updateRecommendCnt" parameterType="int">
+		update review
+		set recommend_cnt = recommend_cnt + 1
+		where review_id = ${reviewId}
+	</update>
 
+	<!-- 필터/검색 컬럼 : member_id, title -->
+	<sql id="search">
+		<if test="word != null and word != ''">
+			where member_id like concat('%', #{word}, '%') or title like concat('%', #{word}, '%')
+		</if>
+	</sql>
 
 </mapper>
