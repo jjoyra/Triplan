@@ -112,4 +112,8 @@ export default {
 .info a {
   color: #a1a1a1;
 }
+
+.info:after {
+  display: none;
+}
 </style>
