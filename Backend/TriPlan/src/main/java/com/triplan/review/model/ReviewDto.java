@@ -1,9 +1,9 @@
-package com.triplan.plan.model;
+package com.triplan.review.model;
 
 import java.time.LocalDateTime;
 
 public class ReviewDto {
-    private String reviewId;
+    private int reviewId;
     private String memberId;
     private String title;
     private String content;
@@ -16,11 +16,11 @@ public class ReviewDto {
     private int companion;
     private int price;
 
-    public String getReviewId() {
+    public int getReviewId() {
         return reviewId;
     }
 
-    public void setReviewId(String reviewId) {
+    public void setReviewId(int reviewId) {
         this.reviewId = reviewId;
     }
 
