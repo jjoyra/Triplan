@@ -9,7 +9,7 @@
           <div
             class="profile-wrap"
             v-if="userInfo"
-            @click="movePage(`/mypage/${userInfo.memberId}`)"
+            @click="movePage(`/mypage/${userInfo.memberId}/main`)"
           >
             <div class="profileImg-wrap">
               <img id="profileImg" src="../../assets/300.png" alt="300.png" />
