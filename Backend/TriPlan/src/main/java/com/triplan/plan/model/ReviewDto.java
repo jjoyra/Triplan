@@ -10,7 +10,7 @@ public class ReviewDto {
     private int recommendCnt;
     private int hit;
     private LocalDateTime createDate;
-    private LocalDateTime modify_date;
+    private LocalDateTime modifyDate;
     private int planId;
     private int rating;
     private int companion;
@@ -73,11 +73,11 @@ public class ReviewDto {
     }
 
     public LocalDateTime getModify_date() {
-        return modify_date;
+        return modifyDate;
     }
 
-    public void setModify_date(LocalDateTime modify_date) {
-        this.modify_date = modify_date;
+    public void setModify_date(LocalDateTime modifyDate) {
+        this.modifyDate = modifyDate;
     }
 
     public int getPlanId() {
@@ -122,7 +122,7 @@ public class ReviewDto {
                 ", recommendCnt=" + recommendCnt +
                 ", hit=" + hit +
                 ", createDate=" + createDate +
-                ", modify_date=" + modify_date +
+                ", modifyDate=" + modifyDate +
                 ", planId=" + planId +
                 ", rating=" + rating +
                 ", companion=" + companion +
