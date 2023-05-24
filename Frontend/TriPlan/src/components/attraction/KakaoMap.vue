@@ -161,7 +161,7 @@ export default {
 };
 </script>
 
-<style scope>
+<style scoped>
 #map {
   width: 100%;
   height: 560px;
@@ -259,11 +259,5 @@ export default {
 }
 .info .link {
   color: #5085bb;
-}
-
-@media (max-width: 950px) {
-  #map {
-    height: 453px;
-  }
 }
 </style>

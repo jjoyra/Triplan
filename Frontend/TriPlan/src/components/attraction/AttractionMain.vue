@@ -45,4 +45,15 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#map {
+  width: 100%;
+  height: 560px;
+}
+
+@media (max-width: 950px) {
+  #map {
+    height: 453px;
+  }
+}
+</style>
