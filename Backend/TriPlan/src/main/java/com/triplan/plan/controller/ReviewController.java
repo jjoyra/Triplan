@@ -86,30 +86,22 @@ public class ReviewController {
 	
 	// 2. 리뷰 목록 불러오기
 	@GetMapping("/review")
-	public ResponseEntity<?> getReviewList(@RequestParam Map<String, Object> map, HttpServletRequest request) {
+	public ResponseEntity<?> getReviewList(@RequestParam Map<String, Object> map) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
-		
-		if (jwtService.checkToken(request.getHeader("access-token"))) {
-			System.out.println("사용 가능한 토큰!");
-			
-			try {
-				List<ReviewDto> reviews = reviewService.getReviewList(map);
-				resultMap.put("reviews", reviews);
-				resultMap.put("pgno", map.get("pgno"));
-				resultMap.put("sortkey", map.get("sortkey"));
-				resultMap.put("word", map.get("word"));
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
-			} catch (SQLException e) {
-				e.printStackTrace();
-				resultMap.put("message", e.getMessage());
-				status = HttpStatus.INTERNAL_SERVER_ERROR;
-			}
-		} else {
-			System.out.println("사용 불가능한 토큰..");
-			resultMap.put("message", FAIL);
-			status = HttpStatus.UNAUTHORIZED;
+
+		try {
+			List<ReviewDto> reviews = reviewService.getReviewList(map);
+			resultMap.put("reviews", reviews);
+			resultMap.put("pgno", map.get("pgno"));
+			resultMap.put("sortkey", map.get("sortkey"));
+			resultMap.put("word", map.get("word"));
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
