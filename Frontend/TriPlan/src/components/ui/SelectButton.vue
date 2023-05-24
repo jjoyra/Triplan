@@ -43,6 +43,7 @@ export default {
         } else if (this.selected.length === this.contentTypes.length) {
           this.selected = [];
         }
+        this.changeContentType();
       },
     },
   },
