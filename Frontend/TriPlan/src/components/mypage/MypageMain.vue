@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="userInfo.memberId === memberId">
+    <template v-if="userInfo && userInfo.memberId === memberId">
       <div class="h1-wrap">
         <h1>마이페이지</h1>
       </div>
@@ -10,7 +10,7 @@
       <template v-if="pageUserInfo">
         <user-info-item
           :pageUserInfo="pageUserInfo"
-          :isMyInfo="userInfo.memberId !== memberId && pageUserInfo ? false : true"
+          :isMyInfo="userInfo && userInfo.memberId === memberId ? true : false"
           v-on:get-page-user-info="getPageUserInfo"
         ></user-info-item>
       </template>
@@ -20,6 +20,7 @@
           title="마이 플랜"
           :isMore="true"
           :link="`/mypage/${memberId}/myplan`"
+          :bg="false"
         ></ranking-list>
       </div>
 
@@ -28,6 +29,7 @@
           title="관심 플랜"
           :isMore="true"
           :link="`/mypage/${memberId}/favoplan`"
+          :bg="false"
         ></ranking-list>
       </div>
 
@@ -36,6 +38,7 @@
           title="관심 여행지"
           :isMore="true"
           :link="`/mypage/${memberId}/favoattraction`"
+          :bg="false"
         ></ranking-list>
       </div>
     </div>
@@ -72,6 +75,7 @@ export default {
     },
   },
   created() {
+    console.log("userinfo", this.userInfo);
     this.memberId = this.$route.params.memberId;
     this.getPageUserInfo();
   },
@@ -84,7 +88,15 @@ export default {
       }
     },
     async getPageUserInfo() {
-      if (this.userInfo.memberId !== this.memberId) {
+      console.log("getPageUserInfo");
+      if (this.userInfo && this.userInfo.memberId === this.memberId) {
+        // 로그인 사용자 O === 현재 페이지 사용자
+        console.log("if");
+        await this.loginUserInfo();
+        console.log("내 페이지임");
+        this.pageUserInfo = this.userInfo;
+      } else {
+        console.log("else", this.memberId);
         getOtherMemberInfo(
           this.memberId,
           ({ data }) => {
@@ -97,10 +109,6 @@ export default {
             console.log("회원 정보 조회 불가", error);
           }
         );
-      } else {
-        await this.loginUserInfo();
-        console.log("내 페이지임");
-        this.pageUserInfo = this.userInfo;
       }
     },
   },
