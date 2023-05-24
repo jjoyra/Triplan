@@ -18,12 +18,6 @@ const onlyAuthAdmin = async (to, from, next) => {
   }
   if (!checkToken || checkUserInfo === null) {
     alert("로그인이 필요한 페이지입니다..");
-    // next({ name: "login" });
-    // router.push({ name: "login" });
-    router.push({
-      name: "main",
-      params: { showLoginModal: true },
-    });
   } else {
     if (checkUserInfo.role === 0) {
       console.log("관리자 로그인 완료");
@@ -31,7 +25,6 @@ const onlyAuthAdmin = async (to, from, next) => {
     } else {
       console.log("사용자 로그인 완료");
       alert("관리자 권한이 필요한 페이지입니다..");
-      router.push({ name: "main" });
     }
     console.log("userinfo", checkUserInfo);
   }
@@ -49,12 +42,6 @@ const onlyAuthUser = async (to, from, next) => {
   }
   if (!checkToken || checkUserInfo === null) {
     alert("로그인이 필요한 페이지입니다..");
-    // next({ name: "login" });
-    // router.push({ name: "login" });
-    router.push({
-      name: "main",
-      params: { showLoginModal: true },
-    });
   } else {
     console.log("로그인 완료");
     next();
@@ -150,18 +137,20 @@ const routes = [
         component: () => import(/* webpackChunkName: "review" */ '../components/review/ReviewList')
       },
       {
-        path: 'detail',
+        path: 'detail/:reviewId',
         name: 'reviewdetail',
         component: () => import(/* webpackChunkName: "review" */ '../components/review/ReviewDetail')
       },
       {
         path: 'write',
         name: 'reviewwrite',
+        beforeEnter: onlyAuthUser,
         component: () => import(/* webpackChunkName: "review" */ '../components/review/ReviewWrite')
       },
       {
-        path: 'modify',
+        path: 'modify/:modifyId',
         name: 'reviewmodify',
+        beforeEnter: onlyAuthUser,
         component: () => import(/* webpackChunkName: "review" */ '../components/review/ReviewModify')
       },
     ],

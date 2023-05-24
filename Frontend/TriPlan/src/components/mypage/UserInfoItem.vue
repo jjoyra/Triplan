@@ -57,6 +57,12 @@ export default {
   },
   methods: {
     handleFollow() {
+      if (!this.isMyInfo && this.userInfo === null) {
+        alert("로그인이 필요한 서비스입니다.");
+        this.$bvModal.show("modal-login");
+        return;
+      }
+
       let params = {
         followerId: this.pageUserInfo.memberId,
         followeeId: this.userInfo.memberId,

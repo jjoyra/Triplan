@@ -73,10 +73,10 @@ values (1, '2849095', 1, '내 금고'),
        (1, '2840934', 3, '경주 가면 황리단길 꼭 가야지 볼거 진짜 많음 OO 가게 꼭 가! 진짜 맛있어');
 
 -- 테이블 : review
-insert into triplan.review (member_id, title, content, recommend_cnt, hit, create_date, modify_date, plan_id, rating, companion, price)
-values ("test", "경주로 가자", "부모님이랑 당일치기로 경주 다녀왔다!! 첨성대 빵 꼭 먹어줘", 0, 0, "2023-05-25", "2023-05-29", 1, 4, 4, 170000),
-	   ("ssafy", "무조건 부산 ㄱ", "밤바다 보고 싶으면 광안리로 가", 2, 0, "2023-05-25", "2023-05-29", 2, 4, 0, 354000),
-       ("ssafy", "반드시 추천하는 제주도 여행", "친구들이랑 진짜 짱 재밌게 놀다 옴 ㄱㄱ", 3, 0, "2023-05-26", "2023-05-27", 3, 5, 1, 600000);
+insert into triplan.review (member_id, people_cnt, title, content, recommend_cnt, hit, create_date, modify_date, start_date, end_date, plan_id, rating, companion, price)
+values ("test", 3, "경주로 가자", "부모님이랑 당일치기로 경주 다녀왔다!! 첨성대 빵 꼭 먹어줘", 0, 0, now(), now(), "2023-05-29", "2023-05-29", 1, 4, 4, 170000),
+	   ("ssafy", 2, "무조건 부산 ㄱ", "밤바다 보고 싶으면 광안리로 가", 2, 0, now(), now(), "2023-04-20", "2023-04-23", 2, 4, 0, 354000),
+       ("ssafy", 4, "반드시 추천하는 제주도 여행", "친구들이랑 진짜 짱 재밌게 놀다 옴 ㄱㄱ", 3, 0, now(), now(), "2023-05-06", "2023-05-13", 3, 5, 1, 600000);
 
 -- 테이블 : follow_list
 insert into triplan.follow_list(follower_id, followee_id)

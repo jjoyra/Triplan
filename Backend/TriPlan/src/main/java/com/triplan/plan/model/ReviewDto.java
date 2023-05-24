@@ -5,12 +5,15 @@ import java.time.LocalDateTime;
 public class ReviewDto {
     private int reviewId;
     private String memberId;
+    private int peopleCnt;
     private String title;
     private String content;
     private int recommendCnt;
     private int hit;
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private int planId;
     private int rating;
     private int companion;
@@ -72,11 +75,11 @@ public class ReviewDto {
         this.createDate = createDate;
     }
 
-    public LocalDateTime getModify_date() {
+    public LocalDateTime getModifyDate() {
         return modifyDate;
     }
 
-    public void setModify_date(LocalDateTime modifyDate) {
+    public void setModifyDate(LocalDateTime modifyDate) {
         this.modifyDate = modifyDate;
     }
 
@@ -112,21 +115,49 @@ public class ReviewDto {
         this.price = price;
     }
 
+    public int getPeopleCnt() {
+        return peopleCnt;
+    }
+
+    public void setPeopleCnt(int peopleCnt) {
+        this.peopleCnt = peopleCnt;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
     @Override
     public String toString() {
         return "ReviewDto{" +
-                "reviewId='" + reviewId + '\'' +
+                "reviewId=" + reviewId +
                 ", memberId='" + memberId + '\'' +
+                ", peopleCnt=" + peopleCnt +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", recommendCnt=" + recommendCnt +
                 ", hit=" + hit +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 ", planId=" + planId +
                 ", rating=" + rating +
                 ", companion=" + companion +
                 ", price=" + price +
                 '}';
     }
+
 }

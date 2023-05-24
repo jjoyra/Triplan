@@ -89,7 +89,7 @@ export default {
   },
   filters: {
     dateFormat(regtime) {
-      return moment(new Date(regtime)).format("YY.MM.DD hh:mm:ss");
+      return moment(new Date(regtime)).format("YY.MM.DD");
     },
   },
 };
