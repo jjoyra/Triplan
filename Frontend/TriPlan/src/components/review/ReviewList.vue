@@ -11,74 +11,77 @@
         >
         </b-form-radio-group>
       </b-form-group>
-      <router-link class="btn btn-primary" to="/notice/write">글쓰기</router-link>
+      <router-link class="btn btn-primary" to="/review/write">리뷰 쓰기</router-link>
     </div>
 
-    <b-table
-      id="review-table"
-      responsive
-      :items="reviews"
-      :fields="fields"
-      selectable
-      class="text-center"
-      @row-selected="onRowSelected"
-    >
-      <template #cell()="data">
+    <b-list-group>
+      <b-list-group-item
+        v-for="(data, index) in reviews"
+        :key="index"
+        class="flex-column align-items-start"
+      >
         <b-card no-body border-variant="light" class="review-card-wrap overflow-hidden">
-          <favo-button></favo-button>
           <b-row no-gutters>
             <b-col class="img-wrap">
-              <b-card-img src="https://placekitten.com/300/300" alt="Image"></b-card-img>
+              <b-card-img
+                :src="
+                  data.thumbnailUrl.length !== 0
+                    ? data.thumbnailUrl
+                    : 'https://placekitten.com/300/300'
+                "
+                alt="Image"
+              ></b-card-img>
             </b-col>
             <b-col class="content-wrap">
-              <b-card-body class="content-body" :title="data.item.title">
-                <b-card-text class="content">
-                  <div class="body">
-                    <div>
-                      <b-icon class="icon" icon="people"></b-icon>
-                      {{ companionList[data.item.companion] }} {{ data.item.peopleCnt }}인
+              <router-link :to="`/review/detail/${data.reviewId}`">
+                <b-card-body class="content-body">
+                  <b-card-title>{{ data.title }}</b-card-title>
+                  <b-card-text class="content">
+                    <div class="body">
+                      <div>
+                        <b-icon class="icon" icon="people"></b-icon>
+                        {{ companionList[data.companion] }} {{ data.peopleCnt }}인
+                      </div>
+                      <div>
+                        <b-icon class="icon" icon="calendarWeek"></b-icon>
+                        {{ data.startDate | dateFormat }} ~ {{ data.endDate | dateFormat }}
+                      </div>
+                      <div>
+                        <b-icon class="icon" icon="coin"></b-icon>
+                        {{ data.totalPrice ? "총" : "인당" }}
+                        {{ data.price.toLocaleString() }} 원
+                      </div>
+                      <div v-html="makeStarIcon(data.rating)"></div>
+                      <div class="content-data">{{ data.content | substrText }}</div>
                     </div>
-                    <div>
-                      <b-icon class="icon" icon="calendarWeek"></b-icon>
-                      {{ data.item.startDate | dateFormat }} ~ {{ data.item.endDate | dateFormat }}
-                    </div>
-                    <div>
-                      <b-icon class="icon" icon="coin"></b-icon>
-                      {{ data.item.totalPrice ? "총" : "인당" }}
-                      {{ data.item.price.toLocaleString() }} 원
-                    </div>
-                    <div v-html="makeStarIcon(data.item.rating)"></div>
-                    <div class="content-data">{{ data.item.content | substrText }}</div>
-                  </div>
 
-                  <div class="footer">
-                    <div class="info">
-                      <div>
-                        <b-icon class="icon" icon="person"></b-icon> {{ data.item.memberId }}
+                    <div class="footer">
+                      <div class="info">
+                        <div><b-icon class="icon" icon="person"></b-icon> {{ data.memberId }}</div>
+                        <div>
+                          <b-icon class="icon" icon="calendarDate"></b-icon>
+                          {{ data.modifyDate | dateFormat }}
+                        </div>
                       </div>
-                      <div>
-                        <b-icon class="icon" icon="calendarDate"></b-icon>
-                        {{ data.item.modifyDate | dateFormat }}
+                      <div class="cnt-info">
+                        <div>
+                          <b-icon class="icon" icon="eye"></b-icon>
+                          {{ data.hit }}
+                        </div>
+                        <div>
+                          <b-icon class="icon" icon="hand-thumbs-up"></b-icon>
+                          {{ data.recommendCnt }}
+                        </div>
                       </div>
                     </div>
-                    <div class="cnt-info">
-                      <div>
-                        <b-icon class="icon" icon="eye"></b-icon>
-                        {{ data.item.hit }}
-                      </div>
-                      <div>
-                        <b-icon class="icon" icon="hand-thumbs-up"></b-icon>
-                        {{ data.item.recommendCnt }}
-                      </div>
-                    </div>
-                  </div>
-                </b-card-text>
-              </b-card-body>
+                  </b-card-text>
+                </b-card-body>
+              </router-link>
             </b-col>
           </b-row>
         </b-card>
-      </template>
-    </b-table>
+      </b-list-group-item>
+    </b-list-group>
 
     <b-pagination
       v-model="currentPage"
@@ -94,13 +97,12 @@ import moment from "moment";
 import { getReviewList, getTotalReviewCount } from "@/api/review";
 import { mapState, mapActions } from "vuex";
 import SearchInput from "../common/SearchInput.vue";
-import FavoButton from "../ui/FavoButton.vue";
 
 const memberStore = "memberStore";
 const reviewStore = "reviewStore";
 
 export default {
-  components: { SearchInput, FavoButton },
+  components: { SearchInput },
   name: "ReviewList",
   watch: {
     selected(val) {
@@ -140,7 +142,6 @@ export default {
         { text: "별점순", value: "rating" },
         { text: "경비순", value: "price" },
       ],
-      fields: [{ label: "리뷰 목록", key: "index" }],
       companionList: ["혼자", "친구와", "연인과", "가족과", "부모님과", "배우자와", "반려동물과"],
     };
   },
@@ -167,11 +168,9 @@ export default {
         word: this.reviewSearchWord,
         pgno: this.pgno,
       };
-      console.log("handleReviewList params", params);
       getReviewList(
         params,
         ({ data }) => {
-          console.log("data", data);
           this.reviews = data.reviews;
         },
         (err) => {
@@ -204,7 +203,7 @@ export default {
   },
   filters: {
     dateFormat(regtime) {
-      return moment(new Date(regtime)).format("YY.MM.DD");
+      return moment(new Date(regtime)).format("YY.MM.DD.");
     },
     substrText(text) {
       return text.substr(0, 60) + "...";
@@ -222,12 +221,11 @@ export default {
 
 <style scoped>
 .review-card-wrap {
+  width: 100%;
   border: 0;
   position: relative;
   margin-right: 12rem;
-}
-.content-wrap {
-  text-align: left;
+  background: transparent;
 }
 .content-wrap .content-body {
   height: 100%;
@@ -302,12 +300,48 @@ export default {
   display: none;
 }
 
-.favo-icon-wrap {
-  top: 0.5rem;
-  right: 0.5rem;
+.card-title {
+  padding-right: 1rem;
+}
+
+.list-group {
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.list-group-item {
+  border-radius: 3px;
+}
+.list-group-item + .list-group-item,
+.list-group-item:last-child {
+  border-top-width: thin;
+}
+.list-group-item a {
+  text-decoration: none;
+}
+.list-group-item a:hover {
+  color: #383838;
+}
+
+.img-wrap {
+  flex-grow: 0.3;
+}
+.img-wrap .card-img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+.content-wrap {
+  flex-grow: 0.7;
 }
 
 @media (max-width: 990px) {
+  .img-wrap {
+    flex: 0.4;
+  }
+  .content-wrap {
+    flex: 0.6;
+  }
+
   .review-card-wrap {
     margin: 0;
   }
@@ -332,17 +366,8 @@ export default {
 }
 
 @media (min-width: 991px) {
-  .img-wrap {
-    flex: 0.4;
-  }
-  .content-wrap {
-    flex: 0.6;
-  }
   .content {
     font-size: 1.1rem;
-  }
-  .favo-icon-wrap {
-    top: 1.5rem;
   }
 }
 </style>

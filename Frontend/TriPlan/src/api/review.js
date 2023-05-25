@@ -13,10 +13,10 @@ async function getReviewList(param, success, fail) {
   await api.get(`/review`, { params: param }).then(success).catch(fail);
 }
 
-async function getReviewDetail(param, success, fail) {
+async function getReviewDetail(reviewId, success, fail) {
   // 3-1. 리뷰 상세 보기
   // 3-2. 리뷰 코스 가져오기
-  await api.get(`/review/${param.reviewId}`, { params: param }).then(success).catch(fail);
+  await api.get(`/review/${reviewId}`).then(success).catch(fail);
 }
 
 async function deleteReview(reviewId, success, fail) {
