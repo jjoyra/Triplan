@@ -2,7 +2,10 @@
   <div id="wrap">
     <div class="side-wrap">
       <attraction-search-bar></attraction-search-bar>
-      <attraction-list></attraction-list>
+      <attraction-list
+        @clicked-attraction="openOverlay"
+        @add-plan-attraction="addPlanAttraction"
+      ></attraction-list>
     </div>
     <div class="side-wrap write-plan">
       <b-form @submit="onPlanSubmit">
@@ -26,20 +29,21 @@
         </div>
         <div class="plan-list">
           <b-card
-            img-src="https://placekitten.com/300/300"
+            v-for="(attraction, index) in planAttractions"
+            :key="index"
+            :img-src="attraction.firstImage"
             img-alt="Card image"
             img-left
             class="mb-3"
           >
             <b-card-text>
-              Some quick example text to build on the card and make up the bulk of the card's
-              content.
+              {{ attraction.title }}
             </b-card-text>
           </b-card>
         </div>
       </b-form>
     </div>
-    <kakao-map></kakao-map>
+    <kakao-map :attractions="attractions" :peekList="peekList"></kakao-map>
   </div>
 </template>
 
@@ -47,6 +51,11 @@
 import KakaoMap from "@/components/attraction/KakaoMap.vue";
 import AttractionSearchBar from "@/components/attraction/AttractionSearchBar.vue";
 import AttractionList from "@/components/attraction/AttractionList.vue";
+import { mapState } from "vuex";
+import { registPlan } from "@/api/plan";
+
+const attractionStore = "attractionStore";
+const memberStore = "memberStore";
 
 export default {
   name: "MyPlanWrite",
@@ -57,7 +66,17 @@ export default {
         startDate: "",
         endDate: "",
       },
+      members: {
+        owner: "",
+        member: [],
+      },
+      peekList: null,
+      planAttractions: [],
     };
+  },
+  computed: {
+    ...mapState(attractionStore, ["attractions"]),
+    ...mapState(memberStore, ["userInfo"]),
   },
   components: {
     KakaoMap,
@@ -67,7 +86,52 @@ export default {
   methods: {
     onPlanSubmit(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.form));
+      let thumbnailUrl = "";
+      for (let i = 0; i < this.planAttractions.length; i++) {
+        if (this.planAttractions[i].firstImage != "") {
+          thumbnailUrl = this.planAttractions[i].firstImage;
+          break;
+        }
+      }
+
+      let courseList = [];
+
+      for (let i = 0; i < this.planAttractions.length; i++) {
+        console.log(this.planAttractions[i]);
+        let course = {
+          contentId: this.planAttractions[i].contentId,
+          order: i + 1,
+        };
+
+        courseList.push(course);
+      }
+
+      this.members.owner = this.userInfo.memberId;
+
+      let param = {
+        title: this.form.title,
+        startDate: this.form.startDate,
+        endDate: this.form.endDate,
+        thumbnailUrl: thumbnailUrl,
+        members: this.members,
+        courseList: courseList,
+      };
+      alert(JSON.stringify(param));
+      registPlan(
+        param,
+        ({ data }) => {
+          console.log(data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    openOverlay(contentid) {
+      this.peekList = contentid;
+    },
+    addPlanAttraction(planAttractionsInfo) {
+      this.planAttractions = planAttractionsInfo.attractions;
     },
   },
 };
@@ -75,20 +139,27 @@ export default {
 
 <style scoped>
 #wrap {
-  /* display: flex; */
+  border-top: 0.3px rgba(0, 0, 0, 0.125);
+  border-style: solid hidden;
 }
 
 .side-wrap {
   background-color: #fff;
   z-index: 21;
-  width: 30%;
+  width: 25%;
   position: absolute;
   padding: 1rem;
+  height: calc(100vh - 60px);
+}
+
+.list-wrap {
+  height: 100%;
 }
 
 .write-plan {
   right: 0%;
   height: 100%;
+  overflow: auto;
 }
 
 .plan-list {
@@ -103,5 +174,9 @@ export default {
 img {
   width: 220px;
   height: 50%;
+}
+
+#map {
+  height: calc(100vh - 60px);
 }
 </style>
