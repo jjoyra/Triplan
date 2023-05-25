@@ -59,10 +59,10 @@ public class ReviewController {
 				System.out.println("review 등록 " + reviewDto);
 				reviewService.registReview(reviewDto);
 				
-				// 코스별 코멘트 생성
-				int planId = (int) map.get("planId");
-				List<CourseListDto> courseList = planService.getCourseList(planId);
-				
+//				// 코스별 코멘트 생성
+//				int planId = reviewDto.getPlanId();
+//				List<CourseListDto> courseList = planService.getCourseList(planId);
+				List<CourseListDto> courseList = (List<CourseListDto>) map.get("courseList");
 				for (CourseListDto course: courseList) {
 					System.out.println("comment 등록 " + course);
 					reviewService.registCourseComment(course);
