@@ -116,11 +116,11 @@ export default {
         members: this.members,
         courseList: courseList,
       };
-      alert(JSON.stringify(param));
       registPlan(
         param,
         ({ data }) => {
           console.log(data);
+          alert("플랜이 등록되었습니다.");
         },
         (error) => {
           console.log(error);
@@ -150,21 +150,22 @@ export default {
   position: absolute;
   padding: 1rem;
   height: calc(100vh - 60px);
+  /* box-shadow: 15px 0px 20px #a0a0a09b; */
 }
 
 .list-wrap {
-  height: 100%;
+  height: calc(100vh - 350px);
 }
 
 .write-plan {
   right: 0%;
-  height: 100%;
   overflow: auto;
 }
 
 .plan-list {
   border-top: 0.3px rgba(0, 0, 0, 0.125);
   border-style: solid hidden;
+  height: calc(100vh - 200px);
 }
 
 .card {

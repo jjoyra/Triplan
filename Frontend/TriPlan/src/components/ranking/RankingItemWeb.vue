@@ -8,8 +8,8 @@
   >
     <b-card-text>
       <favo-button></favo-button>
-      <p class="type">여행지 유형</p>
-      <p class="title">여행지 제목</p>
+      <p class="type">{{ plan.title }}</p>
+      <p class="title">{{ plan.title }}</p>
     </b-card-text>
   </b-card>
 </template>
@@ -19,6 +19,9 @@ import FavoButton from "../ui/FavoButton.vue";
 
 export default {
   name: "RankingItemWeb",
+  props: {
+    plan: Object,
+  },
   components: {
     FavoButton,
   },

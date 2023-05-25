@@ -10,19 +10,36 @@
         </template>
       </div>
       <template v-if="isPublic || isMyInfo">
-        <div class="ranking-item-wrap web">
-          <!-- <ranking-item-web v-for="item in items" :key="item"></ranking-item-web> -->
-          <ranking-item-web></ranking-item-web>
-          <ranking-item-web></ranking-item-web>
-          <ranking-item-web></ranking-item-web>
-        </div>
+        <template v-if="planList.length !== 0">
+          <div class="ranking-item-wrap web">
+            <!-- <ranking-item-web v-for="item in items" :key="item"></ranking-item-web> -->
+            <ranking-item-web></ranking-item-web>
+            <ranking-item-web></ranking-item-web>
+            <ranking-item-web></ranking-item-web>
+          </div>
 
-        <div class="ranking-item-wrap mobile">
-          <!-- <ranking-item-mobile v-for="item in items" :key="item"></ranking-item-mobile> -->
-          <ranking-item-mobile></ranking-item-mobile>
-          <ranking-item-mobile></ranking-item-mobile>
-          <ranking-item-mobile></ranking-item-mobile>
-        </div>
+          <div class="ranking-item-wrap mobile">
+            <ranking-item-mobile
+              v-for="(plan, index) in planList"
+              :key="index"
+              :plan="plan"
+            ></ranking-item-mobile>
+          </div>
+        </template>
+        <template v-else>
+          <div class="ranking-item-wrap web">
+            <!-- <ranking-item-web v-for="item in items" :key="item"></ranking-item-web> -->
+            <ranking-item-web></ranking-item-web>
+            <ranking-item-web></ranking-item-web>
+            <ranking-item-web></ranking-item-web>
+          </div>
+
+          <div class="ranking-item-wrap mobile">
+            <ranking-item-mobile></ranking-item-mobile>
+            <ranking-item-mobile></ranking-item-mobile>
+            <ranking-item-mobile></ranking-item-mobile>
+          </div>
+        </template>
       </template>
       <template v-else>
         <div>비공개 유저입니다.</div>
@@ -49,6 +66,7 @@ export default {
     link: String,
     isPublic: Boolean,
     isMyInfo: Boolean,
+    planList: Array,
   },
   data() {
     return {
