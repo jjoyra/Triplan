@@ -66,6 +66,11 @@ h2 {
   margin-bottom: 1rem;
 }
 
+h5 {
+  position: relative;
+  font-size: 1.25rem;
+}
+
 ol,
 ul {
   list-style: none;
