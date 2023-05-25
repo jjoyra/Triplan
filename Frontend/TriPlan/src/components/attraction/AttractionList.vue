@@ -75,7 +75,7 @@ export default {
   created() {
     this.CLEAR_ATTRACTION_LIST();
     console.log(this.$route.path);
-    if (this.$route.path === "/myplan/write") this.isWrite = true;
+    if (this.$route.path === "/plan/write") this.isWrite = true;
     else this.isWrite = false;
   },
   methods: {

@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import MainView from '../views/MainView.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import MainView from "../views/MainView.vue";
 
 import store from "@/store";
 
@@ -50,180 +50,199 @@ const onlyAuthUser = async (to, from, next) => {
 
 const routes = [
   {
-    path: '/',
-    name: 'main',
-    component: MainView
+    path: "/",
+    name: "main",
+    component: MainView,
   },
   {
-    path: '/notice',
-    name: 'notice',
-    redirect: '/notice/list',
-    component: () => import(/* webpackChunkName: "notice" */ '../views/NoticeView.vue'),
+    path: "/notice",
+    name: "notice",
+    redirect: "/notice/list",
+    component: () => import(/* webpackChunkName: "notice" */ "../views/NoticeView.vue"),
     children: [
       {
-        path: 'list',
-        name: 'noticelist',
-        component: () => import(/* webpackChunkName: "notice" */ '../components/notice/NoticeList')
+        path: "list",
+        name: "noticelist",
+        component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeList"),
       },
       {
-        path: 'detail/:noticeId',
-        name: 'noticedetail',
-        component: () => import(/* webpackChunkName: "notice" */ '../components/notice/NoticeDetail')
+        path: "detail/:noticeId",
+        name: "noticedetail",
+        component: () =>
+          import(/* webpackChunkName: "notice" */ "../components/notice/NoticeDetail"),
       },
       {
-        path: 'write',
-        name: 'noticewrite',
+        path: "write",
+        name: "noticewrite",
         beforeEnter: onlyAuthAdmin,
-        component: () => import(/* webpackChunkName: "notice" */ '../components/notice/NoticeWrite')
+        component: () =>
+          import(/* webpackChunkName: "notice" */ "../components/notice/NoticeWrite"),
       },
       {
-        path: 'modify',
-        name: 'noticemodify',
+        path: "modify",
+        name: "noticemodify",
         beforeEnter: onlyAuthAdmin,
-        component: () => import(/* webpackChunkName: "notice" */ '../components/notice/NoticeModify')
+        component: () =>
+          import(/* webpackChunkName: "notice" */ "../components/notice/NoticeModify"),
       },
     ],
   },
   {
-    path: '/attraction',
-    name: 'attraction',
-    redirect: '/attraction/main',
-    component: () => import(/* webpackChunkName: "attraction" */ '../views/AttractionView.vue'),
+    path: "/attraction",
+    name: "attraction",
+    redirect: "/attraction/main",
+    component: () => import(/* webpackChunkName: "attraction" */ "../views/AttractionView.vue"),
     children: [
       {
-        path: 'main',
-        name: 'attractionmain',
-        component: () => import(/* webpackChunkName: "attraction" */ '../components/attraction/AttractionMain')
+        path: "main",
+        name: "attractionmain",
+        component: () =>
+          import(/* webpackChunkName: "attraction" */ "../components/attraction/AttractionMain"),
       },
     ],
   },
   {
-    path: '/community',
-    name: 'community',
-    redirect: '/community/list',
-    component: () => import(/* webpackChunkName: "community" */ '../views/CommunityView.vue'),
+    path: "/community",
+    name: "community",
+    redirect: "/community/list",
+    component: () => import(/* webpackChunkName: "community" */ "../views/CommunityView.vue"),
     children: [
       {
-        path: 'list',
-        name: 'communitylist',
-        component: () => import(/* webpackChunkName: "community" */ '../components/community/CommunityList')
+        path: "list",
+        name: "communitylist",
+        component: () =>
+          import(/* webpackChunkName: "community" */ "../components/community/CommunityList"),
       },
       {
-        path: 'detail',
-        name: 'communitydetail',
-        component: () => import(/* webpackChunkName: "community" */ '../components/community/CommunityDetail')
+        path: "detail",
+        name: "communitydetail",
+        component: () =>
+          import(/* webpackChunkName: "community" */ "../components/community/CommunityDetail"),
       },
       {
-        path: 'write',
-        name: 'communitywrite',
-        component: () => import(/* webpackChunkName: "community" */ '../components/community/CommunityWrite')
+        path: "write",
+        name: "communitywrite",
+        component: () =>
+          import(/* webpackChunkName: "community" */ "../components/community/CommunityWrite"),
       },
       {
-        path: 'modify',
-        name: 'communitymodify',
-        component: () => import(/* webpackChunkName: "community" */ '../components/community/CommunityModify')
+        path: "modify",
+        name: "communitymodify",
+        component: () =>
+          import(/* webpackChunkName: "community" */ "../components/community/CommunityModify"),
       },
     ],
   },
   {
-    path: '/review',
-    name: 'review',
-    redirect: '/review/list',
-    component: () => import(/* webpackChunkName: "review" */ '../views/ReviewView.vue'),
+    path: "/review",
+    name: "review",
+    redirect: "/review/list",
+    component: () => import(/* webpackChunkName: "review" */ "../views/ReviewView.vue"),
     children: [
       {
-        path: 'list',
-        name: 'reviewlist',
-        component: () => import(/* webpackChunkName: "review" */ '../components/review/ReviewList')
+        path: "list",
+        name: "reviewlist",
+        component: () => import(/* webpackChunkName: "review" */ "../components/review/ReviewList"),
       },
       {
-        path: 'detail/:reviewId',
-        name: 'reviewdetail',
-        component: () => import(/* webpackChunkName: "review" */ '../components/review/ReviewDetail')
+        path: "detail/:reviewId",
+        name: "reviewdetail",
+        component: () =>
+          import(/* webpackChunkName: "review" */ "../components/review/ReviewDetail"),
       },
       {
-        path: 'write',
-        name: 'reviewwrite',
+        path: "write",
+        name: "reviewwrite",
         beforeEnter: onlyAuthUser,
-        component: () => import(/* webpackChunkName: "review" */ '../components/review/ReviewWrite')
+        component: () =>
+          import(/* webpackChunkName: "review" */ "../components/review/ReviewWrite"),
       },
       {
-        path: 'modify/:modifyId',
-        name: 'reviewmodify',
+        path: "modify/:modifyId",
+        name: "reviewmodify",
         beforeEnter: onlyAuthUser,
-        component: () => import(/* webpackChunkName: "review" */ '../components/review/ReviewModify')
+        component: () =>
+          import(/* webpackChunkName: "review" */ "../components/review/ReviewModify"),
       },
     ],
   },
   {
-    path: '/mypage/:memberId',
-    name: 'mypage',
-    redirect: '/mypage/:memberId/main',
-    component: () => import(/* webpackChunkName: "mypage" */ '../views/MypageView.vue'),
+    path: "/mypage/:memberId",
+    name: "mypage",
+    redirect: "/mypage/:memberId/main",
+    component: () => import(/* webpackChunkName: "mypage" */ "../views/MypageView.vue"),
     children: [
       {
-        path: 'main',
-        name: 'mypagemain',
-        component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/MypageMain.vue'),
+        path: "main",
+        name: "mypagemain",
+        component: () =>
+          import(/* webpackChunkName: "mypage" */ "../components/mypage/MypageMain.vue"),
       },
       {
-        path: 'favoplan',
-        name: 'favoplan',
-        redirect: '/mypage/:memberId/favoplan/list',
-        component: () => import(/* webpackChunkName: "mypage" */ '../views/FavoPlanView.vue'),
+        path: "myplan",
+        name: "myplan",
+        redirect: "/mypage/:memberId/myplan/list",
+        component: () => import(/* webpackChunkName: "mypage" */ "../views/MyplanView.vue"),
         children: [
           {
-            path: 'list',
-            name: 'planlist',
-            component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/favoplan/FavoPlanList'),
+            path: "list",
+            name: "myplanlist",
+            component: () =>
+              import(/* webpackChunkName: "mypage" */ "../components/mypage/myplan/MyPlanList"),
+          },
+          {
+            path: "detail",
+            name: "myplandetail",
+            component: () =>
+              import(/* webpackChunkName: "mypage" */ "../components/mypage/myplan/MyPlanDetail"),
           },
         ],
       },
       {
-        path: 'favoattraction',
-        name: 'favoattraction',
-        redirect: '/mypage/:memberId/favoattraction/list',
-        component: () => import(/* webpackChunkName: "mypage" */ '../views/FavoAttractionView.vue'),
+        path: "favoplan",
+        name: "favoplan",
+        redirect: "/mypage/:memberId/favoplan/list",
+        component: () => import(/* webpackChunkName: "mypage" */ "../views/FavoPlanView.vue"),
         children: [
           {
-            path: 'list',
-            name: 'favoattractionlist',
-            component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/favoattraction/FavoAttractionList'),
+            path: "list",
+            name: "planlist",
+            component: () =>
+              import(/* webpackChunkName: "mypage" */ "../components/mypage/favoplan/FavoPlanList"),
+          },
+        ],
+      },
+      {
+        path: "favoattraction",
+        name: "favoattraction",
+        redirect: "/mypage/:memberId/favoattraction/list",
+        component: () => import(/* webpackChunkName: "mypage" */ "../views/FavoAttractionView.vue"),
+        children: [
+          {
+            path: "list",
+            name: "favoattractionlist",
+            component: () =>
+              import(
+                /* webpackChunkName: "mypage" */ "../components/mypage/favoattraction/FavoAttractionList"
+              ),
           },
         ],
       },
     ],
   },
   {
-    path: '/myplan',
-    name: 'myplan',
-    redirect: '/myplan/write',
-    component: () => import(/* webpackChunkName: "mypage" */ '../views/MyplanView.vue'),
-    children: [
-      {
-        path: 'list',
-        name: 'myplanlist',
-        component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/myplan/MyPlanList'),
-      },
-      {
-        path: 'detail',
-        name: 'myplandetail',
-        component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/myplan/MyPlanDetail'),
-      },
-      {
-        path: 'write',
-        name: 'myplanwrite',
-        beforeEnter: onlyAuthUser,
-        component: () => import(/* webpackChunkName: "mypage" */ '../components/mypage/myplan/MyPlanWrite'),
-      }
-    ],
+    path: "/plan/write",
+    name: "myplanwrite",
+    beforeEnter: onlyAuthUser,
+    component: () =>
+      import(/* webpackChunkName: "mypage" */ "../components/mypage/myplan/MyPlanWrite"),
   },
-]
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
