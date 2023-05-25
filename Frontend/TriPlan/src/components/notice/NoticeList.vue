@@ -100,6 +100,8 @@ export default {
       getNoticeList(
         { word: val },
         ({ data }) => {
+          this.currentPage = 1;
+          this.setPgno(1);
           this.notices = data.notices;
         },
         (err) => {
@@ -157,6 +159,9 @@ export default {
   },
   updated() {
     this.changeActive();
+  },
+  destroyed() {
+    this.setPgno(1);
   },
   watch: {
     selected(val) {
