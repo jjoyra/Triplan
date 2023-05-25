@@ -2,7 +2,9 @@
   <div id="app">
     <the-header></the-header>
     <router-view />
-    <the-footer></the-footer>
+    <template v-if="!isWrite">
+      <the-footer></the-footer>
+    </template>
   </div>
 </template>
 
@@ -11,9 +13,20 @@ import TheHeader from "@/components/common/TheHeader.vue";
 import TheFooter from "@/components/common/TheFooter.vue";
 
 export default {
+  data() {
+    return {
+      isWrite: false,
+    };
+  },
   components: {
     TheHeader,
     TheFooter,
+  },
+  watch: {
+    $route(to) {
+      if (to.path === "/myplan/write") this.isWrite = true;
+      else this.isWrite = false;
+    },
   },
 };
 </script>

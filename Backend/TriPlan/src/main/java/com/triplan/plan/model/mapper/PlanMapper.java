@@ -18,7 +18,7 @@ public interface PlanMapper {
     void registMemberPlan(Map<String, Object> members) throws Exception;
 
     // 코스 리스트 추가
-    void registCourseList(List<CourseListDto> courseList) throws Exception;
+    void registCourseList(Map<String, Object> courseList) throws Exception;
 
     // 2. 플랜 수정
 //    void modifyPlan(PlanDto planDto) throws Exception;

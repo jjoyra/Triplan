@@ -8,23 +8,33 @@
     <insert id="registPlan" parameterType="planDto">
         insert into triplan.plan(title, start_date, end_date, thumbnail_url)
         values (#{title}, #{startDate}, #{endDate}, #{thumbnailUrl});
+        <selectKey resultType="int" keyProperty="planId" order="AFTER">
+            select last_insert_id()
+        </selectKey>
     </insert>
 
-    <!-- 플랜 멤버 -->
+    <!-- 플랜 멤버(작성자) -->
     <insert id="registMemberPlan" parameterType="map">
         insert into triplan.member_plan_list(member_id, plan_id, role)
-        values
-        <foreach collection="memberList" item="member" separator=" , ">
-            (#{member.member_id}, #{member.plan_id}, #{member.role})
-        </foreach>
+        values(#{owner}, #{planId}, 0)
     </insert>
+
+    <!-- 플랜 멤버(멤버 추가) -->
+<!--    <insert id="registMemberPlan" parameterType="map">-->
+<!--        insert into triplan.member_plan_list(member_id, plan_id, role)-->
+<!--        values-->
+<!--        <foreach collection="memberList" item="member" separator=" , ">-->
+<!--            (#{member.member_id}, #{member.plan_id}, 0)-->
+<!--        </foreach>-->
+<!--    </insert>-->
+
 
     <!-- 코스 리스트 -->
     <insert id="registCourseList" parameterType="map">
-        insert into triplan.course_list(plan_id, content_id, `order`, comment)
+        insert into triplan.course_list(plan_id, content_id, `order`)
         values
         <foreach collection="courseList" item="course" separator=" , ">
-            (#{course.planId}, #{course.contentId}, #{course.order}, #{course.comment})
+            (#{planId}, #{course.contentId}, #{course.order})
         </foreach>
     </insert>
 

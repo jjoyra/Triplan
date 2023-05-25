@@ -36,7 +36,6 @@ export default {
       }
     },
     peekList() {
-      console.log(this.attraction);
       if (this.attractions.length) {
         let obj = {};
         this.attractions.forEach((attraction) => {
@@ -125,20 +124,20 @@ export default {
     },
     openOverlay(peek) {
       this.content = `<div class="wrap">
-                <div class="info">
-                    <div class="title">
-                        ${peek.title}
-                    </div>
-                    <div class="body">
-                        <div class="img">
-                            <img src="${peek.firstImage}" width="73" height="70" onerror="this.style.display='none'">
+                        <div class="overlay">
+                          <div class="title">
+                            ${peek.title}
                           </div>
-                        <div class="desc">
-                            <div class="ellipsis">${peek.addr1}</div>
-                      </div>
-                    </div>'
-                </div>
-            </div>`;
+                          <div class="body">
+                            <div class="img">
+                              <img src="${peek.firstImage}" width="73" height="70" onerror="this.style.display='none'">
+                            </div>
+                            <div class="desc">
+                              <div class="ellipsis">${peek.addr1}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>`;
 
       this.overlay.setContent(this.content);
       this.overlay.setPosition(peek.latlng);
@@ -161,7 +160,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 #map {
   width: 100%;
   height: 560px;
@@ -188,7 +187,7 @@ export default {
   padding: 0;
   margin: 0;
 }
-.wrap .info {
+.wrap .overlay {
   width: 286px;
   height: 120px;
   border-radius: 5px;
@@ -197,17 +196,17 @@ export default {
   overflow: hidden;
   background: #fff;
 }
-.wrap .info:nth-child(1) {
+.wrap .overlay:nth-child(1) {
   border: 0;
   box-shadow: 0px 1px 2px #888;
 }
-.info .title {
+.overlay .title {
   padding: 5px 0 0 10px;
   height: 30px;
   font-size: 18px;
   font-weight: bold;
 }
-.info .close {
+.overlay .close {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -216,14 +215,14 @@ export default {
   height: 17px;
   background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png");
 }
-.info .close:hover {
+.overlay .close:hover {
   cursor: pointer;
 }
-.info .body {
+.overlay .body {
   position: relative;
   overflow: hidden;
 }
-.info .desc {
+.overlay .desc {
   position: relative;
   margin: 13px 0 0 90px;
   height: 75px;
@@ -238,7 +237,7 @@ export default {
   color: #888;
   margin-top: -2px;
 }
-.info .img {
+.overlay .img {
   position: absolute;
   top: 6px;
   left: 5px;
@@ -247,7 +246,7 @@ export default {
   color: #888;
   overflow: hidden;
 }
-.info:after {
+.overlay:after {
   content: "";
   position: absolute;
   margin-left: -12px;
@@ -257,7 +256,7 @@ export default {
   height: 12px;
   background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png");
 }
-.info .link {
+.overlay .link {
   color: #5085bb;
 }
 </style>
