@@ -19,6 +19,13 @@
         </div>
         <div>
           <img :src="attraction.firstImage" alt="" />
+          <b-button
+            class="add-btn"
+            variant="outline-secondary"
+            @click="addPlan(attraction)"
+            v-show="isWrite"
+            >추가</b-button
+          >
         </div>
       </b-list-group-item>
     </div>
@@ -36,7 +43,13 @@ const attractionStore = "attractionStore";
 export default {
   name: "AttractionList",
   data() {
-    return {};
+    return {
+      isWrite: false,
+      planAttractionInfo: {
+        attractions: [],
+        contentIds: [],
+      },
+    };
   },
   components: {
     AttractionDetailModal,
@@ -61,6 +74,9 @@ export default {
   },
   created() {
     this.CLEAR_ATTRACTION_LIST();
+    console.log(this.$route.path);
+    if (this.$route.path === "/myplan/write") this.isWrite = true;
+    else this.isWrite = false;
   },
   methods: {
     ...mapMutations(attractionStore, ["CLEAR_ATTRACTION_LIST"]),
@@ -72,6 +88,11 @@ export default {
     clickedAttraction(contentId) {
       this.$emit("clicked-attraction", contentId);
       // this.detailAttraction(contentId);
+    },
+    addPlan(attraction) {
+      this.planAttractionInfo.attractions.push(attraction);
+      this.planAttractionInfo.contentIds.push(attraction.contentId);
+      this.$emit("add-plan-attraction", this.planAttractionInfo);
     },
   },
 };
@@ -98,7 +119,6 @@ a {
 
 .list-wrap {
   width: 100%;
-  height: 560px;
   overflow: auto;
 }
 
@@ -129,6 +149,9 @@ span {
 
 img {
   width: 120px;
+}
+
+.add-plan-btn {
 }
 
 @media (max-width: 1199px) {
