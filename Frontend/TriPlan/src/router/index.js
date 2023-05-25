@@ -191,7 +191,7 @@ const routes = [
               import(/* webpackChunkName: "mypage" */ "../components/mypage/myplan/MyPlanList"),
           },
           {
-            path: "detail",
+            path: "detail/:planId",
             name: "myplandetail",
             component: () =>
               import(/* webpackChunkName: "mypage" */ "../components/mypage/myplan/MyPlanDetail"),

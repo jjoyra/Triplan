@@ -7,9 +7,6 @@
 <script>
 import RankingList from "@/components/ranking/RankingList.vue";
 import { getUserPlanList } from "@/api/plan";
-import { mapState } from "vuex";
-
-const memberStore = "memberStore";
 
 export default {
   name: "MyPlanList",
@@ -21,19 +18,11 @@ export default {
   components: {
     RankingList,
   },
-  computed: {
-    ...mapState(memberStore, ["userInfo"]),
-  },
   created() {
-    this.planList = getUserPlanList(
-      this.userInfo.memberId,
-      ({ data }) => {
-        console.log(data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    getUserPlanList(this.$route.params.memberId, ({ data }) => {
+      this.planList = data;
+      // console.log(data);
+    });
   },
 };
 </script>

@@ -19,6 +19,7 @@
             title="마이 플랜"
             :isMore="true"
             :link="`/mypage/${memberId}/myplan`"
+            :planList="planList"
             :bg="false"
             :isPublic="pageUserInfo.openMyplan === 1"
             :isMyInfo="userInfo && userInfo.memberId === memberId ? true : false"
@@ -53,6 +54,7 @@
 
 <script>
 import { getOtherMemberInfo } from "@/api/member";
+import { getUserPlanList } from "@/api/plan";
 import { mapState, mapActions } from "vuex";
 import RankingList from "../ranking/RankingList.vue";
 import UserInfoItem from "./UserInfoItem.vue";
@@ -65,6 +67,7 @@ export default {
     return {
       memberId: "",
       pageUserInfo: null,
+      planList: [],
     };
   },
   components: {
@@ -84,6 +87,12 @@ export default {
     console.log("userinfo", this.userInfo);
     this.memberId = this.$route.params.memberId;
     this.getPageUserInfo();
+    getUserPlanList(this.memberId, ({ data }) => {
+      for (let i = 0; i < 3; i++) {
+        this.planList.push(data[i]);
+      }
+      // console.log(data);
+    });
   },
   methods: {
     ...mapActions(memberStore, ["getUserInfo"]),

@@ -10,12 +10,14 @@
         </template>
       </div>
       <template v-if="isPublic || isMyInfo">
-        <template v-if="planList.length !== 0">
+        <template v-if="planList !== undefined && planList.length !== 0">
           <div class="ranking-item-wrap web">
             <!-- <ranking-item-web v-for="item in items" :key="item"></ranking-item-web> -->
-            <ranking-item-web></ranking-item-web>
-            <ranking-item-web></ranking-item-web>
-            <ranking-item-web></ranking-item-web>
+            <ranking-item-web
+              v-for="(plan, index) in planList"
+              :key="index"
+              :plan="plan"
+            ></ranking-item-web>
           </div>
 
           <div class="ranking-item-wrap mobile">
