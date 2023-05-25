@@ -1,7 +1,5 @@
 <template>
-  <b-container>
-    <ranking-list :planList="planList" :isPublic="true"></ranking-list>
-  </b-container>
+  <ranking-list :planList="planList" :isPublic="true"></ranking-list>
 </template>
 
 <script>

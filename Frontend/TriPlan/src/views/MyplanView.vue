@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <div class="h1-wrap">
       <h1>마이 플랜</h1>
     </div>

@@ -86,6 +86,7 @@ img {
   flex-shrink: 0;
   width: 360px;
   height: 180px;
+  object-fit: cover;
 }
 
 .card-text {

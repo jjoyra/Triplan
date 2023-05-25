@@ -1,7 +1,9 @@
 <template>
   <div>
-    <h2>{{ plan.title }}</h2>
-
+    <div class="title-wrap">
+      <h2>{{ plan.title }}</h2>
+      <div class="date">시작일 : {{ plan.startDate }} ~ 종료일 : {{ plan.startDate }}</div>
+    </div>
     <div class="article-wrap">
       <h5>Course</h5>
       <div class="attraction-review" v-if="courseList.length !== 0">
@@ -50,8 +52,32 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 h5 {
   color: #33a3ff;
+}
+
+.date {
+  color: #8d9193;
+  margin-bottom: 1rem;
+}
+
+.article-wrap div ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card img[data-v-64922605] {
+  width: 30%;
+  height: 215px;
+  object-fit: cover;
+}
+
+.title-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

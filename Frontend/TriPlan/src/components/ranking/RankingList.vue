@@ -84,12 +84,14 @@ export default {
 .fluid-wrap {
   position: relative;
 }
-.content-wrap {
+.content-wrap[data-v-4f285e1b] {
   margin-bottom: 2rem;
   padding: 2rem 0;
   position: relative;
   z-index: 1;
+  width: 1106px;
 }
+
 .fluid-bg {
   width: 100vw;
   height: 100%;
@@ -121,6 +123,7 @@ export default {
   display: flex;
   flex-direction: row;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .mobile {
@@ -143,6 +146,7 @@ export default {
     display: flex;
     flex-direction: row;
     gap: 10px;
+    flex-wrap: wrap;
   }
 }
 </style>
