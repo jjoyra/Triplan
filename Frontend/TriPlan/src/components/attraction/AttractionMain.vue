@@ -51,6 +51,10 @@ export default {
   height: 560px;
 }
 
+.list-wrap {
+  height: 560px;
+}
+
 @media (max-width: 950px) {
   #map {
     height: 453px;
