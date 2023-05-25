@@ -52,6 +52,7 @@
     <select id="getUserPlanList" parameterType="String" resultType="planDto">
         select p.*
         from triplan.plan p join triplan.member_plan_list memberPlan
+        on p.plan_id = memberPlan.plan_id
         where member_id = #{memberId};
     </select>
     <!-- 5. 플랜 상세보기 -->
