@@ -9,19 +9,24 @@
           ></router-link>
         </template>
       </div>
-      <div class="ranking-item-wrap web">
-        <!-- <ranking-item-web v-for="item in items" :key="item"></ranking-item-web> -->
-        <ranking-item-web></ranking-item-web>
-        <ranking-item-web></ranking-item-web>
-        <ranking-item-web></ranking-item-web>
-      </div>
+      <template v-if="isPublic || isMyInfo">
+        <div class="ranking-item-wrap web">
+          <!-- <ranking-item-web v-for="item in items" :key="item"></ranking-item-web> -->
+          <ranking-item-web></ranking-item-web>
+          <ranking-item-web></ranking-item-web>
+          <ranking-item-web></ranking-item-web>
+        </div>
 
-      <div class="ranking-item-wrap mobile">
-        <!-- <ranking-item-mobile v-for="item in items" :key="item"></ranking-item-mobile> -->
-        <ranking-item-mobile></ranking-item-mobile>
-        <ranking-item-mobile></ranking-item-mobile>
-        <ranking-item-mobile></ranking-item-mobile>
-      </div>
+        <div class="ranking-item-wrap mobile">
+          <!-- <ranking-item-mobile v-for="item in items" :key="item"></ranking-item-mobile> -->
+          <ranking-item-mobile></ranking-item-mobile>
+          <ranking-item-mobile></ranking-item-mobile>
+          <ranking-item-mobile></ranking-item-mobile>
+        </div>
+      </template>
+      <template v-else>
+        <div>비공개 유저입니다.</div>
+      </template>
     </div>
     <div :class="{ 'fluid-bg': bg }"></div>
   </div>
@@ -42,6 +47,8 @@ export default {
     bg: Boolean,
     isMore: Boolean,
     link: String,
+    isPublic: Boolean,
+    isMyInfo: Boolean,
   },
   data() {
     return {
