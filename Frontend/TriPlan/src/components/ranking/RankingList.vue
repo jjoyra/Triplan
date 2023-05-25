@@ -84,7 +84,7 @@ export default {
 .fluid-wrap {
   position: relative;
 }
-.content-wrap[data-v-4f285e1b] {
+.content-wrap {
   margin-bottom: 2rem;
   padding: 2rem 0;
   position: relative;
