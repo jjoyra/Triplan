@@ -2,8 +2,8 @@ import { apiInstance } from "./http";
 
 const api = apiInstance();
 
-function getAttractionList(param, success, fail) {
-  api.get(`/attraction`, { params: param }).then(success).catch(fail);
+async function getAttractionList(param, success, fail) {
+  await api.get(`/attraction`, { params: param }).then(success).catch(fail);
 }
 
 function updateAttractionRecommentCnt(contentid, success, fail) {
