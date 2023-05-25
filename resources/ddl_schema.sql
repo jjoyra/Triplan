@@ -120,6 +120,7 @@ CREATE TABLE IF NOT EXISTS `review` (
     `companion` INT NOT NULL DEFAULT 0 COMMENT '동행자(0: 혼자, 1: 친구와, 2: 연인과, 3: 가족과, 4: 부모님과, 5: 배우자와, 6: 반려동물과)',
     `is_total_price` BOOLEAN NOT NULL DEFAULT TRUE,
     `price` INT NOT NULL DEFAULT 0 COMMENT '여행 경비',
+    `thumbnail_url` VARCHAR(1000) COMMENT '썸네일 이미지',
     PRIMARY KEY (`review_id`, `member_id`, `plan_id`),
     CONSTRAINT `FK_member_TO_review_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`member_id`) ON UPDATE CASCADE,
 	CONSTRAINT `FK_plan_TO_review_1` FOREIGN KEY (`plan_id`) REFERENCES `plan` (`plan_id`) ON UPDATE CASCADE
