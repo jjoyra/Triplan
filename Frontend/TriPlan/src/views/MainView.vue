@@ -16,18 +16,27 @@
       >
         <!-- Text slides with image -->
         <b-carousel-slide
-          caption="First slide"
-          text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-          img-src="https://picsum.photos/1024/480/?image=52"
+          height="480"
+          caption="신안 증도"
+          text="한국의 나트랑이라고 소개하고 싶은 신안의 증도. 세계에서 가장 품질이 좋다는 천일염의 고장입니다."
+          img-src="https://i.ibb.co/n3dD3Qm/fa8573ce-ede1-44d2-9496-ae0548c04490.jpg"
+          alt="65076bb1-ff62-45e9-9e66-a7a381d076a8"
         ></b-carousel-slide>
 
         <!-- Slides with custom text -->
-        <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
-          <h1>Hello world!</h1>
+        <b-carousel-slide
+          height="480"
+          caption="신두리 해안사구"
+          img-src="https://i.ibb.co/D1MF9nB/65076bb1-ff62-45e9-9e66-a7a381d076a8.jpg"
+          alt="65076bb1-ff62-45e9-9e66-a7a381d076a8"
+        >
         </b-carousel-slide>
 
         <!-- Slides with image only -->
-        <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58"></b-carousel-slide>
+        <b-carousel-slide
+          height="480"
+          img-src="https://i.ibb.co/n3dD3Qm/fa8573ce-ede1-44d2-9496-ae0548c04490.jpg"
+        ></b-carousel-slide>
 
         <!-- Slides with img slot -->
         <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
@@ -37,18 +46,10 @@
               class="d-block img-fluid w-100"
               width="1024"
               height="480"
-              src="https://picsum.photos/1024/480/?image=55"
+              src="https://i.ibb.co/D1MF9nB/65076bb1-ff62-45e9-9e66-a7a381d076a8.jpg"
               alt="image slot"
             />
           </template>
-        </b-carousel-slide>
-
-        <!-- Slide with blank fluid image to maintain slide aspect ratio -->
-        <b-carousel-slide caption="Blank Image" img-blank img-alt="Blank image">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eros felis,
-            tincidunt a tincidunt eget, convallis vel est. Ut pellentesque ut lacus vel interdum.
-          </p>
         </b-carousel-slide>
       </b-carousel>
     </b-container>
