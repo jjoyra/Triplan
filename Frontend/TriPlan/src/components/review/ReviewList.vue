@@ -28,11 +28,7 @@
           <favo-button></favo-button>
           <b-row no-gutters>
             <b-col class="img-wrap">
-              <b-card-img
-                src="https://placekitten.com/300/300"
-                alt="Image"
-                class="rounded-0"
-              ></b-card-img>
+              <b-card-img src="https://placekitten.com/300/300" alt="Image"></b-card-img>
             </b-col>
             <b-col class="content-wrap">
               <b-card-body class="content-body" :title="data.item.title">
@@ -43,9 +39,14 @@
                       {{ companionList[data.item.companion] }} {{ data.item.peopleCnt }}인
                     </div>
                     <div>
-                      <b-icon class="icon" icon="calendarWeek"></b-icon> 22.03.22 ~ 22.05.23
+                      <b-icon class="icon" icon="calendarWeek"></b-icon>
+                      {{ data.item.startDate | dateFormat }} ~ {{ data.item.endDate | dateFormat }}
                     </div>
-                    <div><b-icon class="icon" icon="coin"></b-icon> {{ data.item.price }}</div>
+                    <div>
+                      <b-icon class="icon" icon="coin"></b-icon>
+                      {{ data.item.totalPrice ? "총" : "인당" }}
+                      {{ data.item.price.toLocaleString() }} 원
+                    </div>
                     <div v-html="makeStarIcon(data.item.rating)"></div>
                     <div class="content-data">{{ data.item.content | substrText }}</div>
                   </div>
@@ -57,7 +58,7 @@
                       </div>
                       <div>
                         <b-icon class="icon" icon="calendarDate"></b-icon>
-                        {{ data.item.modify_date | dateFormat }}
+                        {{ data.item.modifyDate | dateFormat }}
                       </div>
                     </div>
                     <div class="cnt-info">
@@ -221,6 +222,7 @@ export default {
 
 <style scoped>
 .review-card-wrap {
+  border: 0;
   position: relative;
   margin-right: 12rem;
 }
