@@ -24,7 +24,7 @@ export default {
   },
   watch: {
     $route(to) {
-      if (to.path === "/myplan/write") this.isWrite = true;
+      if (to.path === "/plan/write") this.isWrite = true;
       else this.isWrite = false;
     },
   },
