@@ -40,9 +40,7 @@
           <div v-if="userInfo" class="user-memu-wrap">
             <li class="nav-item">
               <b-icon icon="CalendarPlus"></b-icon>
-              <router-link class="user-menu-plan" to="`/mypage/${userInfo.memberId}/plan/write`"
-                >플랜 만들기</router-link
-              >
+              <router-link class="user-menu-plan" to="`/plan/write`">플랜 만들기</router-link>
             </li>
             <li class="nav-item">
               <b-icon icon="BoxArrowRight"></b-icon>
@@ -108,7 +106,7 @@
               </b-dropdown-item>
               <b-dropdown-divider></b-dropdown-divider>
               <b-dropdown-item>
-                <b-nav-item :to="`/myplan`" exact exact-active-class="active"
+                <b-nav-item :to="`/plan/write`" exact exact-active-class="active"
                   >플랜 만들기</b-nav-item
                 >
               </b-dropdown-item>
