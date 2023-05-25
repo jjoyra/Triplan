@@ -6,6 +6,7 @@ import com.triplan.plan.model.mapper.PlanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,16 +19,16 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public void registPlan(PlanDto planDto) throws Exception {
         planMapper.registPlan(planDto);
-    }
+        System.out.println(planDto.getPlanId());
 
-    @Override
-    public void registMemberPlan(Map<String, Object> members) throws Exception {
-        planMapper.registMemberPlan(members);
-    }
+        Map<String, Object> map = new HashMap<>();
+        map.put("owner", planDto.getMembers().get("owner"));
+        map.put("planId",planDto.getPlanId());
+        map.put("courseList", planDto.getCourseList());
 
-    @Override
-    public void registCourseList(List<CourseListDto> courseList) throws Exception {
-        planMapper.registCourseList(courseList);
+        planMapper.registMemberPlan(map);
+
+        planMapper.registCourseList(map);
     }
 
     @Override
@@ -36,37 +37,27 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public PlanDto getPlan(int planId) throws Exception {
-        return planMapper.getPlan(planId);
-    }
-
-    @Override
     public List<CourseListDto> getCourseList(int planId) throws Exception {
         return planMapper.getCourseList(planId);
     }
 
     @Override
-    public String getPlanOwner(int planId) throws Exception {
-        return planMapper.getPlanOwner(planId);
-    }
+    public PlanDto getPlanDetail(int planId) throws Exception {
+        PlanDto planDto = planMapper.getPlan(planId);
+        planDto.setCourseList(planMapper.getCourseList(planId));
 
-    @Override
-    public List<String> getPlanMembers(int planId) throws Exception {
-        return planMapper.getPlanMembers(planId);
-    }
+        Map<String, Object> map = new HashMap<>();
+        map.put("owner", planMapper.getPlanOwner(planId));
+        map.put("member", planMapper.getPlanMembers(planId));
 
-    @Override
-    public void deletePlanMember(int planId) throws Exception {
-        planMapper.deletePlanMember(planId);
-    }
-
-    @Override
-    public void deletePlanCourse(int planId) throws Exception {
-        planMapper.deletePlanCourse(planId);
+        planDto.setMembers(map);
+        return planDto;
     }
 
     @Override
     public void deletePlan(int planId) throws Exception {
+        planMapper.deletePlanMember(planId);
+        planMapper.deletePlanCourse(planId);
         planMapper.deletePlan(planId);
     }
 }

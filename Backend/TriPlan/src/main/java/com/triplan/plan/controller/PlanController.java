@@ -27,9 +27,9 @@ public class PlanController {
     @ApiOperation(value = "플랜 작성", notes = "플랜을 작성합니다.")
     public ResponseEntity<?> registPlan(@RequestBody @ApiParam(value = "플랜 Dto")PlanDto planDto) {
         try {
+            System.out.println(planDto);
             planService.registPlan(planDto);
-            planService.registMemberPlan(planDto.getMembers());
-            planService.registCourseList(planDto.getCourseList());
+
             return new ResponseEntity<Void>(HttpStatus.CREATED);
 
         } catch (Exception e) {
@@ -52,14 +52,7 @@ public class PlanController {
     @ApiOperation(value = "플랜 상세보기", notes = "해당 플랜의 상세 정보를 조회합니다.")
     public ResponseEntity<?> getPlanDetail(@PathVariable("planId") int planId) {
         try {
-            PlanDto planDto = planService.getPlan(planId);
-            planDto.setCourseList(planService.getCourseList(planId));
-
-            Map<String, Object> map = new HashMap<>();
-            map.put("owner", planService.getPlanOwner(planId));
-            map.put("member", planService.getPlanMembers(planId));
-
-            planDto.setMembers(map);
+            PlanDto planDto = planService.getPlanDetail(planId);
 
             return new ResponseEntity<PlanDto>(planDto, HttpStatus.OK);
         } catch (Exception e) {
@@ -71,8 +64,6 @@ public class PlanController {
     @ApiOperation(value = "플랜 삭제하기", notes = "해당 플랜을 삭제합니다.")
     public ResponseEntity<?> deletePlan(@PathVariable("planId") int planId) {
         try {
-            planService.deletePlanMember(planId);
-            planService.deletePlanCourse(planId);
             planService.deletePlan(planId);
 
             return new ResponseEntity<Void>(HttpStatus.OK);
