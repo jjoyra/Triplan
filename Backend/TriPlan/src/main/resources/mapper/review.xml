@@ -17,6 +17,7 @@
 		<result column="rating" property="rating"/>
 		<result column="companion" property="companion"/>
 		<result column="price" property="price"/>
+		<result column="is_total_price" property="isTotalPrice"/>
 		<result column="people_cnt" property="peopleCnt"/>
 		<result column="start_date" property="startDate"/>
 		<result column="end_date" property="endDate"/>

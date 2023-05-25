@@ -18,6 +18,7 @@ public class ReviewDto {
     private int rating;
     private int companion;
     private int price;
+    private boolean isTotalPrice;
 
     public int getReviewId() {
         return reviewId;
@@ -138,26 +139,29 @@ public class ReviewDto {
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
+    
+    public boolean isTotalPrice() {
+		return isTotalPrice;
+	}
 
-    @Override
-    public String toString() {
-        return "ReviewDto{" +
-                "reviewId=" + reviewId +
-                ", memberId='" + memberId + '\'' +
-                ", peopleCnt=" + peopleCnt +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", recommendCnt=" + recommendCnt +
-                ", hit=" + hit +
-                ", createDate=" + createDate +
-                ", modifyDate=" + modifyDate +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", planId=" + planId +
-                ", rating=" + rating +
-                ", companion=" + companion +
-                ", price=" + price +
-                '}';
-    }
+	public void setTotalPrice(boolean isTotalPrice) {
+		this.isTotalPrice = isTotalPrice;
+	}
+
+	@Override
+	public String toString() {
+		return "ReviewDto [reviewId=" + reviewId + ", memberId=" + memberId + ", peopleCnt=" + peopleCnt + ", title="
+				+ title + ", content=" + content + ", recommendCnt=" + recommendCnt + ", hit=" + hit + ", createDate="
+				+ createDate + ", modifyDate=" + modifyDate + ", startDate=" + startDate + ", endDate=" + endDate
+				+ ", planId=" + planId + ", rating=" + rating + ", companion=" + companion + ", price=" + price
+				+ ", isTotalPrice=" + isTotalPrice + ", getReviewId()=" + getReviewId() + ", getMemberId()="
+				+ getMemberId() + ", getTitle()=" + getTitle() + ", getContent()=" + getContent()
+				+ ", getRecommendCnt()=" + getRecommendCnt() + ", getHit()=" + getHit() + ", getCreateDate()="
+				+ getCreateDate() + ", getModifyDate()=" + getModifyDate() + ", getPlanId()=" + getPlanId()
+				+ ", getRating()=" + getRating() + ", getCompanion()=" + getCompanion() + ", getPrice()=" + getPrice()
+				+ ", getPeopleCnt()=" + getPeopleCnt() + ", getStartDate()=" + getStartDate() + ", getEndDate()="
+				+ getEndDate() + ", isTotalPrice()=" + isTotalPrice() + ", getClass()=" + getClass() + ", hashCode()="
+				+ hashCode() + ", toString()=" + super.toString() + "]";
+	}
 
 }
