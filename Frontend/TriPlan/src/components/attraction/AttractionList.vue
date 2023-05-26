@@ -133,12 +133,8 @@ a {
   background: #fafafa;
 }
 
-span {
-  color: #8d9193;
-  padding: 10px 0px;
-}
-
 .searchEmpty {
+  color: #8d9193;
   padding: 30px 0px;
   width: 100%;
   height: 560px;

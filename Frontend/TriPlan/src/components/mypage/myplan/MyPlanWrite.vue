@@ -8,40 +8,42 @@
       ></attraction-list>
     </div>
     <div class="side-wrap write-plan">
-      <b-form @submit="onPlanSubmit">
-        <b-row>
+      <b-form @submit="onPlanSubmit" class="plan-form">
+        <b-row class="date-picker-wrap">
           <b-col
-            ><b-form-datepicker
-              v-model="form.startDate"
-              placeholder="연도 . 월 . 일"
-            ></b-form-datepicker
+            ><label class="date">여행 시작일</label>
+            <b-form-datepicker v-model="form.startDate" placeholder="연도.월.일"></b-form-datepicker
           ></b-col>
           <b-col
-            ><b-form-datepicker
-              v-model="form.endDate"
-              placeholder="연도 . 월 . 일"
-            ></b-form-datepicker
+            ><label class="date">여행 종료일</label>
+            <b-form-datepicker v-model="form.endDate" placeholder="연도.월.일"></b-form-datepicker
           ></b-col>
         </b-row>
-        <div>
-          <b-form-input v-model="form.title" placeholder="플랜 이름을 작성해주세요."></b-form-input>
-          <b-button type="submit">등록</b-button>
-        </div>
-        <div class="plan-list">
-          <b-card
-            v-for="(attraction, index) in planAttractions"
-            :key="index"
-            :img-src="attraction.firstImage"
-            img-alt="Card image"
-            img-left
-            class="mb-3"
-          >
-            <b-card-text>
-              {{ attraction.title }}
-            </b-card-text>
-          </b-card>
-        </div>
+        <b-row>
+          <b-col cols="10"
+            ><b-form-input
+              v-model="form.title"
+              placeholder="플랜 이름을 작성해주세요."
+            ></b-form-input
+          ></b-col>
+          <b-col><b-button type="submit" class="btn btn-primary">등록</b-button></b-col>
+        </b-row>
       </b-form>
+      <div v-if="planAttractions && planAttractions.length != 0" class="plan-list">
+        <b-card
+          v-for="(attraction, index) in planAttractions"
+          :key="index"
+          :img-src="attraction.firstImage"
+          img-alt="Card image"
+          img-left
+          class="mb-3"
+        >
+          <b-card-text>
+            {{ attraction.title }}
+          </b-card-text>
+        </b-card>
+      </div>
+      <div v-else class="courseEmpty"><span>플랜 여행지를 추가해주세요.</span></div>
     </div>
     <kakao-map :attractions="attractions" :peekList="peekList"></kakao-map>
   </div>
@@ -143,6 +145,35 @@ export default {
   border-style: solid hidden;
 }
 
+.date-picker-wrap {
+  padding: 0px 15px;
+  gap: 10px;
+}
+
+.date {
+  color: #51abf3;
+  font-weight: 500;
+}
+
+.courseEmpty {
+  color: #8d9193;
+  padding: 30px 0px;
+  width: 100%;
+  height: 560px;
+  text-align: center;
+  border-top: 0.3px rgba(0, 0, 0, 0.125);
+  border-style: solid hidden;
+}
+
+.btn:not(:disabled):not(.disabled) {
+  cursor: pointer;
+  height: calc(1.5em + 0.75rem + 2px);
+}
+
+.col {
+  padding: 0px;
+}
+
 .side-wrap {
   background-color: #fff;
   z-index: 21;
@@ -165,16 +196,21 @@ export default {
 .plan-list {
   border-top: 0.3px rgba(0, 0, 0, 0.125);
   border-style: solid hidden;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 270px);
+  padding-top: 30px;
 }
 
-.card {
-  /* width: 70%; */
+.plan-form {
+  padding: 15px 0px;
 }
 
 img {
   width: 220px;
   height: 50%;
+}
+
+.form-control {
+  margin-bottom: 20px;
 }
 
 #map {
