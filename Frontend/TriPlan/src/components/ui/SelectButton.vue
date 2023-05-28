@@ -87,6 +87,15 @@ export default {
   border-color: #51abf3;
 }
 
+.col {
+  padding: 0px;
+}
+
+.row {
+  padding: 0px 15px;
+  gap: 10px;
+}
+
 @media (max-width: 950px) {
   .btn-group,
   .btn-group-vertical {

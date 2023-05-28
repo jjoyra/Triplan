@@ -12,15 +12,23 @@
         <b-row class="date-picker-wrap">
           <b-col
             ><label class="date">여행 시작일</label>
-            <b-form-datepicker v-model="form.startDate" placeholder="연도.월.일"></b-form-datepicker
+            <b-form-datepicker
+              v-model="form.startDate"
+              placeholder="연도.월.일"
+              :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+            ></b-form-datepicker
           ></b-col>
           <b-col
             ><label class="date">여행 종료일</label>
-            <b-form-datepicker v-model="form.endDate" placeholder="연도.월.일"></b-form-datepicker
+            <b-form-datepicker
+              v-model="form.endDate"
+              placeholder="연도.월.일"
+              :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+            ></b-form-datepicker
           ></b-col>
         </b-row>
         <b-row>
-          <b-col cols="10"
+          <b-col cols="9"
             ><b-form-input
               v-model="form.title"
               placeholder="플랜 이름을 작성해주세요."
@@ -146,8 +154,8 @@ export default {
 }
 
 .date-picker-wrap {
-  padding: 0px 15px;
-  gap: 10px;
+  /* padding: 0px 15px; */
+  /* gap: 10px; */
 }
 
 .date {
@@ -168,10 +176,17 @@ export default {
 .btn:not(:disabled):not(.disabled) {
   cursor: pointer;
   height: calc(1.5em + 0.75rem + 2px);
+  width: 100%;
 }
 
-.col {
+.col,
+.col-9 {
   padding: 0px;
+}
+
+.row {
+  padding: 0px 15px;
+  gap: 10px;
 }
 
 .side-wrap {
@@ -185,7 +200,7 @@ export default {
 }
 
 .list-wrap {
-  height: calc(100vh - 350px);
+  height: calc(100vh - 390px);
 }
 
 .write-plan {

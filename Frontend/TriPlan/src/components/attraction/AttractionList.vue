@@ -17,15 +17,13 @@
           <br />
           <span>{{ attraction.addr1 }}</span>
         </div>
-        <div>
+        <div id="img-and-btn">
+          <div id="add-btn">
+            <b-button variant="outline-secondary" @click="addPlan(attraction)" v-show="isWrite"
+              >추가</b-button
+            >
+          </div>
           <img :src="attraction.firstImage" alt="" />
-          <b-button
-            class="add-btn"
-            variant="outline-secondary"
-            @click="addPlan(attraction)"
-            v-show="isWrite"
-            >추가</b-button
-          >
         </div>
       </b-list-group-item>
     </div>
@@ -143,11 +141,19 @@ a {
   border-style: solid hidden;
 }
 
-img {
-  width: 120px;
+#add-btn {
+  padding-bottom: 8px;
 }
 
-.add-plan-btn {
+#img-and-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+img {
+  width: 120px;
+  border-radius: 2px;
 }
 
 @media (max-width: 1199px) {
