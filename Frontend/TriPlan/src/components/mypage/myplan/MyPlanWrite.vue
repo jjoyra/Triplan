@@ -34,7 +34,7 @@
               placeholder="플랜 이름을 작성해주세요."
             ></b-form-input
           ></b-col>
-          <b-col><b-button type="submit" class="btn btn-primary">등록</b-button></b-col>
+          <b-col><b-button type="submit" class="submit-btn btn-primary">등록</b-button></b-col>
         </b-row>
       </b-form>
       <div v-if="planAttractions && planAttractions.length != 0" class="plan-list">
@@ -45,10 +45,18 @@
           img-alt="Card image"
           img-left
           class="mb-3"
+          draggable="true"
+          @drop.prevent="onDrop($event, index)"
+          @dragenter.prevent
+          @dragover.prevent
+          @dragstart="startDrag($event, attraction)"
         >
           <b-card-text>
             {{ attraction.title }}
           </b-card-text>
+          <b-button @click="delPlanAttraction(attraction.contentId)" variant="outline-danger"
+            >삭제</b-button
+          >
         </b-card>
       </div>
       <div v-else class="courseEmpty"><span>플랜 여행지를 추가해주세요.</span></div>
@@ -143,6 +151,32 @@ export default {
     addPlanAttraction(planAttractionsInfo) {
       this.planAttractions = planAttractionsInfo.attractions;
     },
+    delPlanAttraction(contentId) {
+      for (let i = 0; i < this.planAttractions.length; i++) {
+        if (this.planAttractions[i].contentId === contentId) {
+          this.planAttractions.splice(i, 1);
+          break;
+        }
+      }
+    },
+    startDrag(event, item) {
+      event.dataTransfer.setData("selectedItem", item.contentId);
+    },
+    onDrop(event, idx) {
+      const selectedItem = Number(event.dataTransfer.getData("selectedItem"));
+
+      let targetIdx;
+      let targetItem;
+      this.planAttractions.forEach((obj, index) => {
+        if (obj.contentId === selectedItem) {
+          targetIdx = index;
+          targetItem = obj;
+        }
+      });
+
+      this.planAttractions.splice(targetIdx, 1);
+      this.planAttractions.splice(idx, 0, targetItem);
+    },
   },
 };
 </script>
@@ -173,7 +207,13 @@ export default {
   border-style: solid hidden;
 }
 
-.btn:not(:disabled):not(.disabled) {
+.btn-outline-danger {
+  right: 5%;
+  position: absolute;
+  bottom: 15%;
+}
+
+.submit-btn {
   cursor: pointer;
   height: calc(1.5em + 0.75rem + 2px);
   width: 100%;
@@ -216,7 +256,7 @@ export default {
 }
 
 .plan-form {
-  padding: 15px 0px;
+  padding-bottom: 15px;
 }
 
 img {
