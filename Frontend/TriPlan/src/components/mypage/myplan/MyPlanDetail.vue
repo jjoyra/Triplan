@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="btn-left" v-if="userInfo ? userInfo.memberId === plan.members.owner : ''">
+      <b-button variant="danger" size="sm" @click="deletePlan" class="h-100">삭제</b-button>
+    </div>
     <div class="title-wrap">
       <h2>{{ plan.title }}</h2>
       <div class="date">시작일 : {{ plan.startDate }} ~ 종료일 : {{ plan.startDate }}</div>
@@ -21,8 +24,11 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import CourseListItem from "@/components/board/CourseListItem.vue";
-import { getPlanDetail } from "@/api/plan";
+import { getPlanDetail, deletePlan } from "@/api/plan";
+
+const memberStore = "memberStore";
 
 export default {
   name: "MyPlanDetail",
@@ -31,6 +37,9 @@ export default {
       plan: null,
       courseList: [],
     };
+  },
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
   },
   components: {
     CourseListItem,
@@ -48,6 +57,17 @@ export default {
         console.log(error);
       }
     );
+  },
+  methods: {
+    deletePlan() {
+      if (confirm("정말 삭제하시겠습니까?")) {
+        deletePlan(
+          this.plan.planId,
+          () => this.$router.replace("/mypage/ssafy/myplan/list"),
+          (err) => console.log(err)
+        );
+      }
+    },
   },
 };
 </script>
@@ -68,7 +88,7 @@ h5 {
   gap: 0.5rem;
 }
 
-.card img[data-v-64922605] {
+.card img {
   width: 30%;
   height: 215px;
   object-fit: cover;
@@ -79,5 +99,10 @@ h5 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+.btn-left {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
