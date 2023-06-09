@@ -38,6 +38,9 @@
         </b-row>
       </b-form>
       <div v-if="planAttractions && planAttractions.length != 0" class="plan-list">
+        <div class="courseMention">
+          <span>드래그 앤 드랍으로 순서를 변경할 수 있어요.</span>
+        </div>
         <b-card
           v-for="(attraction, index) in planAttractions"
           :key="index"
@@ -59,7 +62,7 @@
           >
         </b-card>
       </div>
-      <div v-else class="courseEmpty"><span>플랜 여행지를 추가해주세요.</span></div>
+      <div v-else class="courseMention"><span>플랜 여행지를 추가해주세요.</span></div>
     </div>
     <kakao-map :attractions="attractions" :peekList="peekList"></kakao-map>
   </div>
@@ -187,21 +190,16 @@ export default {
   border-style: solid hidden;
 }
 
-.date-picker-wrap {
-  /* padding: 0px 15px; */
-  /* gap: 10px; */
-}
-
 .date {
   color: #51abf3;
   font-weight: 500;
 }
 
-.courseEmpty {
+.courseMention {
   color: #8d9193;
   padding: 30px 0px;
   width: 100%;
-  height: 560px;
+  /* height: 560px; */
   text-align: center;
   border-top: 0.3px rgba(0, 0, 0, 0.125);
   border-style: solid hidden;
@@ -249,10 +247,8 @@ export default {
 }
 
 .plan-list {
-  border-top: 0.3px rgba(0, 0, 0, 0.125);
-  border-style: solid hidden;
   height: calc(100vh - 270px);
-  padding-top: 30px;
+  /* padding-top: 30px; */
 }
 
 .plan-form {
