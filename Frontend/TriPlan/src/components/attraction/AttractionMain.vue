@@ -7,7 +7,7 @@
         <b-col xl="8"
           ><kakao-map :attractions="attractions" :peekList="peekList"></kakao-map
         ></b-col>
-        <b-col xl="4"><attraction-list @clicked-attraction="openOverlay"></attraction-list></b-col>
+        <b-col><attraction-list @clicked-attraction="openOverlay"></attraction-list></b-col>
       </b-row>
     </div>
   </div>
