@@ -23,6 +23,8 @@ public class AttractionServiceImpl implements AttractionService {
 
 	@Override
 	public List<AttractionDto> getAttractionList(Map<String, Object> map, List<Integer> ContentTypeList) throws Exception {
+		if(map.get("gugunCode") == null && map.get("title") == null && ContentTypeList == null)
+			return null;
 		Map<String, Object> param = new HashMap<String, Object>();
 		String key = (String) map.get("key");
 		param.put("key", key == null ? "" : key);
