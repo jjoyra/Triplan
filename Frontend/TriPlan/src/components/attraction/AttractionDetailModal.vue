@@ -23,10 +23,10 @@
         </b-row>
         <div class="card-text-wrap">
           <div class="info">
-            <span>
+            <div @click="recommendAttraction(attraction.contentId)">
               <b-icon id="content-icon" icon="hand-thumbs-up"></b-icon>
               {{ attraction.recommendCnt }}
-            </span>
+            </div>
           </div>
         </div>
       </b-container>
@@ -35,7 +35,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
+import { updateAttractionRecommentCnt } from "@/api/attraction";
 
 const attractionStore = "attractionStore";
 
@@ -64,9 +65,21 @@ export default {
       return contentTypes.filter((type) => type.value === contentTypeId)[0].text;
     },
   },
-  // methods: {
-  //   ...mapActions(attractionStore, ["detailAttraction"]),
-  // },
+  methods: {
+    ...mapActions(attractionStore, ["detailAttraction"]),
+    recommendAttraction(contentId) {
+      updateAttractionRecommentCnt(
+        contentId,
+        () => {
+          alert("추천 완료!");
+          this.detailAttraction(contentId);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+  },
 };
 </script>
 
