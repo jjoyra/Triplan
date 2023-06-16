@@ -22,10 +22,15 @@ function getWorldCupTOP3AttractionList(success, fail) {
   api.get(`/attraction/ranking`).then(success).catch(fail);
 }
 
+async function getRecommendTop3AttractionList(success, fail) {
+  await api.get(`/attraction/recommend`).then(success).catch(fail);
+}
+
 export {
   getAttractionList,
   updateAttractionRecommentCnt,
   updateRankingVotes,
   getAttractionDetail,
   getWorldCupTOP3AttractionList,
+  getRecommendTop3AttractionList,
 };
