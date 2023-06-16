@@ -20,12 +20,20 @@
         </ul>
       </div>
     </div>
+    <div class="article-wrap">
+      <h5>MAP</h5>
+      <div class="attraction-map">
+        <!-- 카카오맵 -->
+        <kakao-map :courseList="courseList"></kakao-map>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import CourseListItem from "@/components/board/CourseListItem.vue";
+import KakaoMap from "@/components/attraction/KakaoMap.vue";
 import { getPlanDetail, deletePlan } from "@/api/plan";
 
 const memberStore = "memberStore";
@@ -43,6 +51,7 @@ export default {
   },
   components: {
     CourseListItem,
+    KakaoMap,
   },
   created() {
     let planId = this.$route.params.planId;
@@ -86,6 +95,16 @@ h5 {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.article-wrap {
+  margin-bottom: 3rem;
+}
+.article-wrap:last-child {
+  margin-bottom: 0;
+}
+.article-wrap > div {
+  padding: 1rem 0.25rem;
 }
 
 .card img {

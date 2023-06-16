@@ -82,7 +82,7 @@
                     <h5>MAP</h5>
                     <div class="attraction-map">
                       <!-- 카카오맵 -->
-                      <kakao-map></kakao-map>
+                      <kakao-map :courseList="courseList"></kakao-map>
                     </div>
                   </div>
 
