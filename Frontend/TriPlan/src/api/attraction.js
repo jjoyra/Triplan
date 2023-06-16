@@ -14,8 +14,8 @@ function updateRankingVotes(contentid, success, fail) {
   api.put(`/attraction/ranking/${contentid}`).then(success).catch(fail);
 }
 
-function getAttractionDetail(contentid, success, fail) {
-  api.get(`/attraction/${contentid}`).then(success).catch(fail);
+async function getAttractionDetail(contentid, success, fail) {
+  await api.get(`/attraction/${contentid}`).then(success).catch(fail);
 }
 
 function getWorldCupTOP3AttractionList(success, fail) {
