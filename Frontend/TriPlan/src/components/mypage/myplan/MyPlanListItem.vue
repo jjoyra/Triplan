@@ -3,7 +3,7 @@
     <div v-if="plan !== undefined && plan !== null">
       <!-- <router-link to="/mypage/:memberId/myplan/detail"> -->
       <b-card
-        :img-src="plan.thumbnailUrl"
+        :img-src="plan.thumbnailUrl ? plan.thumbnailUrl : 'https://picsum.photos/600/300/?image=25'"
         img-top
         tag="article"
         class="mb-2 hover-box-shadow"
