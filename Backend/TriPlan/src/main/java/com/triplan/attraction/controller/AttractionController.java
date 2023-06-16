@@ -198,6 +198,24 @@ public class AttractionController {
 			return exceptionHandling(e);
 		}
 	}
+
+	@ApiOperation(value = "관광지 추천 수 TOP3 목록 조회", notes = "관광지 추천 수의 <b>TOP3 관광지 목록</b>을 반환합니다.")
+	@ApiResponses({@ApiResponse(code = 200, message = "관광지 추천 수 TOP3 목록 조회 OK"), @ApiResponse(code = 500, message = "서버 에러")})
+	@GetMapping(value = "/attraction/recommend")
+	public ResponseEntity<?> getRecommendTop3AttractionList() {
+		try {
+			List<AttractionDto> list = attractionService.getRecommendTop3AttractionList();
+			Map<String, Object> response = new HashMap<>();
+			response.put("attractions", list);
+			if (list != null && !list.isEmpty()) {
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			}
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
 	
 	private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();

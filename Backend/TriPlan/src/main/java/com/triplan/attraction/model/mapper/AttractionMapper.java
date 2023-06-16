@@ -35,5 +35,8 @@ public interface AttractionMapper {
 	
 	// 8. 구군 조회 
 	List<SidoGugunCodeDto> getGugunCodeInSido(int sidoCode) throws Exception;
+
+	// 9. 추천수 TOP3 관광지 조회
+	List<AttractionDto> getRecommendTop3AttractionList() throws Exception;
 	
 }

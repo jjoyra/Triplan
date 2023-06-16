@@ -78,7 +78,9 @@ public class AttractionServiceImpl implements AttractionService {
 	public List<SidoGugunCodeDto> getGugunCodeInSido(int sidoCode) throws Exception {
 		return attractionMapper.getGugunCodeInSido(sidoCode);
 	}
-	
-	
-	
+
+	@Override
+	public List<AttractionDto> getRecommendTop3AttractionList() throws Exception {
+		return attractionMapper.getRecommendTop3AttractionList();
+	}
 }

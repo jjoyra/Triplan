@@ -76,7 +76,7 @@
 	<select id="getWorldCupTOP3AttractionList" resultMap="ranking">
 		select *
 		from attraction_ranking
-		order by recommend_cnt desc
+		order by vote_cnt desc
 		limit 3;
 	</select>
 	
@@ -93,7 +93,16 @@
 		from gugun
 		where sido_code = #{sidoCode}
 		order by gugun_Code;
-	</select> 
+	</select>
+
+	<!--9. 추천 수 TOP3 관광지 조회 -->
+	<select id="getRecommendTop3AttractionList" parameterType="int" resultMap="attraction">
+		select i.*, d.recommend_cnt
+		from attraction_detail d join attraction_info i
+									  on d.content_id = i.content_id
+		order by d.recommend_cnt desc
+		limit 3;
+	</select>
 	
 	<!-- 필터/검색 컬럼 : 관광지명(title), 주소(addr1, addr2), 지역별(sido_code, gugun_code), 콘텐츠별(content_type_id) -->
 	<sql id="search">
