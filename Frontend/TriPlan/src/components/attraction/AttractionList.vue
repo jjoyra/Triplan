@@ -28,13 +28,13 @@
       </b-list-group-item>
     </div>
     <div v-else class="searchEmpty"><span>검색 결과가 없습니다.</span></div>
-    <attraction-detail-modal></attraction-detail-modal>
+    <!-- <attraction-detail-modal></attraction-detail-modal> -->
   </div>
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
-import AttractionDetailModal from "./AttractionDetailModal.vue";
+// import AttractionDetailModal from "./AttractionDetailModal.vue";
 
 const attractionStore = "attractionStore";
 
@@ -50,7 +50,7 @@ export default {
     };
   },
   components: {
-    AttractionDetailModal,
+    // AttractionDetailModal,
   },
   computed: {
     ...mapState(attractionStore, ["attractions"]),
@@ -75,6 +75,7 @@ export default {
     console.log(this.$route.path);
     if (this.$route.path === "/plan/write") this.isWrite = true;
     else this.isWrite = false;
+    this.detailAttraction(125266);
   },
   methods: {
     ...mapMutations(attractionStore, ["CLEAR_ATTRACTION_LIST"]),
