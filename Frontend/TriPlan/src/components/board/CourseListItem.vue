@@ -96,6 +96,8 @@ li:last-child::after {
 }
 .card img {
   width: 30%;
+  height: 215px;
+  object-fit: cover;
 }
 .card-text .title {
   font-size: 1.5rem;

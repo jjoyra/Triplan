@@ -8,40 +8,61 @@
       ></attraction-list>
     </div>
     <div class="side-wrap write-plan">
-      <b-form @submit="onPlanSubmit">
-        <b-row>
+      <b-form @submit="onPlanSubmit" class="plan-form">
+        <b-row class="date-picker-wrap">
           <b-col
-            ><b-form-datepicker
+            ><label class="date">여행 시작일</label>
+            <b-form-datepicker
               v-model="form.startDate"
-              placeholder="연도 . 월 . 일"
+              placeholder="연도.월.일"
+              :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
             ></b-form-datepicker
           ></b-col>
           <b-col
-            ><b-form-datepicker
+            ><label class="date">여행 종료일</label>
+            <b-form-datepicker
               v-model="form.endDate"
-              placeholder="연도 . 월 . 일"
+              placeholder="연도.월.일"
+              :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
             ></b-form-datepicker
           ></b-col>
         </b-row>
-        <div>
-          <b-form-input v-model="form.title" placeholder="플랜 이름을 작성해주세요."></b-form-input>
-          <b-button type="submit">등록</b-button>
-        </div>
-        <div class="plan-list">
-          <b-card
-            v-for="(attraction, index) in planAttractions"
-            :key="index"
-            :img-src="attraction.firstImage"
-            img-alt="Card image"
-            img-left
-            class="mb-3"
-          >
-            <b-card-text>
-              {{ attraction.title }}
-            </b-card-text>
-          </b-card>
-        </div>
+        <b-row>
+          <b-col cols="9"
+            ><b-form-input
+              v-model="form.title"
+              placeholder="플랜 이름을 작성해주세요."
+            ></b-form-input
+          ></b-col>
+          <b-col><b-button type="submit" class="submit-btn btn-primary">등록</b-button></b-col>
+        </b-row>
       </b-form>
+      <div v-if="planAttractions && planAttractions.length != 0" class="plan-list">
+        <div class="courseMention">
+          <span>드래그 앤 드랍으로 순서를 변경할 수 있어요.</span>
+        </div>
+        <b-card
+          v-for="(attraction, index) in planAttractions"
+          :key="index"
+          :img-src="attraction.firstImage"
+          img-alt="Card image"
+          img-left
+          class="mb-3"
+          draggable="true"
+          @drop.prevent="onDrop($event, index)"
+          @dragenter.prevent
+          @dragover.prevent
+          @dragstart="startDrag($event, attraction)"
+        >
+          <b-card-text>
+            {{ attraction.title }}
+          </b-card-text>
+          <b-button @click="delPlanAttraction(attraction.contentId)" variant="outline-danger"
+            >삭제</b-button
+          >
+        </b-card>
+      </div>
+      <div v-else class="courseMention"><span>플랜 여행지를 추가해주세요.</span></div>
     </div>
     <kakao-map :attractions="attractions" :peekList="peekList"></kakao-map>
   </div>
@@ -133,6 +154,32 @@ export default {
     addPlanAttraction(planAttractionsInfo) {
       this.planAttractions = planAttractionsInfo.attractions;
     },
+    delPlanAttraction(contentId) {
+      for (let i = 0; i < this.planAttractions.length; i++) {
+        if (this.planAttractions[i].contentId === contentId) {
+          this.planAttractions.splice(i, 1);
+          break;
+        }
+      }
+    },
+    startDrag(event, item) {
+      event.dataTransfer.setData("selectedItem", item.contentId);
+    },
+    onDrop(event, idx) {
+      const selectedItem = Number(event.dataTransfer.getData("selectedItem"));
+
+      let targetIdx;
+      let targetItem;
+      this.planAttractions.forEach((obj, index) => {
+        if (obj.contentId === selectedItem) {
+          targetIdx = index;
+          targetItem = obj;
+        }
+      });
+
+      this.planAttractions.splice(targetIdx, 1);
+      this.planAttractions.splice(idx, 0, targetItem);
+    },
   },
 };
 </script>
@@ -141,6 +188,43 @@ export default {
 #wrap {
   border-top: 0.3px rgba(0, 0, 0, 0.125);
   border-style: solid hidden;
+}
+
+.date {
+  color: #51abf3;
+  font-weight: 500;
+}
+
+.courseMention {
+  color: #8d9193;
+  padding: 30px 0px;
+  width: 100%;
+  /* height: 560px; */
+  text-align: center;
+  border-top: 0.3px rgba(0, 0, 0, 0.125);
+  border-style: solid hidden;
+}
+
+.btn-outline-danger {
+  right: 5%;
+  position: absolute;
+  bottom: 15%;
+}
+
+.submit-btn {
+  cursor: pointer;
+  height: calc(1.5em + 0.75rem + 2px);
+  width: 100%;
+}
+
+.col,
+.col-9 {
+  padding: 0px;
+}
+
+.row {
+  padding: 0px 15px;
+  gap: 10px;
 }
 
 .side-wrap {
@@ -154,7 +238,7 @@ export default {
 }
 
 .list-wrap {
-  height: calc(100vh - 350px);
+  height: calc(100vh - 390px);
 }
 
 .write-plan {
@@ -163,18 +247,21 @@ export default {
 }
 
 .plan-list {
-  border-top: 0.3px rgba(0, 0, 0, 0.125);
-  border-style: solid hidden;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 270px);
+  /* padding-top: 30px; */
 }
 
-.card {
-  /* width: 70%; */
+.plan-form {
+  padding-bottom: 15px;
 }
 
 img {
   width: 220px;
   height: 50%;
+}
+
+.form-control {
+  margin-bottom: 20px;
 }
 
 #map {

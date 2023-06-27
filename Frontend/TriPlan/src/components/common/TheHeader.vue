@@ -26,7 +26,7 @@
           </div>
           <div>
             <b-icon icon="GeoAlt"></b-icon>
-            <b-nav-item to="/attraction" exact exact-active-class="active">관광지 찾기</b-nav-item>
+            <b-nav-item to="/attraction" exact exact-active-class="active">여행지 찾기</b-nav-item>
           </div>
           <div>
             <b-icon icon="ChatLeftDots"></b-icon>
@@ -80,7 +80,7 @@
           </div>
           <div>
             <b-icon icon="GeoAlt"></b-icon>
-            <b-nav-item to="/attraction" exact exact-active-class="active">관광지 찾기</b-nav-item>
+            <b-nav-item to="/attraction" exact exact-active-class="active">여행지 찾기</b-nav-item>
           </div>
           <div>
             <b-icon icon="ChatLeftDots"></b-icon>

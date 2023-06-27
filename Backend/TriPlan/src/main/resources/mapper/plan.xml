@@ -53,7 +53,8 @@
         select p.*
         from triplan.plan p join triplan.member_plan_list memberPlan
         on p.plan_id = memberPlan.plan_id
-        where member_id = #{memberId};
+        where member_id = #{memberId}
+        order by p.start_date desc;
     </select>
     <!-- 5. 플랜 상세보기 -->
     <!-- 플랜 -->

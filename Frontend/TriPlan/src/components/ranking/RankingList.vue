@@ -28,9 +28,26 @@
             ></ranking-item-mobile>
           </div>
         </template>
-        <template v-else>
+        <template v-else-if="attractionList !== undefined && attractionList.length !== 0">
           <div class="ranking-item-wrap web">
             <!-- <ranking-item-web v-for="item in items" :key="item"></ranking-item-web> -->
+            <ranking-item-web
+              v-for="(attraction, index) in attractionList"
+              :key="index"
+              :attraction="attraction"
+            ></ranking-item-web>
+          </div>
+
+          <div class="ranking-item-wrap mobile">
+            <ranking-item-mobile
+              v-for="(attraction, index) in attractionList"
+              :key="index"
+              :attraction="attraction"
+            ></ranking-item-mobile>
+          </div>
+        </template>
+        <template v-else>
+          <div class="ranking-item-wrap web">
             <ranking-item-web></ranking-item-web>
             <ranking-item-web></ranking-item-web>
             <ranking-item-web></ranking-item-web>
@@ -69,6 +86,7 @@ export default {
     isPublic: Boolean,
     isMyInfo: Boolean,
     planList: Array,
+    attractionList: Array,
   },
   data() {
     return {
@@ -89,7 +107,9 @@ export default {
   padding: 2rem 0;
   position: relative;
   z-index: 1;
+  width: 1106px;
 }
+
 .fluid-bg {
   width: 100vw;
   height: 100%;
@@ -121,6 +141,7 @@ export default {
   display: flex;
   flex-direction: row;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .mobile {
@@ -143,6 +164,7 @@ export default {
     display: flex;
     flex-direction: row;
     gap: 10px;
+    flex-wrap: wrap;
   }
 }
 </style>

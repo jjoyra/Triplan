@@ -14,12 +14,16 @@ function updateRankingVotes(contentid, success, fail) {
   api.put(`/attraction/ranking/${contentid}`).then(success).catch(fail);
 }
 
-function getAttractionDetail(contentid, success, fail) {
-  api.get(`/attraction/${contentid}`).then(success).catch(fail);
+async function getAttractionDetail(contentid, success, fail) {
+  await api.get(`/attraction/${contentid}`).then(success).catch(fail);
 }
 
 function getWorldCupTOP3AttractionList(success, fail) {
   api.get(`/attraction/ranking`).then(success).catch(fail);
+}
+
+async function getRecommendTop3AttractionList(success, fail) {
+  await api.get(`/attraction/recommend`).then(success).catch(fail);
 }
 
 export {
@@ -28,4 +32,5 @@ export {
   updateRankingVotes,
   getAttractionDetail,
   getWorldCupTOP3AttractionList,
+  getRecommendTop3AttractionList,
 };

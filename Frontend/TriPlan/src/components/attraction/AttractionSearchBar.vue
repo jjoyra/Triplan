@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row class="text-center">
+    <b-row class="text-center" v-if="this.$route.name == 'attractionmain'">
       <b-col cols="7">
         <search-input
           v-on:handle-search="handleSearch"
@@ -9,6 +9,13 @@
       </b-col>
       <select-sido-gugun @select-gugun="handleAttractionSearch"></select-sido-gugun>
     </b-row>
+    <div v-else>
+      <search-input
+        v-on:handle-search="handleSearch"
+        placeholderTxt="여행지를 찾아보세요"
+      ></search-input>
+      <select-sido-gugun @select-gugun="handleAttractionSearch"></select-sido-gugun>
+    </div>
     <div>
       <select-button
         :contentTypes="contentTypes"
