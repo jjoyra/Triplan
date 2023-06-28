@@ -33,13 +33,12 @@ update triplan.attraction_ranking set vote_cnt = 40 where content_id = "125266";
 update triplan.attraction_ranking set vote_cnt = 290 where content_id = "125410";
 update triplan.attraction_ranking set vote_cnt = 160 where content_id = "125425";
 
-
 -- --------------------------------------
 -- 테이블 : member(role : 관리자 0, 회원 1)
-insert into triplan.member(member_id, password, name, nickname, img_url, join_date, role, comment)
-values ("admin", "1234", "관리자", "관리싸피", null, now(), 0, '나 관리자야'),
-	   ("ssafy", "1234", "임희선", "임싸피", null, now(), 1, '나는 싸피'),
-	   ("test", "1234", "조희라", "조싸피", null, now(), 1, null);
+insert into triplan.member(member_id, password, name, nickname, img_url, join_date, role, comment, open_myplan, open_favo_plan, open_favo_attraction)
+values ("admin", "1234", "관리자", "관리싸피", null, now(), 0, '나 관리자야', 0, 0, 0),
+	   ("ssafy", "1234", "임희선", "임싸피", null, now(), 1, '나는 싸피', 1, 0, 1),
+	   ("test", "1234", "조희라", "조싸피", null, now(), 1, null, 1, 1, 1);
 
 -- 테이블 : community
 insert into triplan.community (member_id, title, content, recommend_cnt, hit, create_date, modify_date)
