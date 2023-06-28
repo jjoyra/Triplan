@@ -55,12 +55,10 @@ public class AttractionController {
 			if (contentTypeList != null && !contentTypeList.equals(""))
 				contentTypes = Arrays.stream(contentTypeList.split(",")).map(Integer::parseInt).collect(Collectors.toList());
 			List<AttractionDto> list = attractionService.getAttractionList(map, contentTypes);
-			Map<String, Object> response = new HashMap<>();
+			Map<String, Object> response = getResponse(map);
 			response.put("attractions", list);
 			response.put("pgno", map.get("pgno"));
-			response.put("key", map.get("key"));
-			response.put("word", map.get("word"));
-			if (list != null && !list.isEmpty()) {
+			if (isNotNullOrNotEmpty(list)) {
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
@@ -80,10 +78,8 @@ public class AttractionController {
 	public ResponseEntity<?> getTotalAttractionCount(@RequestParam Map<String, Object> map) {
 		try {
 			int cnt = attractionService.getTotalAttractionCount(map);
-			Map<String, Object> response = new HashMap<>();
+			Map<String, Object> response = getResponse(map);
 			response.put("cnt", cnt);
-			response.put("key", map.get("key"));
-			response.put("word", map.get("word"));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			return exceptionHandling(e);
@@ -129,11 +125,9 @@ public class AttractionController {
 	public ResponseEntity<?> getAttractionDetail(@PathVariable("contentId") String contentId, @RequestParam Map<String, Object> map) {
 		try {
 			AttractionDto attraction = attractionService.getAttractionDetail(Integer.parseInt(contentId));
-			Map<String, Object> response = new HashMap<>();
+			Map<String, Object> response = getResponse(map);
 			response.put("attraction", attraction);
 			response.put("pgno", map.get("pgno"));
-			response.put("key", map.get("key"));
-			response.put("word", map.get("word"));
 			if (attraction != null) {
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 			} else {
@@ -143,7 +137,14 @@ public class AttractionController {
 			return exceptionHandling(e);
 		}
 	}
-	
+
+	private static Map<String, Object> getResponse(Map<String, Object> map) {
+		Map<String, Object> response = new HashMap<>();
+		response.put("key", map.get("key"));
+		response.put("word", map.get("word"));
+		return response;
+	}
+
 	@ApiOperation(value = "관광지 랭킹 TOP3 목록 조회", notes = "관광지 랭킹의 <b>TOP3 관광지 목록</b>을 반환합니다.")
     @ApiResponses({@ApiResponse(code = 200, message = "관광지 TOP3 목록 조회 OK"), @ApiResponse(code = 500, message = "서버 에러")})
 	@GetMapping(value = "/attraction/ranking")
@@ -152,7 +153,7 @@ public class AttractionController {
 			List<AttractionDto> list = attractionService.getWorldCupTOP3AttractionList();
 			Map<String, Object> response = new HashMap<>();
 			response.put("attractions", list);
-			if (list != null && !list.isEmpty()) {
+			if (isNotNullOrNotEmpty(list)) {
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
@@ -161,7 +162,11 @@ public class AttractionController {
 			return exceptionHandling(e);
 		}
 	}
-	
+
+	private static boolean isNotNullOrNotEmpty(List<AttractionDto> list) {
+		return list != null && !list.isEmpty();
+	}
+
 	@ApiOperation(value = "시도 정보", notes = "전국의 <b>시도 목록</b>을 반환합니다.")
     @ApiResponses({@ApiResponse(code = 200, message = "시도 목록 조회 OK"), @ApiResponse(code = 500, message = "서버 에러")})
 	@GetMapping(value = "/attraction/sido")
@@ -207,7 +212,7 @@ public class AttractionController {
 			List<AttractionDto> list = attractionService.getRecommendTop3AttractionList();
 			Map<String, Object> response = new HashMap<>();
 			response.put("attractions", list);
-			if (list != null && !list.isEmpty()) {
+			if (isNotNullOrNotEmpty(list)) {
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
