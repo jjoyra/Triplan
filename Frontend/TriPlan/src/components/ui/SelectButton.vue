@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "SelectButton",
+  name: 'SelectButton',
   props: {
     contentTypes: [],
   },
@@ -51,9 +51,9 @@ export default {
   methods: {
     changeContentType() {
       const params = {
-        contentTypeList: this.selected.join(","),
+        contentTypeList: this.selected.join(','),
       };
-      this.$emit("select-content-type", params);
+      this.$emit('select-content-type', params);
     },
   },
 };
@@ -92,7 +92,7 @@ export default {
 }
 
 .row {
-  padding: 0px 15px;
+  padding: 15px;
   gap: 10px;
 }
 

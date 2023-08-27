@@ -20,7 +20,7 @@
         :key="index"
         class="flex-column align-items-start"
       >
-        <b-card no-body border-variant="light" class="review-card-wrap overflow-hidden">
+        <b-card no-body border-variant="light" class="review-card-wrap">
           <b-row no-gutters>
             <b-col class="img-wrap">
               <b-card-img
@@ -42,13 +42,13 @@
                         <b-icon class="icon" icon="people"></b-icon>
                         {{ companionList[data.companion] }} {{ data.peopleCnt }}인
                       </div>
-                      <div>
+                      <div class="mobile-no-display">
                         <b-icon class="icon" icon="calendarWeek"></b-icon>
                         {{ data.startDate | dateFormat }} ~ {{ data.endDate | dateFormat }}
                       </div>
                       <div>
                         <b-icon class="icon" icon="coin"></b-icon>
-                        {{ data.totalPrice ? "총" : "인당" }}
+                        {{ data.totalPrice ? '총' : '인당' }}
                         {{ data.price.toLocaleString() }} 원
                       </div>
                       <div v-html="makeStarIcon(data.rating)"></div>
@@ -93,73 +93,73 @@
 </template>
 
 <script>
-import moment from "moment";
-import { getReviewList, getTotalReviewCount } from "@/api/review";
-import { mapState, mapActions } from "vuex";
-import SearchInput from "../common/SearchInput.vue";
+import moment from 'moment';
+import { getReviewList, getTotalReviewCount } from '@/api/review';
+import { mapState, mapActions } from 'vuex';
+import SearchInput from '../common/SearchInput.vue';
 
-const memberStore = "memberStore";
-const reviewStore = "reviewStore";
+const memberStore = 'memberStore';
+const reviewStore = 'reviewStore';
 
 export default {
   components: { SearchInput },
-  name: "ReviewList",
+  name: 'ReviewList',
   watch: {
     selected(val) {
       this.setSortkey(val);
     },
     sortkey(val) {
-      console.log("sortkey", val);
+      console.log('sortkey', val);
       this.setSortkey(val);
       this.handleReviewList();
     },
     pgno(val) {
-      console.log("pgno", val);
+      console.log('pgno', val);
       this.setPgno(val);
       this.handleReviewList();
     },
     reviewSearchWord(val) {
-      console.log("reviewSearchWord", val);
+      console.log('reviewSearchWord', val);
       this.setReviewSearchWord(val);
       this.handleReviewList();
     },
   },
   computed: {
-    ...mapState(memberStore, ["userInfo"]),
-    ...mapState(reviewStore, ["sortkey", "pgno", "reviewSearchWord"]),
+    ...mapState(memberStore, ['userInfo']),
+    ...mapState(reviewStore, ['sortkey', 'pgno', 'reviewSearchWord']),
   },
   data() {
     return {
       reviews: [],
       currentPage: 1,
       totalCount: 0,
-      selected: "create_date",
+      selected: 'create_date',
       options: [
-        { text: "작성일순", value: "create_date" },
-        { text: "제목순", value: "title" },
-        { text: "추천순", value: "recommend_cnt" },
-        { text: "조회순", value: "hit" },
-        { text: "별점순", value: "rating" },
-        { text: "경비순", value: "price" },
+        { text: '작성일순', value: 'create_date' },
+        { text: '제목순', value: 'title' },
+        { text: '추천순', value: 'recommend_cnt' },
+        { text: '조회순', value: 'hit' },
+        { text: '별점순', value: 'rating' },
+        { text: '경비순', value: 'price' },
       ],
-      companionList: ["혼자", "친구와", "연인과", "가족과", "부모님과", "배우자와", "반려동물과"],
+      companionList: ['혼자', '친구와', '연인과', '가족과', '부모님과', '배우자와', '반려동물과'],
     };
   },
   methods: {
-    ...mapActions(memberStore, ["getUserInfo"]),
-    ...mapActions(reviewStore, ["setSortkey", "setPgno", "setReviewSearchWord"]),
+    ...mapActions(memberStore, ['getUserInfo']),
+    ...mapActions(reviewStore, ['setSortkey', 'setPgno', 'setReviewSearchWord']),
     onRowSelected(selected) {
-      console.log("선택", selected);
+      console.log('선택', selected);
       this.$router.push(`/review/detail/${selected[0].reviewId}`).catch((err) => {
-        console.log("notice detail 이동 실패", err);
+        console.log('notice detail 이동 실패', err);
       });
     },
     handleSearch(val) {
-      console.log("검색", val);
+      console.log('검색', val);
       this.setReviewSearchWord(val);
     },
     handlePage(page) {
-      console.log("페이지 이동", page);
+      console.log('페이지 이동', page);
       this.setPgno(page);
     },
     handleReviewList() {
@@ -188,11 +188,11 @@ export default {
       );
     },
     changePageActiveClass() {
-      let items = document.querySelectorAll("li.page-item");
+      let items = document.querySelectorAll('li.page-item');
       items.forEach((item) => {
-        item.classList.remove("active");
+        item.classList.remove('active');
       });
-      items[this.pgno + 1].classList.add("active");
+      items[this.pgno + 1].classList.add('active');
     },
     makeStarIcon(fill) {
       const unfill = 5 - fill;
@@ -203,10 +203,10 @@ export default {
   },
   filters: {
     dateFormat(regtime) {
-      return moment(new Date(regtime)).format("YY.MM.DD.");
+      return moment(new Date(regtime)).format('YY.MM.DD.');
     },
     substrText(text) {
-      return text.substr(0, 60) + "...";
+      return text.substr(0, 60) + '...';
     },
   },
   created() {
@@ -229,6 +229,8 @@ export default {
 }
 .content-wrap .content-body {
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .content,
@@ -238,7 +240,6 @@ export default {
 }
 
 .content {
-  height: calc(100% - 2.25rem);
   flex-direction: column;
   justify-content: space-between;
 }
@@ -277,6 +278,10 @@ export default {
   margin-right: 30px;
 }
 
+.mobile-no-display {
+  display: none;
+}
+
 .icon {
   color: #51abf3;
   margin-right: 0.25rem;
@@ -310,6 +315,7 @@ export default {
 }
 .list-group-item {
   border-radius: 3px;
+  padding: 1.25rem;
 }
 .list-group-item + .list-group-item,
 .list-group-item:last-child {
@@ -341,6 +347,10 @@ export default {
   .content-wrap {
     flex: 0.6;
   }
+  .card-title {
+    padding: 0;
+    font-size: 1.25rem;
+  }
 
   .review-card-wrap {
     margin: 0;
@@ -366,8 +376,34 @@ export default {
 }
 
 @media (min-width: 991px) {
+  .img-wrap {
+    flex: 0.5;
+    margin-right: 1rem;
+  }
+  .card-body {
+    padding: 0;
+  }
   .content {
+    height: 100%;
     font-size: 1.1rem;
+  }
+  .content > .body {
+    margin-bottom: 0.5rem;
+  }
+  .list-group {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .list-group-item {
+    flex: 0.5;
+  }
+  .list-group-item:nth-child(odd):last-child {
+    flex: 1;
+    padding-right: 1rem;
+  }
+  .review-card-wrap,
+  .review-card-wrap > div {
+    height: 100%;
   }
 }
 </style>

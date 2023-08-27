@@ -69,26 +69,26 @@
 </template>
 
 <script>
-import KakaoMap from "@/components/attraction/KakaoMap.vue";
-import AttractionSearchBar from "@/components/attraction/AttractionSearchBar.vue";
-import AttractionList from "@/components/attraction/AttractionList.vue";
-import { mapState } from "vuex";
-import { registPlan } from "@/api/plan";
+import KakaoMap from '@/components/attraction/KakaoMap.vue';
+import AttractionSearchBar from '@/components/attraction/AttractionSearchBar.vue';
+import AttractionList from '@/components/attraction/AttractionList.vue';
+import { mapState } from 'vuex';
+import { registPlan } from '@/api/plan';
 
-const attractionStore = "attractionStore";
-const memberStore = "memberStore";
+const attractionStore = 'attractionStore';
+const memberStore = 'memberStore';
 
 export default {
-  name: "MyPlanWrite",
+  name: 'MyPlanWrite',
   data() {
     return {
       form: {
-        title: "",
-        startDate: "",
-        endDate: "",
+        title: '',
+        startDate: '',
+        endDate: '',
       },
       members: {
-        owner: "",
+        owner: '',
         member: [],
       },
       peekList: null,
@@ -96,8 +96,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(attractionStore, ["attractions"]),
-    ...mapState(memberStore, ["userInfo"]),
+    ...mapState(attractionStore, ['attractions']),
+    ...mapState(memberStore, ['userInfo']),
   },
   components: {
     KakaoMap,
@@ -107,9 +107,9 @@ export default {
   methods: {
     onPlanSubmit(event) {
       event.preventDefault();
-      let thumbnailUrl = "";
+      let thumbnailUrl = '';
       for (let i = 0; i < this.planAttractions.length; i++) {
-        if (this.planAttractions[i].firstImage != "") {
+        if (this.planAttractions[i].firstImage != '') {
           thumbnailUrl = this.planAttractions[i].firstImage;
           break;
         }
@@ -141,7 +141,7 @@ export default {
         param,
         ({ data }) => {
           console.log(data);
-          alert("플랜이 등록되었습니다.");
+          alert('플랜이 등록되었습니다.');
         },
         (error) => {
           console.log(error);
@@ -163,10 +163,10 @@ export default {
       }
     },
     startDrag(event, item) {
-      event.dataTransfer.setData("selectedItem", item.contentId);
+      event.dataTransfer.setData('selectedItem', item.contentId);
     },
     onDrop(event, idx) {
-      const selectedItem = Number(event.dataTransfer.getData("selectedItem"));
+      const selectedItem = Number(event.dataTransfer.getData('selectedItem'));
 
       let targetIdx;
       let targetItem;
@@ -223,7 +223,7 @@ export default {
 }
 
 .row {
-  padding: 0px 15px;
+  padding: 15px;
   gap: 10px;
 }
 
@@ -238,7 +238,7 @@ export default {
 }
 
 .list-wrap {
-  height: calc(100vh - 390px);
+  height: calc(100vh - 450px);
 }
 
 .write-plan {

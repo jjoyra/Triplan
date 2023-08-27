@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import TheHeader from "@/components/common/TheHeader.vue";
-import TheFooter from "@/components/common/TheFooter.vue";
+import TheHeader from '@/components/common/TheHeader.vue';
+import TheFooter from '@/components/common/TheFooter.vue';
 
 export default {
   data() {
@@ -24,7 +24,7 @@ export default {
   },
   watch: {
     $route(to) {
-      if (to.path === "/plan/write") this.isWrite = true;
+      if (to.path === '/plan/write') this.isWrite = true;
       else this.isWrite = false;
     },
   },
@@ -32,7 +32,7 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap');
 
 * {
   margin: 0;
@@ -44,7 +44,7 @@ export default {
 }
 
 #app {
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   color: #383838;
   font-size: 15px;
 }
@@ -64,7 +64,7 @@ h1 {
   display: inline-block;
 }
 h1::after {
-  content: "";
+  content: '';
   position: absolute;
   top: calc(100% + 2px);
   left: 0;
@@ -96,7 +96,7 @@ table {
 }
 
 button,
-input[type="button"] {
+input[type='button'] {
   cursor: pointer;
 }
 
@@ -207,5 +207,20 @@ img {
   text-decoration: none;
   background-color: #e9ecef;
   border-color: #dee2e6;
+}
+
+label.btn.btn-secondary {
+  background-color: transparent;
+  color: #545b62;
+  border-radius: 50px;
+}
+label.btn.btn-secondary:hover {
+  background-color: #eaeaea;
+}
+.btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:not(:disabled):not(.disabled):active {
+  background-color: var(--primary);
+  border: 1px solid var(--primary);
+  color: white;
 }
 </style>

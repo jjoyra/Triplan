@@ -36,10 +36,10 @@
 </template>
 
 <script>
-import FavoButton from "../ui/FavoButton.vue";
+import FavoButton from '../ui/FavoButton.vue';
 
 export default {
-  name: "RankingItemMobile",
+  name: 'RankingItemMobile',
   props: {
     plan: Object,
   },
@@ -48,7 +48,7 @@ export default {
   },
   data() {
     return {
-      memberId: "",
+      memberId: '',
     };
   },
   watch: {
@@ -60,11 +60,11 @@ export default {
     clickedCard() {
       this.$router
         .push({
-          name: "myplandetail",
+          name: 'myplandetail',
           params: { userId: this.memberID, planId: this.plan.planId },
         })
         .catch((err) => {
-          console.log("myplan detail 이동 실패", err);
+          console.log('myplan detail 이동 실패', err);
         });
     },
   },
@@ -85,7 +85,6 @@ a:hover {
 img {
   flex-shrink: 0;
   height: 74px;
-  width: 148px;
 }
 
 .card-text .type[data-v-23c8905c],
@@ -112,5 +111,6 @@ img {
 
 .card-body {
   overflow: hidden;
+  padding: 0.4rem;
 }
 </style>

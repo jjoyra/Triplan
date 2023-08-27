@@ -69,11 +69,11 @@
 </template>
 
 <script>
-import RankingItemMobile from "./RankingItemMobile.vue";
-import RankingItemWeb from "./RankingItemWeb.vue";
+import RankingItemMobile from './RankingItemMobile.vue';
+import RankingItemWeb from './RankingItemWeb.vue';
 
 export default {
-  name: "RankingList",
+  name: 'RankingList',
   components: {
     RankingItemMobile,
     RankingItemWeb,
@@ -107,7 +107,11 @@ export default {
   padding: 2rem 0;
   position: relative;
   z-index: 1;
-  width: 1106px;
+  /* width: 1106px; */
+}
+
+.ranking-item-wrap > div {
+  width: calc((100% - 20px) / 3);
 }
 
 .fluid-bg {
@@ -146,6 +150,10 @@ export default {
 
 .mobile {
   display: none;
+}
+
+.mobile > div {
+  width: calc((100% - 20px) / 3);
 }
 
 .hover-box-shadow:hover {

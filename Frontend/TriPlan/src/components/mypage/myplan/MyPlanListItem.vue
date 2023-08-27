@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import FavoButton from "../../ui/FavoButton.vue";
+import FavoButton from '../../ui/FavoButton.vue';
 
 export default {
-  name: "MyPageListItem",
+  name: 'MyPageListItem',
   props: {
     plan: Object,
   },
@@ -33,7 +33,7 @@ export default {
   },
   data() {
     return {
-      memberId: "",
+      memberId: '',
     };
   },
   watch: {
@@ -45,11 +45,11 @@ export default {
     clickedCard() {
       this.$router
         .push({
-          name: "myplandetail",
+          name: 'myplandetail',
           params: { userId: this.memberID, planId: this.plan.planId },
         })
         .catch((err) => {
-          console.log("myplan detail 이동 실패", err);
+          console.log('myplan detail 이동 실패', err);
         });
     },
   },
@@ -69,7 +69,6 @@ a:hover {
 
 img {
   flex-shrink: 0;
-  width: 360px;
   height: 180px;
   object-fit: cover;
 }

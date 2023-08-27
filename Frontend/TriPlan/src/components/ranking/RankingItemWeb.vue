@@ -55,13 +55,13 @@
 </template>
 
 <script>
-import FavoButton from "../ui/FavoButton.vue";
-import { mapActions } from "vuex";
+import FavoButton from '../ui/FavoButton.vue';
+import { mapActions } from 'vuex';
 
-const attractionStore = "attractionStore";
+const attractionStore = 'attractionStore';
 
 export default {
-  name: "RankingItemWeb",
+  name: 'RankingItemWeb',
   props: {
     plan: Object,
     attraction: Object,
@@ -71,7 +71,7 @@ export default {
   },
   data() {
     return {
-      memberId: "",
+      memberId: '',
     };
   },
   watch: {
@@ -82,33 +82,33 @@ export default {
   filters: {
     formatContentType(contentTypeId) {
       const contentTypes = [
-        { text: "관광지", value: 12 },
-        { text: "문화시설", value: 14 },
-        { text: "축제/공연/행사", value: 15 },
-        { text: "여행코스", value: 25 },
-        { text: "레포츠", value: 28 },
-        { text: "숙박", value: 32 },
-        { text: "쇼핑", value: 38 },
-        { text: "음식점", value: 39 },
+        { text: '관광지', value: 12 },
+        { text: '문화시설', value: 14 },
+        { text: '축제/공연/행사', value: 15 },
+        { text: '여행코스', value: 25 },
+        { text: '레포츠', value: 28 },
+        { text: '숙박', value: 32 },
+        { text: '쇼핑', value: 38 },
+        { text: '음식점', value: 39 },
       ];
       return contentTypes.filter((v) => v.value == contentTypeId)[0].text;
     },
   },
   methods: {
-    ...mapActions(attractionStore, ["detailAttraction"]),
+    ...mapActions(attractionStore, ['detailAttraction']),
     clickedCard() {
       this.$router
         .push({
-          name: "myplandetail",
+          name: 'myplandetail',
           params: { userId: this.memberID, planId: this.plan.planId },
         })
         .catch((err) => {
-          console.log("myplan detail 이동 실패", err);
+          console.log('myplan detail 이동 실패', err);
         });
     },
     openModal(contentId) {
       this.detailAttraction(contentId);
-      this.$bvModal.show("modal-detail");
+      this.$bvModal.show('modal-detail');
     },
   },
 };
@@ -127,7 +127,6 @@ a:hover {
 
 img {
   flex-shrink: 0;
-  width: 360px;
   height: 180px;
   object-fit: cover;
 }

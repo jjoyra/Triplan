@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: "FavoButton",
+  name: 'FavoButton',
   data() {
     return {
       checked: false,
@@ -46,8 +46,8 @@ export default {
 
 @media (max-width: 750px) {
   .favo-icon-wrap {
-    top: -10px;
-    right: -10px;
+    top: 0;
+    right: 0;
   }
 }
 </style>

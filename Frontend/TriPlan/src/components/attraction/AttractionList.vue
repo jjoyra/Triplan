@@ -33,13 +33,13 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from 'vuex';
 // import AttractionDetailModal from "./AttractionDetailModal.vue";
 
-const attractionStore = "attractionStore";
+const attractionStore = 'attractionStore';
 
 export default {
-  name: "AttractionList",
+  name: 'AttractionList',
   data() {
     return {
       isWrite: false,
@@ -53,19 +53,19 @@ export default {
     // AttractionDetailModal,
   },
   computed: {
-    ...mapState(attractionStore, ["attractions"]),
+    ...mapState(attractionStore, ['attractions']),
   },
   filters: {
     formatContentType(contentTypeId) {
       const contentTypes = [
-        { text: "관광지", value: 12 },
-        { text: "문화시설", value: 14 },
-        { text: "축제/공연/행사", value: 15 },
-        { text: "여행코스", value: 25 },
-        { text: "레포츠", value: 28 },
-        { text: "숙박", value: 32 },
-        { text: "쇼핑", value: 38 },
-        { text: "음식점", value: 39 },
+        { text: '관광지', value: 12 },
+        { text: '문화시설', value: 14 },
+        { text: '축제/공연/행사', value: 15 },
+        { text: '여행코스', value: 25 },
+        { text: '레포츠', value: 28 },
+        { text: '숙박', value: 32 },
+        { text: '쇼핑', value: 38 },
+        { text: '음식점', value: 39 },
       ];
       return contentTypes.filter((v) => v.value == contentTypeId)[0].text;
     },
@@ -73,25 +73,25 @@ export default {
   created() {
     this.CLEAR_ATTRACTION_LIST();
     console.log(this.$route.path);
-    if (this.$route.path === "/plan/write") this.isWrite = true;
+    if (this.$route.path === '/plan/write') this.isWrite = true;
     else this.isWrite = false;
     this.detailAttraction(125266);
   },
   methods: {
-    ...mapMutations(attractionStore, ["CLEAR_ATTRACTION_LIST"]),
-    ...mapActions(attractionStore, ["detailAttraction"]),
+    ...mapMutations(attractionStore, ['CLEAR_ATTRACTION_LIST']),
+    ...mapActions(attractionStore, ['detailAttraction']),
     openModal(contentId) {
       this.detailAttraction(contentId);
-      this.$bvModal.show("modal-detail");
+      this.$bvModal.show('modal-detail');
     },
     clickedAttraction(contentId) {
-      this.$emit("clicked-attraction", contentId);
+      this.$emit('clicked-attraction', contentId);
       // this.detailAttraction(contentId);
     },
     addPlan(attraction) {
       this.planAttractionInfo.attractions.push(attraction);
       this.planAttractionInfo.contentIds.push(attraction.contentId);
-      this.$emit("add-plan-attraction", this.planAttractionInfo);
+      this.$emit('add-plan-attraction', this.planAttractionInfo);
     },
   },
 };
@@ -136,7 +136,6 @@ a {
   color: #8d9193;
   padding: 30px 0px;
   width: 100%;
-  height: 560px;
   text-align: center;
   border-top: 0.3px rgba(0, 0, 0, 0.125);
   border-style: solid hidden;
