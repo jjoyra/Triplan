@@ -40,7 +40,7 @@
           <div v-if="userInfo" class="user-memu-wrap">
             <li class="nav-item">
               <b-icon icon="CalendarPlus"></b-icon>
-              <router-link class="user-menu-plan" to="`/plan/write`">플랜 만들기</router-link>
+              <router-link class="user-menu-plan" to="/plan/write">플랜 만들기</router-link>
             </li>
             <li class="nav-item">
               <b-icon icon="BoxArrowRight"></b-icon>
@@ -222,19 +222,19 @@
 </template>
 
 <script>
-import { join, idCheck } from "@/api/member";
-import { useVuelidate } from "@vuelidate/core";
-import { required, minLength, maxLength, sameAs } from "@vuelidate/validators";
-import { mapState, mapActions } from "vuex";
+import { join, idCheck } from '@/api/member';
+import { useVuelidate } from '@vuelidate/core';
+import { required, minLength, maxLength, sameAs } from '@vuelidate/validators';
+import { mapState, mapActions } from 'vuex';
 
-const memberStore = "memberStore";
+const memberStore = 'memberStore';
 const ID_INPUT_IDX = 2;
 const CONFIRM_INPUT_IDX = 4;
 
-import SearchInput from "@/components/common/SearchInput.vue";
+import SearchInput from '@/components/common/SearchInput.vue';
 
 export default {
-  name: "TheHeader",
+  name: 'TheHeader',
   setup() {
     return {
       v$: useVuelidate(),
@@ -282,94 +282,94 @@ export default {
       width: 0,
       isMenuOpen: false,
       isMain: true,
-      loginMemberId: "",
-      loginPassword: "",
-      message: "",
+      loginMemberId: '',
+      loginPassword: '',
+      message: '',
       isCanUseId: false,
       signFormList: [
         {
-          label: "이름",
-          labelFor: "signName",
-          type: "text",
-          value: "",
-          id: "signName",
-          name: "name",
-          placeholder: "이름을 입력해주세요",
-          ariaDescribedby: "input-signName-feedback",
-          feedback: "이름은 2자 이상 6자 이하입니다.",
+          label: '이름',
+          labelFor: 'signName',
+          type: 'text',
+          value: '',
+          id: 'signName',
+          name: 'name',
+          placeholder: '이름을 입력해주세요',
+          ariaDescribedby: 'input-signName-feedback',
+          feedback: '이름은 2자 이상 6자 이하입니다.',
         },
         {
-          label: "닉네임",
-          labelFor: "signNickname",
-          type: "text",
-          value: "",
-          id: "signNickname",
-          name: "nickname",
-          placeholder: "닉네임을 입력해주세요",
-          ariaDescribedby: "input-signNickname-feedback",
-          feedback: "닉네임은 2자 이상 6자 이하입니다.",
+          label: '닉네임',
+          labelFor: 'signNickname',
+          type: 'text',
+          value: '',
+          id: 'signNickname',
+          name: 'nickname',
+          placeholder: '닉네임을 입력해주세요',
+          ariaDescribedby: 'input-signNickname-feedback',
+          feedback: '닉네임은 2자 이상 6자 이하입니다.',
         },
         {
-          label: "아이디",
-          labelFor: "signMemberId",
-          type: "text",
-          value: "",
-          id: "signMemberId",
-          name: "memberId",
-          placeholder: "아이디를 입력해주세요",
-          ariaDescribedby: "input-signMemberId-feedback",
-          feedback: "아이디는 4자 이상 10자 이하입니다.",
+          label: '아이디',
+          labelFor: 'signMemberId',
+          type: 'text',
+          value: '',
+          id: 'signMemberId',
+          name: 'memberId',
+          placeholder: '아이디를 입력해주세요',
+          ariaDescribedby: 'input-signMemberId-feedback',
+          feedback: '아이디는 4자 이상 10자 이하입니다.',
         },
         {
-          label: "비밀번호",
-          labelFor: "signPassword",
-          type: "password",
-          value: "",
-          id: "signPassword",
-          name: "password",
-          placeholder: "비밀번호를 입력해주세요",
-          ariaDescribedby: "input-signPassword-feedback",
-          feedback: "비밀번호는 4자 이상 10자 이하입니다.",
+          label: '비밀번호',
+          labelFor: 'signPassword',
+          type: 'password',
+          value: '',
+          id: 'signPassword',
+          name: 'password',
+          placeholder: '비밀번호를 입력해주세요',
+          ariaDescribedby: 'input-signPassword-feedback',
+          feedback: '비밀번호는 4자 이상 10자 이하입니다.',
         },
         {
-          label: "비밀번호 확인",
-          labelFor: "signPasswordConfrim",
-          type: "password",
-          value: "",
-          id: "signPasswordConfrim",
+          label: '비밀번호 확인',
+          labelFor: 'signPasswordConfrim',
+          type: 'password',
+          value: '',
+          id: 'signPasswordConfrim',
           // name: "signPasswordConfrim",
-          placeholder: "비밀번호를 다시 입력해주세요",
-          ariaDescribedby: "input-signPasswordConfrim-feedback",
-          feedback: "비밀번호가 일치하지 않습니다.",
+          placeholder: '비밀번호를 다시 입력해주세요',
+          ariaDescribedby: 'input-signPasswordConfrim-feedback',
+          feedback: '비밀번호가 일치하지 않습니다.',
         },
       ],
     };
   },
   methods: {
-    ...mapActions(memberStore, ["userConfirm", "getUserInfo", "userLogout"]),
+    ...mapActions(memberStore, ['userConfirm', 'getUserInfo', 'userLogout']),
     async onLoginSubmit() {
       let params = {
         memberId: this.loginMemberId,
         password: this.loginPassword,
       };
-      console.log("로그인", params);
+      console.log('로그인', params);
 
       await this.userConfirm(params);
 
-      this.loginMemberId = "";
-      this.loginPassword = "";
+      this.loginMemberId = '';
+      this.loginPassword = '';
 
-      let token = sessionStorage.getItem("access-token");
-      console.log("1. confirm() token >> " + token);
+      let token = sessionStorage.getItem('access-token');
+      console.log('1. confirm() token >> ' + token);
       if (this.isLogin) {
         await this.getUserInfo(token);
-        console.log("4. confirm() userInfo :: ", this.userInfo);
-        this.message = "";
-        this.$bvModal.hide("modal-login");
+        console.log('4. confirm() userInfo :: ', this.userInfo);
+        this.message = '';
+        this.$bvModal.hide('modal-login');
         alert(`${this.userInfo.nickname} 님 환영합니다!`);
       } else {
-        console.log("로그인 실패");
-        this.message = "아이디와 비밀번호를 확인해주세요!";
+        console.log('로그인 실패');
+        this.message = '아이디와 비밀번호를 확인해주세요!';
       }
     },
     onSignUpSubmit() {
@@ -384,34 +384,34 @@ export default {
           userInfo,
           ({ status }) => {
             if (status === 201) {
-              this.$bvModal.hide("modal-registe");
-              this.message = "";
+              this.$bvModal.hide('modal-registe');
+              this.message = '';
               this.signFormList = this.signFormList.map((item) => {
                 return {
                   ...item,
-                  value: "",
+                  value: '',
                 };
               });
               this.isCanUseId = false;
               this.$refs.inputIdRef[0].state = null;
-              alert("회원가입 성공");
+              alert('회원가입 성공');
             }
           },
-          (err) => console.log("회원가입 실패", err)
+          (err) => console.log('회원가입 실패', err)
         );
       } else {
-        if (!this.isCanUseId) this.message = "아이디 중복 확인이 필요합니다.";
-        else this.message = "입력 값을 확인해주세요.";
+        if (!this.isCanUseId) this.message = '아이디 중복 확인이 필요합니다.';
+        else this.message = '입력 값을 확인해주세요.';
       }
     },
     handleLogout() {
-      console.log("로그아웃");
+      console.log('로그아웃');
       console.log(this.userInfo.memberId);
       this.userLogout(this.userInfo.memberId);
-      sessionStorage.removeItem("access-token");
-      sessionStorage.removeItem("refresh-token");
-      alert("로그아웃 되셨습니다.");
-      if (this.$route.path != "/") this.$router.push("/");
+      sessionStorage.removeItem('access-token');
+      sessionStorage.removeItem('refresh-token');
+      alert('로그아웃 되셨습니다.');
+      if (this.$route.path != '/') this.$router.push('/');
     },
     handleIdCheck() {
       let memberId = this.signFormList[ID_INPUT_IDX].value;
@@ -424,7 +424,7 @@ export default {
               // 중복된 아이디
               this.isCanUseId = false;
               this.$refs.inputIdRef[0].state = false;
-              this.signFormList[ID_INPUT_IDX].feedback = "중복된 아이디 입니다.";
+              this.signFormList[ID_INPUT_IDX].feedback = '중복된 아이디 입니다.';
             } else {
               // 사용 가능한 아이디
               if (
@@ -436,7 +436,7 @@ export default {
               } else {
                 this.isCanUseId = false;
                 this.$refs.inputIdRef[0].state = false;
-                this.signFormList[ID_INPUT_IDX].feedback = "아이디는 4자 이상 10자 이하입니다.";
+                this.signFormList[ID_INPUT_IDX].feedback = '아이디는 4자 이상 10자 이하입니다.';
               }
             }
           },
@@ -473,10 +473,10 @@ export default {
         this.$refs.inputIdRef[0].value.length <= 10
       ) {
         this.$refs.inputIdRef[0].state = false;
-        this.signFormList[ID_INPUT_IDX].feedback = "아이디 중복 확인이 필요합니다.";
+        this.signFormList[ID_INPUT_IDX].feedback = '아이디 중복 확인이 필요합니다.';
       } else {
         this.$refs.inputIdRef[0].state = false;
-        this.signFormList[ID_INPUT_IDX].feedback = "아이디는 4자 이상 10자 이하입니다.";
+        this.signFormList[ID_INPUT_IDX].feedback = '아이디는 4자 이상 10자 이하입니다.';
       }
     },
     inputState(idx) {
@@ -495,9 +495,9 @@ export default {
       this.$refs.inputIdRef[0].state = false;
 
       if (!this.v$.signFormList[ID_INPUT_IDX].$invalid) {
-        this.signFormList[ID_INPUT_IDX].feedback = "아이디 중복 확인이 필요합니다.";
+        this.signFormList[ID_INPUT_IDX].feedback = '아이디 중복 확인이 필요합니다.';
       } else {
-        this.signFormList[ID_INPUT_IDX].feedback = "아이디는 4자 이상 10자 이하입니다.";
+        this.signFormList[ID_INPUT_IDX].feedback = '아이디는 4자 이상 10자 이하입니다.';
       }
     },
     passwordConfirmState() {
@@ -511,16 +511,16 @@ export default {
     },
   },
   computed: {
-    ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
+    ...mapState(memberStore, ['isLogin', 'isLoginError', 'userInfo']),
   },
   components: {
     SearchInput,
   },
   watch: {
     $route(to) {
-      if (to.fullPath === "/") {
+      if (to.fullPath === '/') {
         this.isMain = true;
-      } else if (this.$route.fullPath !== "/" && this.width < 950) {
+      } else if (this.$route.fullPath !== '/' && this.width < 950) {
         this.isMain = false;
       } else {
         this.isMain = true;
@@ -528,9 +528,9 @@ export default {
       this.handleMenuClose();
     },
     width(val) {
-      if (this.$route.fullPath === "/") {
+      if (this.$route.fullPath === '/') {
         this.isMain = true;
-      } else if (this.$route.fullPath !== "/" && val > 950) {
+      } else if (this.$route.fullPath !== '/' && val > 950) {
         this.isMain = true;
       } else {
         this.isMain = false;
@@ -539,11 +539,11 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener("resize", this.handleResize);
+    window.addEventListener('resize', this.handleResize);
     this.width = window.innerWidth;
   },
   beforeDestroy() {
-    window.removeEventListener("resize", this.handleResize);
+    window.removeEventListener('resize', this.handleResize);
   },
 };
 </script>
